@@ -7,7 +7,7 @@ public abstract class Niveau {
 	/*definie le nombre de couleurs utilisables*/
 	protected boolean doubl;
 	/*definie si l'utilisation de deux couleurs differentes dans la combinaison est autorisee*/
-	protected int coupMax;
+	protected int coupMax=10;
 	/*definie le nombre de combinaisons maximal que peut soumettre l'utilisateur pour un tour*/
 	
 	
