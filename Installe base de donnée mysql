@@ -1,0 +1,132 @@
+Tutoriel, installer mysql sur un os de linux et accès à la base de donnée via eclipse :
+
+Installer mysql : 
+Sur le terminal, faite : apt-get install mysql-server mysql-client
+Lors de l'installation vous définisez un mot de passe de superutilisateur.
+
+Puis si mysql n'est pas lancé, faire :/etc/init.d/mysql start ( ou stop pour l'arrêter )
+A ce stade il n' y a que l'utilisateur root qui est inscrit dans mysql. Donc pour se connecter à mysql, sur la console faite : mysql -u root -p
+Donnez le mot de passe du  superutilisateur.
+Pour vous créez un nouveau utilisateur faite( il faut être connecté en tant que root à mysql ou avoir les droits ) : CREATE USER login_utilisateur IDENTIFIED BY 'son_mot_de_passe'
+En remplaçant  login_utilisateur et  mot_de_passe.
+
+Pour lui retirer les droits d’accès aux bases de données :
+grant usage on *.* to login_utilisateur@localhost identified by 'son_mot_de_passe'; 
+*.* : signifie qu'il a aucun droit sur toutes les bases de données et toutes leurs tables
+Mastermind.* : siginife qu'il a aucun droit sur la base de donnée Mastermind et ses tables.
+Localhost : c'est le poste auquel il à droit de se connecter à la base de donée avec son login et mot de passe.
+
+Voici le contraire de grant usage : pour ajouter des droits d'accès aux bases de données de l'utilisateur.
+grant all privileges on nom_base_de_donnée.* to sqluser@localhost; 
+
+Par défaut quand on créé un nouveau utilisateur, on lui retire tous c'est droits avec :
+grant usage on *.* to login_utilisateur@localhost identified by 'son_mot_de_passe'; 
+Puis on ajoute les droits d'accès de certaines base de donnée (ou table) avec :
+grant all privileges on nom_base_de_donnée.* to sqluser@localhost; 
+
+Pour sortir de mysql taper : exit
+
+Pour créer une base de donnée ( il faut être connecté en tant que root à mysql ou avoir les droits ) faite : CREATE DATABASE testBDD
+En remplacant testBDD, par votre nom de base de donnée.
+
+A ce stade vous êtes dans aucune base de donné, donc pour en sélectionner une :
+USE testBDD
+
+Après les command SELECT, UPDATE, etc Vous les connaissez
+
+Accès via eclipse : (en m'inspirant du tutoriel : http://www.vogella.com/tutorials/MySQLJava/article.html)
+
+Télécharger le driver : Pour avoir accès à la base de donnée il faut télécharger un driver. Pour mysql il faut celui la :
+http://dev.mysql.com/downloads/connector/j. Sélectionner plateforme indépendant dans la liste déroulante puis le télécharger et après le désarchiver/décompresser.
+
+Ajouter un dossier lib dans votre projet : Sur eclipse dans votre projet(le créer ou ouvrer en un), créer un répertoire lib:clic droit sur arborescence de votre projet, puis new, puis folder. Une page s'ouvre, Entrer le nom:lib puis clic sur finish. Un nouveau dossier(lib) c'est ouvert dans votre arborescence de votre projet.
+
+Importer le dossier driver dans lib : Maintenant clicl droit sur lib, pus import. Une page s'ouvre, puis double-clic sur générale, puis file system, puis next.Indiquer le répertoire que vous venez de désarchivez dans From directory.
+Sélectionner le checkbox qui vient d’apparaître de votre répertoire que vous avez désarchivez. Enfin sélectionner le check-box create top-level folder et Finish.
+Dans le fichier lib(sur l’arborescence d'eclipse) votre répertoire(driver mysql) a été importer
+
+Ajouter le path du fichier mysql-connector-java-X.X.X-bin.jar : (X.X.X = numéro de version)
+Dans l'arborescence de votre projet, lib →  mysql-connector-java-X.X.X →  mysql-connector-java-X.X.X-bin.jar, clic droit, puis Build Path, puis Add To Build Path. Un dossier c'est créer dans votre projet (Referenced Libraries) avec des choses dedans.
+
+Maintenant on peut commencer à coder :
+Dans votre projet, créer une classe (par exemple : Testbdd), avec une méthode main.
+Pour manipuler la base de donnée on aura besoin des imports suivant (donc ajoute les, dans ta classe) :
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+Variables dont on a besoin :
+private Connection connect = null;
+private Statement statement = null;
+private PreparedStatement preparedStatement = null;
+private ResultSet resultSet = null;
+
+
+Pour se connecter à la base de donnée :
+try {
+       //Je ne sais pas trop ce que ça veut dire, mais c'est utile !!
+      Class.forName("com.mysql.jdbc.Driver");
+    
+       //Connection à la base de donnée
+      connect = DriverManager
+          .getConnection("jdbc:mysql://localhost/nom_base_de_donnée?"
+              + "user=login&password=mot_de_passe");
+     /*N'oublié pas de remplacer :  nom_base_de_donnée (ex emple : Mastermind:)
+				      login
+				      mot_de_passe
+     */
+    …...les  Requetes
+}catch(Exception e){....}//ON peut être plus precis que Exception e (à chercher)
+
+}finally{//On ferme les variables
+  try {
+      if (resultSet != null) {
+        resultSet.close();
+      }
+
+      if (statement != null) {
+        statement.close();
+      }
+
+      if (connect != null) {
+        connect.close();
+      }
+   } catch (Exception e) {
+
+   }
+}
+
+Faire un select :
+//Nouvelle requete
+statement = connect.createStatement();
+// Executer la requete
+resultSet = statement.executeQuery("select * from feedback.comments");
+//Tant que on il y a des tuples
+while (resultSet.next()) {
+	String une_chaine = resultSet.getString("attribut_de _type_string");//Une colonne d'une table
+	Date date = resultSet.getDate("attribut_de_type_date");//Une autre colonne de la même table 
+	…..
+	//Il existe bien sûr getInt(...), get...(...), etc
+}
+Faire une requete prepare :
+statement = connect.createStatement();
+			preparedStatement = connect
+					.prepareStatement("select * from ville where cp = ? and ville = ?");
+			preparedStatement.setInt(1, 95100);
+			preparedStatement.setString(1, "argenteuil");
+			resultSet = preparedStatement.executeQuery();
+			//Si on aurait fait un UPDATE il ne faut pas faire preparedStatement.executeQuery() mais preparedStatement.executeUpdate();
+			… Affiché le resulteSet
+
+ 	
+	
+
+Je m'arrete la car si on n'a compris ca on comprend vite fait le reste (les delete, insert, etc )
+Je vous invite à voir le petit tuto :
+http://www.vogella.com/tutorials/MySQLJava/article.html
+
+
+
