@@ -1,5 +1,8 @@
 package mastermind;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class Niveau {
 	protected int pions;
 	/*definie le nombre de pions à deviner*/
@@ -53,9 +56,70 @@ public abstract class Niveau {
 		return this.coupMax;
 	}
 	//*permet de retourner le nombre de combinaisons maximal que l'on peut soumettre*/
+	
 	public void setCoupMax(int nb)
 	{
 		this.coupMax = nb;
 	}
 	//*permet de definir le nombre de combinaisons maximal que l'on peut soumettre*/
+	
+	public boolean validePions(Couleur[] coul)
+	{
+		if(coul.length==this.pions)
+		{
+			return true;
+		}
+		//Si la combinaison contient le même nombre de couleurs que dans la definition de la classe, on renvoie vrai
+		else
+		{
+			return false;
+		}
+		//Sinon on renvoie faux
+	}
+	//*permet de vérifier que la combinaison comporte le bon nombre de pions*/
+
+	public boolean valideCouleurs(Couleur[] coul)
+	{
+		Set<Couleur> unicColors = new HashSet<Couleur>();
+		//On va utiliser un HashSet qui ne peut pas contenir de doublons
+		for (Couleur c : coul) unicColors.add(c);
+		//On ajoute les couleurs au HashSet, si un element est deja present il ne sera pas insere
+		int unicNB = unicColors.size();
+		//On recupere la taille du HashSet qui correspond au nombre de couleurs utilises
+		if (unicNB>this.couleurs)
+		{
+			return false;
+		}
+		//Si le nombre de couleurs utilise est superieur a la valeur specifiee dans la classe, on renvoie faux
+		else
+		{
+			return true;
+		}
+		//Sinon on renvoie vrai
+	}
+	//*permet de vérifier que la combinaison comporte le bon nombre de couleurs*/
+	
+	public boolean valideDoubl(Couleur[] coul)
+	{
+		Set<Couleur> unicColors = new HashSet<Couleur>();
+		for (Couleur c : coul) unicColors.add(c);
+		int unicNB = unicColors.size();
+		if (unicNB<coul.length && this.doubl==false)
+		{
+			return false;
+		}
+		//Si le nombre de couleur sans doublons est inferieur a la longeur de la combinaison alors il y a des doublons, si les doublons ne sont pas autorises on renvoie faux
+		else
+		{
+			return true;
+		}
+		//Sinon on renvoie vrai
+	}
+	//*permet de vérifier que la combinaison respecte bien la defintion du niveau pour les doubles*/
+	
+	public boolean valideCombinaison(Couleur[] coul)
+	{
+		return (this.valideCouleurs(coul) && this.valideDoubl(coul) && this.validePions(coul));
+	}
+	//*Permet de verifier la validite d'une combinaison
 }
