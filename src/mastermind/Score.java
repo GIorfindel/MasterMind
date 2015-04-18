@@ -1,13 +1,13 @@
 package mastermind;
 
 public class Score {
-	/* */
+	/* Le mode représente le mode multijoueur ou solo */
 	private String mode;
-	/* */
+	/* Le coups est le nombre de combinaisons que le joueur a fait pour trouver la bonne combinaisons */
 	private int coups;
 	/* */
 	private boolean victoire;
-	/* */
+	/* Le nombre de tour de la partie */
 	private int tours;
 	
 	/* Constructeur par defaut */
