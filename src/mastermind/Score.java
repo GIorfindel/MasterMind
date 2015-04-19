@@ -1,14 +1,21 @@
 package mastermind;
 
 public class Score {
+	
 	/* Le mode représente le mode multijoueur ou solo */
 	private String mode;
+	
 	/* Le coups est le nombre de combinaisons que le joueur a fait pour trouver la bonne combinaisons */
 	private int coups;
-	/* */
+	
+	/* Si le joueur a gagné ou perdu la partie */
 	private boolean victoire;
+	
 	/* Le nombre de tour de la partie */
 	private int tours;
+	
+	/* Le niveau auquel le joueur a joué */
+	private Niveau niveau;
 	
 	/* Constructeur par defaut */
 	public Score(){
@@ -60,6 +67,15 @@ public class Score {
 	public void setTours( int tours ){
 		this.tours = tours;
 	}
+	
+	public Niveau getNiveau(){
+		return this.niveau;
+	}
+	
+	public void setNiveau( Niveau niveau ){
+		this.niveau = niveau;
+	}
+	
 	/* Fin des methodes set et get des varaibles */
 	
 }
