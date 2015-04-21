@@ -22,7 +22,7 @@ public class Joueur {
 		return this.identifiant;
 	}
 	
-	public void setIdentifiant( String isentifiant ){
+	public void setIdentifiant( String identifiant ){
 		this.identifiant = identifiant;
 	}
 	
@@ -46,7 +46,7 @@ public class Joueur {
 		return this.malus;
 	}
 	
-	public void setMalus(){
+	public void setMalus( int malus ){
 		this.malus = malus;
 	}
 	
