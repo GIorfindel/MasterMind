@@ -58,10 +58,9 @@ public class Partie {
 	}
 	
 	//Créé une partie personnalisée
-	public void personnaliserNiveau(int pions, int couleurs, boolean doubl) {
-		this.niveau.couleurs = couleurs;
-		this.niveau.pions = pions;
-		this.niveau.doubl = doubl;
+	public void personnaliserNiveau(int pions, int couleurs, boolean doubl, int coupMax) {
+		this.niveau = new NiveauPerso(pions, couleurs, doubl, coupMax);
 	}
+	
 		
 }
