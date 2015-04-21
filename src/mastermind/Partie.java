@@ -5,7 +5,7 @@ public class Partie {
 	/* Variables */
 	private String nom; //Nom de la partie
 	private Niveau niveau;
-	private Joueur jouer;
+	private Joueur joueur;
 	
 	/* Constructeur par défaut */
 	public Partie() {
