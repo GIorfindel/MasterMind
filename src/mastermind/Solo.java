@@ -18,3 +18,6 @@ public void setCoups( Integer coups ) {
 public Coups getCoups() {
 		return this.coups;
 	}
+
+	
+}
