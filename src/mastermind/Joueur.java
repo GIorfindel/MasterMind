@@ -1,11 +1,11 @@
 package mastermind;
 
 public class Joueur {
-	String identifiant;
-	String mdp;
+	private String identifiant;
+	private String mdp;
 	//Le nom(l'adresse) de l'image du joueur
-	String avatar;
-	int malus;
+	private String avatar;
+	private int malus;
 	
 	// Constructeur par paramètre
 	public Joueur( String identifiant, String mdp, String avatar, int malus ){
