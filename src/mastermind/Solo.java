@@ -6,7 +6,7 @@ public class Solo extends Partie{
 	private Tour tour; //le tour que l’on fait
 	
 
-public Coups getCoups() {
+public int getCoups(Tour[] tour) {
 		return this.coups;
 	}
 	
