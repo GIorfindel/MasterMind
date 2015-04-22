@@ -7,6 +7,7 @@ public class Solo extends Partie{
 	
 
 public Coups getCoups() {
-		return super.coups;
+		return this.coups;
 	}
+	
 }
