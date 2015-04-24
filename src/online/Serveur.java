@@ -46,6 +46,11 @@ public class Serveur {
 		sortie.flush();
 		
 	}
+	
+	public enum Demande {
+		afficherJoueurs,
+		jouer_avec
+	}
 	 
 	public static void main(String[] args) {
 		
@@ -143,8 +148,8 @@ public class Serveur {
 
 		private PrintWriter sortie;
 		private BufferedReader entree;
-		private String demandeClient = null, identifiant = null, identifiant2 = null;
-		 
+		private String action = null, identifiant = null, identifiant2 = null;
+	
 		public Traitement_action(BufferedReader entree, PrintWriter sortie, String identifiant){
 			this.entree = entree;
 			this.sortie = sortie;
@@ -155,18 +160,19 @@ public class Serveur {
 			 
 			while(true){
 				try {
-					demandeClient = entree.readLine(); // Lit la demande d'un client
-					System.out.println(identifiant +" : "+ demandeClient); 
+					action = entree.readLine(); // Lit la demande d'un client
+					System.out.println(identifiant +" : "+ action); 
 					 
+					Demande demandeClient = Demande.valueOf(action);
 					
 					// Liste des demandes possibles
 					switch(demandeClient) {
 					
-						case "afficherJoueurs" :
+						case afficherJoueurs :
 							envoyerListeJoueurs(sortie); // Envoie la liste des joueurs à la sortie
-					 		break;
+					 	break;
 					 		
-						case "jouer_avec": // Un joueur demande de jouer avec un joueur connecté
+						case jouer_avec: // Un joueur demande de jouer avec un joueur connecté
 							sortie.println("qui ?");; // Le serveur répond avec qui il voudrait jouer
 							sortie.flush();
 							identifiant2 = entree.readLine(); // Le joueur donne l'identifiant de l'autre joueur avec qui il veut jouer
@@ -190,7 +196,7 @@ public class Serveur {
 								sortie.println("Ce joueur n'existe pas.");
 								sortie.flush();
 							}
-							break;
+						break;
 							
 					 }
 					 

@@ -22,7 +22,6 @@ public class Client {
 		try {
 			entree = new BufferedReader(new InputStreamReader(socket.getInputStream())); //Initialisation du buffer sur le socketClient
 			int nbJoueurs = Integer.parseInt(entree.readLine());
-			System.out.println("Il y a "+nbJoueurs+" joueurs connectés"); 
 			for(int i = nbJoueurs; i > 0; i--) {
 				System.out.println(entree.readLine());
 			}
@@ -36,7 +35,7 @@ public class Client {
 		
 		try {
 			
-			Client client = new Client("mpm"); // L'identifiant est normalement fourni par le programme
+			Client client = new Client("toto"); // L'identifiant est normalement fourni par le programme
 			
 			
 			System.out.println("Demande de connexion");
@@ -72,7 +71,7 @@ public class Client {
 
 		private PrintWriter sortie;
 		private String action = null;
-		private Scanner entree = null;
+		private Scanner clavier = null;
 		
 		public Emission(PrintWriter sortie) {
 			this.sortie = sortie;	
@@ -80,11 +79,11 @@ public class Client {
 		
 		public void run() {
 			
-			entree = new Scanner(System.in);
+			clavier = new Scanner(System.in);
 			  
 			while(true){
-				System.out.println("Votre action :");
-				action = entree.nextLine();
+				System.out.println(identifiant+" : ");
+				action = clavier.nextLine();
 				sortie.println(action);
 				sortie.flush();
 			}
@@ -104,7 +103,7 @@ public class Client {
 			
 			while(true){
 				try {
-		        	
+					
 					message = entree.readLine();
 					System.out.println(message);
 				
