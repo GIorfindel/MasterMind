@@ -30,6 +30,22 @@ public class Serveur {
 			System.out.println(i+":"+listeJoueurs.get(i));
 		}
 	}
+	
+	public void envoyerListeJoueurs(PrintWriter sortie) {
+		int j = 0;
+		int nbJoueurs = listeJoueurs.size();
+		if(nbJoueurs < 2) {
+			sortie.println("Il y a "+nbJoueurs+" joueur connecté");	
+		}
+		else {
+			sortie.println("Il y a "+nbJoueurs+" joueurs connectés");	
+		}
+		for(j=0; j<nbJoueurs;j++) {
+			sortie.println(listeJoueurs.get(j));
+		}
+		sortie.flush();
+		
+	}
 	 
 	public static void main(String[] args) {
 		
@@ -56,13 +72,14 @@ public class Serveur {
 	 *Si ça vous pertubre, vous pouvez créer un nouveau fichier et faire un couper/coller.
 	 *Si vous faites ça, n'oubliez pas la portée des variables.
 	 */
-	class Accepter_connexion implements Runnable{
+	class Accepter_connexion implements Runnable {
 	
 		private ServerSocket socketServeur = null; // Socket qui s'occupe SEULEMENT de l'écoute du port
 		private Socket socketClient = null; // Socket qui s'occupe de l'échange de flux avec le client
 		private PrintWriter sortie = null;
 		private BufferedReader entree = null; // L'entrée sera (presque) toujours lue en utilisant un buffer
 		private String identifiant = null;
+		private Thread traitements = null;
 		
 		// Récupération du socket de serveur de la classe Serveur
 		public Accepter_connexion(ServerSocket ss) {
@@ -73,7 +90,7 @@ public class Serveur {
 		public void run() {
 			
 			try {
-				while(nbJoueurs < 5){ // Normalement c'est un while(true), ou un autre prédicat
+				while(true){ // Normalement c'est un while(true), ou un autre prédicat
 					
 					socketClient = socketServeur.accept(); // On accepte la connexion
 					
@@ -81,9 +98,7 @@ public class Serveur {
 					sortie = new PrintWriter(socketClient.getOutputStream()); // Initialisation du flux de sortie
 					
 					listeSocket.add(socketClient); // On ajoute le socket dans la liste (peut être utile pour la suite)
-					
 					identifiant = entree.readLine(); // On lit le sortie.println du Client
-					
 					listeJoueurs.add(identifiant); // On ajoute l'identifiant du client dans la liste
 					
 					System.out.println(identifiant+" vient de se connecter"); // Affichage d'un message côté Serveur
@@ -93,23 +108,98 @@ public class Serveur {
 					 * message = entree.readLine() côté Client
 					 */
 					
+					sortie.println("connecte"); // envoi le statut du client
+					sortie.flush();
 					nbJoueurs++;
+					
+					traitements = new Thread(new Traitement_action(entree, sortie, identifiant));
+					traitements.start();
+
 				}
-				afficheSocket(listeSocket);
+				/*afficheSocket(listeSocket);
 				afficheLogin(listeJoueurs);
 				System.out.println("Il y a "+nbJoueurs+" joueurs connectés"); 
-				
+				*/
 				
 				/* Fermeture du socket à la FIN du programme. Obligatoire pour libérer le port.
 				 * Cette méthode n'est utile que si on souhaite fermer le serveur, 
 				 * ce qui serait rare dans des conditions réelles */
-				socketServeur.close(); 
+				//socketServeur.close(); 
 				
 				
 			} catch (IOException e) {
-				e.getStackTrace();
-				System.out.println(e);
+				e.printStackTrace();
 			}			
+		}
+	}
+	
+	
+	/* Cette classe traitera les actions envoyés par un client.
+	 * Un client envoie une demande au serveur (par exemple afficherJoueurs) et le serveur retourne un résultat.
+	 * Les demandes sont définies dans un switch. Toute action inconnue ne sera pas traitée.
+	 * Les méthodes System.out.println ne servent qu'au débuggage. On pourrait les utiliser pour faire des logs si on a le temps ?
+	 */
+	class Traitement_action implements Runnable {
+
+		private PrintWriter sortie;
+		private BufferedReader entree;
+		private String demandeClient = null, identifiant = null, identifiant2 = null;
+		 
+		public Traitement_action(BufferedReader entree, PrintWriter sortie, String identifiant){
+			this.entree = entree;
+			this.sortie = sortie;
+			this.identifiant = identifiant;
+		}
+			
+		public void run() {
+			 
+			while(true){
+				try {
+					demandeClient = entree.readLine(); // Lit la demande d'un client
+					System.out.println(identifiant +" : "+ demandeClient); 
+					 
+					
+					// Liste des demandes possibles
+					switch(demandeClient) {
+					
+						case "afficherJoueurs" :
+							envoyerListeJoueurs(sortie); // Envoie la liste des joueurs à la sortie
+					 		break;
+					 		
+						case "jouer_avec": // Un joueur demande de jouer avec un joueur connecté
+							sortie.println("qui ?");; // Le serveur répond avec qui il voudrait jouer
+							sortie.flush();
+							identifiant2 = entree.readLine(); // Le joueur donne l'identifiant de l'autre joueur avec qui il veut jouer
+							
+							if(listeJoueurs.contains(identifiant2)) { // Si l'identifiant donné existe dans la liste, on fait le traitement
+								System.out.println(identifiant+" veut jouer avec "+ identifiant2); //log
+								Socket joueur2 = listeSocket.get(listeJoueurs.indexOf(identifiant2));
+								PrintWriter sortieJ2 = new PrintWriter(joueur2.getOutputStream());
+								BufferedReader entreeJ2 = new BufferedReader(new InputStreamReader(joueur2.getInputStream())); 
+								sortieJ2.println(identifiant+" souhaite jouer avec vous. Accepter ?"); // On informe un joueur qu'une personne souhaite jouer avec lui
+								sortieJ2.flush();
+								if(entreeJ2.readLine().equals("accepte")) { // Si il accepte, on lance la partie (je bloque pour la suite !!!)
+									System.out.println("test");
+									sortie.println("lancement");
+									sortie.flush();
+									sortieJ2.println("lancement");
+									sortieJ2.flush();
+								}
+							}
+							else {
+								sortie.println("Ce joueur n'existe pas.");
+								sortie.flush();
+							}
+							break;
+							
+					 }
+					 
+					
+				 } catch (IOException e) {
+						
+					 e.printStackTrace();
+				 }
+			}
 		}
 	}
 }
