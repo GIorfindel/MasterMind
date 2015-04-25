@@ -5,4 +5,9 @@ public class TresDifficile extends Niveau {
 	protected  static final int couleurs=10;
 	protected static final boolean doubl=true;
 	protected static final int coupMax=14;
+	
+	@Override public String toString()
+	{
+		return "tres_difficile";
+	}
 }

@@ -20,6 +20,17 @@ public class Tour {
 	}
 	//*Permet de definir le nombre de combinaisons soumises par le joueur
 	
+	public Couleur[] getComb()
+	{
+		return this.combinaison;
+	}
+	//*Permet de recuperer le nombre de combinaisons soumises par le joueur
+	
+	public void setComb(Couleur[] comb)
+	{
+		this.combinaison = comb;
+	}
+		
 	public boolean testCombinaison(Couleur[] coul)
 	{
 		boolean ret = true;
