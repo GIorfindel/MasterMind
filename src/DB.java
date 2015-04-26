@@ -48,12 +48,12 @@ public class DB {
 		}
 		
 		//Permet de sauvegarder une partie 
-		public void sauvegarderPartie(Solo solo, Joueur j, String nom) throws SQLException{
+		public void sauvegarderPartie(Solo solo, Joueur j) throws SQLException{
 		      String query = " insert into Partie(id_Joueur, nom, niveau, coups)"
 				        + " values (?, ?, ?, ?)";
 		      PreparedStatement preparedStmt = connexion.prepareStatement(query);
 		      preparedStmt.setInt (1, this.getIdJoueur(j));
-		      preparedStmt.setString (2, nom);
+		      preparedStmt.setString (2, solo.getNom());
 		      preparedStmt.setString (3, solo.getNiveau().toString());
 		      preparedStmt.setInt (4, solo.getTour().getCoups());
 			  preparedStmt.executeQuery();
@@ -61,7 +61,7 @@ public class DB {
 			  {
 				  String query2 = " insert into Couleur"
 				        + " values (?, ?, ?)";
-				  preparedStmt.setInt (1, this.getIdPartie(j, nom));
+				  preparedStmt.setInt (1, this.getIdPartie(j, solo));
 				  preparedStmt.setInt (2, i);
 				  preparedStmt.setInt (3, solo.getTour().getComb()[i].ordinal());
 				  preparedStmt.executeQuery();
@@ -69,12 +69,12 @@ public class DB {
 		}
 		
 		//Permet de recuperer l'id d'une partie
-		public Integer getIdPartie(Joueur j, String nom) throws SQLException
+		public Integer getIdPartie(Joueur j, Solo solo) throws SQLException
 		{
 		      String query = "select id_Partie from Partie where id_Joueur = ? AND nom = ?";
 		      PreparedStatement preparedStmt = connexion.prepareStatement(query);
 		      preparedStmt.setInt (1, getIdJoueur(j));
-		      preparedStmt.setString (2, nom);
+		      preparedStmt.setString (2, solo.getNom());
 		      ResultSet result = preparedStmt.executeQuery();
 		      return result.getInt(1);
 		}
@@ -100,26 +100,26 @@ public class DB {
 		}
 		
 		//Permet de recuperer le nombre de couleur composants la combinaison
-		public int getNbCouleur(Joueur j, String nom) throws SQLException
+		public int getNbCouleur(Joueur j, Solo solo) throws SQLException
 		{
 		    String query = "select count(id_Partie) from Couleur where id_Partie = ?";
 		    PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		    preparedStmt.setInt (1, getIdPartie(j, nom));
+		    preparedStmt.setInt (1, getIdPartie(j, solo));
 		    ResultSet result = preparedStmt.executeQuery();
 		    return result.getInt(1);
 		}
 		
 		//Permet de charger de charger une partie sauvegardée
-		public Solo chargerPartie(Joueur j, String nom) throws SQLException
+		public Solo chargerPartie(Joueur j, Solo solo) throws SQLException
 		{
 			Solo s = new Solo();
 			Tour t = new Tour();
-			t.setCoups(this.getCoups(getIdPartie(j, nom)));
+			t.setCoups(this.getCoups(getIdPartie(j, solo)));
 		    String query = "select place, numero from Couleur where id_Partie = ? order by place";
 		    PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		    preparedStmt.setInt (1, getIdPartie(j, nom));
+		    preparedStmt.setInt (1, getIdPartie(j, solo));
 		    ResultSet result = preparedStmt.executeQuery();
-		    Couleur[] comb = new Couleur[this.getNbCouleur(j, nom)];
+		    Couleur[] comb = new Couleur[this.getNbCouleur(j, solo)];
 		    while (result.next()) {
 		        int place = result.getInt("place");
 		        int num = result.getInt("numero");
