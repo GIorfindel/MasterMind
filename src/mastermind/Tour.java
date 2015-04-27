@@ -5,7 +5,7 @@ public class Tour {
 	private int coups;
 	//*Variable qui stock le nombre de combinaisons soumises par le joueur
 	
-	private Couleur[] combinaison;
+	private Pions combinaison;
 	//*Variable qui stock la combinaison à deviner
 	
 	public int getCoups()
@@ -20,27 +20,27 @@ public class Tour {
 	}
 	//*Permet de definir le nombre de combinaisons soumises par le joueur
 	
-	public Couleur[] getComb()
+	public Pions getComb()
 	{
 		return this.combinaison;
 	}
 	//*Permet de recuperer le nombre de combinaisons soumises par le joueur
 	
-	public void setComb(Couleur[] comb)
+	public void setComb(Pions comb)
 	{
 		this.combinaison = comb;
 	}
 		
-	public boolean testCombinaison(Couleur[] coul)
+	public boolean testCombinaison(Pions comb)
 	{
 		boolean ret = true;
-		if (coul.length != this.combinaison.length)
+		if (comb.getNbPion() != this.combinaison.getNbPion())
 			ret = false;
 		else
 		{
-			for (int i=0;i<coul.length;i++)
+			for (int i=0;i<comb.getNbPion();i++)
 			{
-				if (coul[i] != this.combinaison[i])
+				if (comb.getPion(i) != this.combinaison.getPion(i))
 					ret = false;
 			}
 		}

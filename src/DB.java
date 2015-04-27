@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import mastermind.Couleur;
 import mastermind.Joueur;
+import mastermind.Pions;
 import mastermind.Solo;
 import mastermind.Tour;
 
@@ -57,13 +58,13 @@ public class DB {
 		      preparedStmt.setString (3, solo.getNiveau().toString());
 		      preparedStmt.setInt (4, solo.getTour().getCoups());
 			  preparedStmt.executeQuery();
-			  for (int i=0; i<solo.getTour().getComb().length;i++)
+			  for (int i=0; i<solo.getTour().getComb().getNbPion();i++)
 			  {
 				  String query2 = " insert into Couleur"
 				        + " values (?, ?, ?)";
 				  preparedStmt.setInt (1, this.getIdPartie(j, solo));
 				  preparedStmt.setInt (2, i);
-				  preparedStmt.setInt (3, solo.getTour().getComb()[i].ordinal());
+				  preparedStmt.setInt (3, solo.getTour().getComb().getPion(i).ordinal());
 				  preparedStmt.executeQuery();
 			  }
 		}
@@ -125,7 +126,7 @@ public class DB {
 		        int num = result.getInt("numero");
 		        comb[place]=Couleur.values()[num];
 		    }
-		    t.setComb(comb);
+		    t.setComb(new Pions(comb));
 		    s.setTour(t);
 		    return s;
 		}

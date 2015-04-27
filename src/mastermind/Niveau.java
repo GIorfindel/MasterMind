@@ -63,9 +63,9 @@ public abstract class Niveau {
 	}
 	//*permet de definir le nombre de combinaisons maximal que l'on peut soumettre*/
 	
-	public boolean validePions(Couleur[] coul)
+	public boolean validePions(Pions comb)
 	{
-		if(coul.length==this.pions)
+		if(comb.getNbPion()==this.pions)
 		{
 			return true;
 		}
@@ -78,8 +78,9 @@ public abstract class Niveau {
 	}
 	//*permet de vérifier que la combinaison comporte le bon nombre de pions*/
 
-	public boolean valideCouleurs(Couleur[] coul)
+	public boolean valideCouleurs(Pions comb)
 	{
+		Couleur[] coul = comb.getCombinaison();
 		Set<Couleur> unicColors = new HashSet<Couleur>();
 		//On va utiliser un HashSet qui ne peut pas contenir de doublons
 		for (Couleur c : coul) unicColors.add(c);
@@ -99,8 +100,9 @@ public abstract class Niveau {
 	}
 	//*permet de vérifier que la combinaison comporte le bon nombre de couleurs*/
 	
-	public boolean valideDoubl(Couleur[] coul)
+	public boolean valideDoubl(Pions comb)
 	{
+		Couleur[] coul = comb.getCombinaison();
 		Set<Couleur> unicColors = new HashSet<Couleur>();
 		for (Couleur c : coul) unicColors.add(c);
 		int unicNB = unicColors.size();
@@ -117,9 +119,9 @@ public abstract class Niveau {
 	}
 	//*permet de vérifier que la combinaison respecte bien la defintion du niveau pour les doubles*/
 	
-	public boolean valideCombinaison(Couleur[] coul)
+	public boolean valideCombinaison(Pions comb)
 	{
-		return (this.valideCouleurs(coul) && this.valideDoubl(coul) && this.validePions(coul));
+		return (this.valideCouleurs(comb) && this.valideDoubl(comb) && this.validePions(comb));
 	}
 	//*Permet de verifier la validite d'une combinaison
 }
