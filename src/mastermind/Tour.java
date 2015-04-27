@@ -1,5 +1,7 @@
 package mastermind;
 
+import java.util.ArrayList;
+
 public class Tour {
 
 	private int coups;
@@ -7,6 +9,30 @@ public class Tour {
 	
 	private Pions combinaison;
 	//*Variable qui stock la combinaison à deviner
+	
+	private ArrayList<Pions> essais;
+	//Variable qui stocke les essais pour trouver la combinaison
+	
+	public Tour(int nbPions){
+		this.coups = 0;
+		this.combinaison = new Pions(nbPions);
+		this.essais = new ArrayList<Pions>();
+	}
+	
+	public ArrayList<Pions> getEssais(){
+		return this.essais;
+	}
+	//Retourne la liste des essais
+	
+	public void setEssais( ArrayList<Pions> essais ){
+		this.essais = essais;
+	}
+	//Fixe les essais
+	
+	public void addEssai( Pions pions ){
+		this.essais.add(pions);
+	}
+	//Ajoute un nouveau essai
 	
 	public int getCoups()
 	{
