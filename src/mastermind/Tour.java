@@ -77,20 +77,28 @@ public class Tour {
 		
 	public boolean testCombinaison(Pions comb)
 	{
+		this.essais.add(comb);
+		Pions indice = new Pions(this.combinaison.getNbPion());
 		boolean ret = true;
-		if (comb.getNbPion() != this.combinaison.getNbPion())
-			ret = false;
-		else
+		for (int i=0;i<comb.getNbPion();i++)
 		{
-			for (int i=0;i<comb.getNbPion();i++)
+			for (int j=0;j<this.combinaison.getNbPion();j++)
 			{
-				if (comb.getPion(i) != this.combinaison.getPion(i))
+				if (comb.getPion(i) == combinaison.getPion(j))
+				{
+					if (i==j)
+						indice.addPion(Couleur.Noir);
+					else
+						indice.addPion(Couleur.Blanc);
+				}
+				else
 					ret = false;
 			}
 		}
+		this.aides.add(indice);
 		return ret;
 	}
-	//*Permet de verifier si la combinaison soumise est la même que la combinaison à deviner
+	//*Vérifie si le joueur à trouvé la combinaison et ajoute des indications dans la variable aides
 	
 	
 	//Pour chaque essai il ajoute l'aide. Pas encore fait
