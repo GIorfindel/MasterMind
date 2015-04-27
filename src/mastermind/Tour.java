@@ -13,11 +13,29 @@ public class Tour {
 	private ArrayList<Pions> essais;
 	//Variable qui stocke les essais pour trouver la combinaison
 	
+	private ArrayList<Pions> aides;
+	//Variable qui stocke l'aide pour chaque essai
+	
 	public Tour(int nbPions){
 		this.coups = 0;
 		this.combinaison = new Pions(nbPions);
 		this.essais = new ArrayList<Pions>();
+		this.aides = new ArrayList<Pions>();
 	}
+	
+	public ArrayList<Pions> getAides(){
+		return this.aides;
+	}
+	//Retourne la liste des aides
+	
+	public void setAides( ArrayList<Pions> aides ){
+		this.aides = aides;
+	}
+	
+	public void addAide( Pions pions ){
+		this.aides.add(pions);
+	}
+	//Ajoute une nouvelle aide
 	
 	public ArrayList<Pions> getEssais(){
 		return this.essais;
