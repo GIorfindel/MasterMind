@@ -1,0 +1,94 @@
+une meilleur version est sur la box du mastermind
+
+Voici comment le joueur interagie avec la console: (Pas encore fini)
+
+-Le signe # veut dire qu'on a la main.
+-Le rouge signifie ce qui est affiché à la console
+-Le vert c'est le(s) choix du joueur, précedé du #
+-Le | montre les divers choix du joueur
+-Le #quit c'est pour retourner au menu
+
+
+Menu :
+
+1 -Se connecter
+2 -S'inscrire
+3 -Profil
+4 -Jouer
+5 -Score
+6 -Arreter
+
+#1|2|3|4|5|6
+
+
+
+Se connecter : #1
+Connection :
+#login ton_login mdp ton_mdp|quit
+
+Si connection correct redirection vers la page profil, sinon on re-demande de se connecter.
+On peut faire #quit pour retourner au menu
+
+
+
+Profil : #3
+
+Identifiant : ton_identifiant
+Avatar : nom_ton_avatar
+Malus : nombre_malus
+1 -Menu
+#1
+
+
+S'inscrire : #2
+
+Inscription:
+#login ton_login mdp ton_mdp|quit
+
+Si inscription correct redirection vers la page profil, sinon on re-demande de s'inscrire.
+On peut faire #quit pour retourner au menu
+
+
+
+
+
+
+
+Score: #5
+Moi → #m
+Autre joueur → #o nom_joueur
+
+#m|o benoit|quit
+
+
+Affiche Score :
+Nom_joueur
+mode		coups		victoire	tours		niveau
+
+solo		50		oui		10		Normal
+multi		60		oui		25		Facile
+
+1 -Menu
+#1
+
+
+Jouer : #4
+Niveau :
+	1 -Très facile : 3 pions, 6 couleurs, pas double
+	2 -Facile : 4 pions, 6 couleurs, pas double
+	3 -Normal : 4 pions, 8 couleurs, pas double
+	4 -Difficile : 4 pions, 8 couleurs, double
+	5 -Très difficile : 4 pions, 10 couleurs, double
+#1|2|3|4|5|quit
+
+Si niveau correct redirection vers la page mode
+
+
+Mode : 
+Mode :
+	1 -Solo
+	2 -Multijoueur
+#1|2|quit
+
+Solo :
+
