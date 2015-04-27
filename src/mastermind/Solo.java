@@ -40,7 +40,11 @@ public int getNbTour(){
 	return this.nbTour;
 }
 
-public void setNbTour(){
+public void setNbTour( int nbTour ){
+	this.nbTour = nbTour;
+}
+
+public void addNbTour(){
 	this.nbTour ++;
 }
 
