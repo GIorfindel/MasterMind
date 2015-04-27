@@ -91,4 +91,10 @@ public class Tour {
 		return ret;
 	}
 	//*Permet de verifier si la combinaison soumise est la même que la combinaison à deviner
+	
+	
+	//Pour chaque essai il ajoute l'aide. Pas encore fait
+	public void ajouteAides(){
+		
+	}
 }

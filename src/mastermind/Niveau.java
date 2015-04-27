@@ -124,4 +124,18 @@ public abstract class Niveau {
 		return (this.valideCouleurs(comb) && this.valideDoubl(comb) && this.validePions(comb));
 	}
 	//*Permet de verifier la validite d'une combinaison
+	
+	public static Niveau niveauString( String niveau ){
+		if( niveau.equals("TresFacile") ){
+			return new TresFacile();
+		}else if( niveau.equals("Facile") ){
+			return new Facile();
+		}else if( niveau.equals("Normal") ){
+			return new Normal();
+		}else if( niveau.equals("Difficile") ){
+			return new Difficile();
+		}else{
+			return new TresDifficile();
+		}
+	}
 }
