@@ -79,7 +79,6 @@ public class Tour {
 	{
 		this.essais.add(comb);
 		Pions indice = new Pions(this.combinaison.getNbPion());
-		boolean ret = true;
 		for (int i=0;i<comb.getNbPion();i++)
 		{
 			for (int j=0;j<this.combinaison.getNbPion();j++)
@@ -91,12 +90,10 @@ public class Tour {
 					else
 						indice.addPion(Couleur.Blanc);
 				}
-				else
-					ret = false;
 			}
 		}
 		this.aides.add(indice);
-		return ret;
+		return this.combinaison.equals(comb);
 	}
 	//*Vérifie si le joueur à trouvé la combinaison et ajoute des indications dans la variable aides
 	
