@@ -1,0 +1,11 @@
+drop table Solo;
+drop table Tour;
+drop table Partie;
+drop table Joueur_Score;
+drop table Score;
+drop table Joueur;
+drop table Essai;
+drop table Essais;
+drop table Pions;
+drop table Combinaison;
+drop table Couleur;
