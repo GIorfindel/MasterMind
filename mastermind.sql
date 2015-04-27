@@ -1,3 +1,4 @@
+
 CREATE TABLE Joueur(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	identifiant VARCHAR(20) not null,
@@ -33,6 +34,23 @@ CREATE TABLE Partie(
 	CHECK ( niveau = 'tres_facile' OR niveau = 'facile' OR niveau = 'normal' OR niveau = 'difficile' OR niveau = 'tres_difficile' )	
 );
 
+CREATE TABLE Essais(
+	id INT PRIMARY KEY AUTO_INCREMENT
+);
+
+CREATE TABLE Combinaison(
+	id INT PRIMARY KEY AUTO_INCREMENT
+);
+
+CREATE TABLE Tour(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	coups INT NOT NULL,
+	combinaison INT,
+	essais INT,
+	FOREIGN KEY (combinaison) REFERENCES Combinaison(id),
+	FOREIGN KEY (essais) REFERENCES Essais(id)
+);
+
 CREATE TABLE Solo(
 	id_Partie INT,
 	coups INT NOT NULL,
@@ -42,29 +60,16 @@ CREATE TABLE Solo(
 	FOREIGN KEY (tour) REFERENCES Tour(id)
 );
 
-CREATE TABLE Tour(
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	coups INT NOT NULL
-	combinaison INT,
-	essais INT,
-	FOREIGN KEY (combinaison) REFERENCES Combinaison(id),
-	FOREIGN KEY (essais) REFERENCES Essais(id)
-);
-
-CREATE TABLE Essais(
-	id INT PRIMARY KEY AUTO_INCREMENT
-);
-
 CREATE TABLE Essai(
 	id_essais INT,
 	id_combinaison INT,
 	place INT,
 	FOREIGN KEY (id_essais) REFERENCES Essais(id),
-	FOREIGN KEY (id_combinaison) REFERENCES Combinaison(id),
+	FOREIGN KEY (id_combinaison) REFERENCES Combinaison(id)
 );
 
-CREATE TABLE Combinaison(
-	id INT PRIMARY KEY AUTO_INCREMENT
+CREATE TABLE Couleur(
+	nom VARCHAR(20) PRIMARY KEY
 );
 
 CREATE TABLE Pions(
@@ -72,9 +77,6 @@ CREATE TABLE Pions(
 	id_couleur VARCHAR(20),
 	place INT NOT NULL,
 	FOREIGN KEY (id_combinaison) REFERENCES Combinaison(id),
-	FOREIGN KEY (couleur) REFERENCES Couleur(nom)
+	FOREIGN KEY (id_couleur) REFERENCES Couleur(nom)
 );
 
-CREATE TABLE Couleur(
-	nom VARCHAR(20) PRIMARY KEY
-);
