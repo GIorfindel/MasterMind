@@ -19,6 +19,11 @@ public class Pions {
 		this.nbPions ++;
 	}
 	
+	public void addPion( Couleur couleur, int indice ){
+		this.combinaison[indice] = couleur;
+		this.nbPions ++;
+	}
+	
 	public Couleur getPion( int indice ){
 		return this.combinaison[indice];
 	}
