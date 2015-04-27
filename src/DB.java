@@ -19,6 +19,7 @@ import mastermind.Tour;
  * Contrainte: -Dans la table(de la bdd) Couleur, il faut que chaque couleur a le meme nom
  * que dans la classe enum de couleur.
  * 				-Le couple nom(de la partie) et id_joueur doivent etre unqiue, dans la table Partie
+ * 				-Le nom de la classe des niveau(Facile, Normal etc) doit être le même que les nom des niveau dans la BDD
  */
 
 public class DB {
