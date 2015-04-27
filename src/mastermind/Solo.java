@@ -8,6 +8,13 @@ public class Solo extends Partie{
 	private Tour tour; //le tour que l’on fait
 	
 public Solo(){
+	super();
+	this.coups = 0;
+	this.nbTour = 0;
+}
+
+public Solo( String nom ){
+	super( nom );
 	this.coups = 0;
 	this.nbTour = 0;
 }
