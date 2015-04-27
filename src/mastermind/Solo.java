@@ -7,6 +7,11 @@ public class Solo extends Partie{
 	private int nbTour;
 	private Tour tour; //le tour que l’on fait
 	
+public Solo(){
+	this.coups = 0;
+	this.nbTour = 0;
+}
+	
 public void setCoups( int coups ) {
 	this.coups = coups;
 	this.nbTour = 0;
