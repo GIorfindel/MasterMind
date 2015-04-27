@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import mastermind.Couleur;
 import mastermind.Joueur;
@@ -22,6 +24,7 @@ public class DB {
 		//Connexion à la base de données
 		public void connexion(){
 			try {
+				Class.forName("com.mysql.jdbc.Driver");
 				connexion = DriverManager.getConnection("jdbc:mysql://"
                     +host+
                     ":3306/"+db_name+""
@@ -29,6 +32,8 @@ public class DB {
 			}
 			catch ( SQLException e ) {
 				throw new RuntimeException("Cannot connect the database!", e);
+			}catch ( ClassNotFoundException e ) {
+				throw new RuntimeException("Cannot connect the database!, classe non trouve", e);
 			}
 		}
 		
@@ -48,87 +53,92 @@ public class DB {
 		      return result.getInt(1);
 		}
 		
-		//Permet de sauvegarder une partie 
-		public void sauvegarderPartie(Solo solo, Joueur j) throws SQLException{
-		      String query = " insert into Partie(id_Joueur, nom, niveau, coups)"
-				        + " values (?, ?, ?, ?)";
-		      PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		      preparedStmt.setInt (1, this.getIdJoueur(j));
-		      preparedStmt.setString (2, solo.getNom());
-		      preparedStmt.setString (3, solo.getNiveau().toString());
-		      preparedStmt.setInt (4, solo.getTour().getCoups());
-			  preparedStmt.executeQuery();
-			  for (int i=0; i<solo.getTour().getComb().getNbPion();i++)
-			  {
-				  String query2 = " insert into Couleur"
+		//Renvoie la clé primaire généré lors d'un insert
+		private int getCleGenerer( PreparedStatement p )throws SQLException{
+			ResultSet res = p.getGeneratedKeys();
+			if ( res.next() ) {
+				res.close();
+				return res.getInt(1);
+			 }else{
+				 throw new SQLException("Imposible d'obtenir la cle primaire");
+			 }
+		}
+		
+		private int saveEssais( ArrayList<Pions> essais )throws SQLException{
+			String query = " insert into Essais values (null)";
+			PreparedStatement preparedStmt = this.connexion.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
+			preparedStmt.executeUpdate();
+			int id_essais = getCleGenerer( preparedStmt );
+			preparedStmt.close();
+			
+			for( int essai = 0; essai < essais.size(); essai++ ){
+				query = " insert into Essai(id_essais, id_combinaison, place)"
 				        + " values (?, ?, ?)";
-				  preparedStmt.setInt (1, this.getIdPartie(j, solo));
-				  preparedStmt.setInt (2, i);
-				  preparedStmt.setInt (3, solo.getTour().getComb().getPion(i).ordinal());
-				  preparedStmt.executeQuery();
-			  }
+				this.connexion.prepareStatement( query );
+				preparedStmt.setInt ( 1, id_essais );
+				preparedStmt.setInt ( 2, this.saveCombinaison( essais.get( essai ) ) );
+				preparedStmt.setInt ( 3, essai );
+				preparedStmt.close();
+			}
+			
+			return id_essais;
 		}
 		
-		//Permet de recuperer l'id d'une partie
-		public Integer getIdPartie(Joueur j, Solo solo) throws SQLException
-		{
-		      String query = "select id_Partie from Partie where id_Joueur = ? AND nom = ?";
-		      PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		      preparedStmt.setInt (1, getIdJoueur(j));
-		      preparedStmt.setString (2, solo.getNom());
-		      ResultSet result = preparedStmt.executeQuery();
-		      return result.getInt(1);
+		//Sauvegarde la combinaison et renvoi l'id de la BDD de cette combinaison
+		private int saveCombinaison( Pions pions )throws SQLException{
+			String query = " insert into Combinaison values (null)";
+			PreparedStatement preparedStmt = this.connexion.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
+			preparedStmt.executeUpdate();
+			int id_comb = getCleGenerer( preparedStmt );
+			preparedStmt.close();
+			
+			for( int pion = 0; pion < pions.getNbPion(); pion++ ){
+				query = " insert into Pions(id_combinaison, id_couleur, place)"
+				        + " values (?, ?, ?)";
+				this.connexion.prepareStatement( query );
+				preparedStmt.setInt ( 1, id_comb );
+				preparedStmt.setString ( 2, pions.getPion( pion ).toString() );
+				preparedStmt.setInt ( 3, pion );
+				preparedStmt.close();
+			}
+			
+			return id_comb;
 		}
 		
-		//Permet de recuperer le niveau d'une partie
-		public String getNiveau(Integer partie) throws SQLException
-		{
-		      String query = "select niveau from Partie where id_Partie = ?";
-		      PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		      preparedStmt.setInt (1, partie);
-		      ResultSet result = preparedStmt.executeQuery();
-		      return result.getNString(1);
+		//Sauvegarde le tour et renvoi l'id de la BDD du tour
+		private int saveTour( Tour t )throws SQLException{
+			String query = " insert into Tour(coups, combinaison, essais)"
+			        + " values (?, ?, ?)";
+			PreparedStatement preparedStmt = this.connexion.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
+			preparedStmt.setInt ( 1, t.getCoups() );
+			preparedStmt.setInt ( 2, this.saveCombinaison( t.getComb() ) );
+			preparedStmt.setInt ( 3, this.saveEssais( t.getEssais() ) );
+			int id_tour = getCleGenerer( preparedStmt );
+			preparedStmt.close();
+			return id_tour;
 		}
 		
-		//Permet de recuperer le nombre de coups joués dans dans une partie
-		public int getCoups(Integer partie) throws SQLException
-		{
-		      String query = "select coups from Partie where id_Partie = ?";
-		      PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		      preparedStmt.setInt (1, partie);
-		      ResultSet result = preparedStmt.executeQuery();
-		      return result.getInt(1);
-		}
-		
-		//Permet de recuperer le nombre de couleur composants la combinaison
-		public int getNbCouleur(Joueur j, Solo solo) throws SQLException
-		{
-		    String query = "select count(id_Partie) from Couleur where id_Partie = ?";
-		    PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		    preparedStmt.setInt (1, getIdPartie(j, solo));
-		    ResultSet result = preparedStmt.executeQuery();
-		    return result.getInt(1);
-		}
-		
-		//Permet de charger de charger une partie sauvegardée
-		public Solo chargerPartie(Joueur j, Solo solo) throws SQLException
-		{
-			Solo s = new Solo();
-			Tour t = new Tour();
-			t.setCoups(this.getCoups(getIdPartie(j, solo)));
-		    String query = "select place, numero from Couleur where id_Partie = ? order by place";
-		    PreparedStatement preparedStmt = connexion.prepareStatement(query);
-		    preparedStmt.setInt (1, getIdPartie(j, solo));
-		    ResultSet result = preparedStmt.executeQuery();
-		    Couleur[] comb = new Couleur[this.getNbCouleur(j, solo)];
-		    while (result.next()) {
-		        int place = result.getInt("place");
-		        int num = result.getInt("numero");
-		        comb[place]=Couleur.values()[num];
-		    }
-		    t.setComb(new Pions(comb));
-		    s.setTour(t);
-		    return s;
+		//Permet de sauvegarder une partie 
+		public void sauvegarderSolo( Solo solo ) throws SQLException{
+		      String query = " insert into Partie(id_Joueur, nom, niveau)"
+				        + " values (?, ?, ?)";
+		      PreparedStatement preparedStmt = this.connexion.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
+		      preparedStmt.setInt ( 1, this.getIdJoueur( solo.getJoueur() ) );
+		      preparedStmt.setString ( 2, solo.getNom() );
+		      preparedStmt.setString ( 3, solo.getNiveau().toString() );
+			  preparedStmt.executeUpdate();
+			  int id_partie = getCleGenerer( preparedStmt );
+			  preparedStmt.close();
+			  
+			  query = " insert into Solo(id_Partie, coups, nbTours, tour)"
+				        + " values (?, ?, ?, ?)";
+			  preparedStmt = this.connexion.prepareStatement( query );
+			  preparedStmt.setInt ( 1, id_partie );
+			  preparedStmt.setInt ( 2, solo.getCoups() );
+			  preparedStmt.setInt ( 3, solo.getNbTour() );
+			  preparedStmt.setInt ( 4, this.saveTour( solo.getTour() ) );
+			  preparedStmt.executeUpdate();
+			  preparedStmt.close();
 		}
 		
 	}
