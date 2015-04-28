@@ -47,7 +47,7 @@ public class EcouteServeur extends Thread {
 	
 	public Paquet getReponseServeur(){
 		this.une_reponse = false;
-		return this.reponseServeur;
+		return new Paquet( this.reponseServeur );
 	}
 	
 	public boolean getUneReponse(){
