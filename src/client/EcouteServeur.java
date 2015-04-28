@@ -28,7 +28,9 @@ public class EcouteServeur extends Thread {
 				return;
 			}
 			catch(ClassNotFoundException e) {
+				this.close();
 				e.printStackTrace();
+				return;
 			}
 		}
 	}
