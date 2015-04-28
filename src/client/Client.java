@@ -12,6 +12,7 @@ public class Client {
 	
 	public Client( String addr_serveur, int port_serveur ){
 		this.joueur = null;
+		this.partie = null;
 		this.serveur = new Serveur( addr_serveur, port_serveur );
 	}
 
