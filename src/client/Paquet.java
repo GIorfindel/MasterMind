@@ -16,6 +16,15 @@ public class Paquet implements Serializable{
 		this.type = type;
 	}
 	
+	public Paquet( Paquet p ){
+		this.nbObjet = p.nbObjet;
+		this.type = p.type;
+		this.objets = new Object[p.objets.length];
+		for( int i = 0; i < p.objets.length; i++ ){
+			this.objets[i] = p.objets[i];
+		}
+	}
+	
 	public void addObjet( Object objet ){
 		this.objets[this.nbObjet] = objet;
 		this.nbObjet ++;
