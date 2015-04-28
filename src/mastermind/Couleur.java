@@ -10,5 +10,6 @@ public enum Couleur {
 	Violet,
 	Fuchsia,
 	Cyan,
-	Rose
+	Rose,
+	Noir
 }

@@ -35,4 +35,18 @@ public class Pions {
 	public Couleur[] getCombinaison(){
 		return this.combinaison;
 	}
+	
+	public boolean equals(Pions comb){
+		if (comb.getNbPion() != this.getNbPion())
+			return false;
+		else
+		{
+			for (int i=0; i<comb.getNbPion();i++)
+			{
+				if (comb.getPion(i) != this.getPion(i))
+					return false;
+			}
+		}
+		return true;
+	}
 }

@@ -74,27 +74,38 @@ public class Tour {
 	{
 		this.combinaison = comb;
 	}
+	
+	public void valideAide( Pions comb ){
+		Pions aide = new Pions( this.combinaison.getNbPion() );
+		for ( int i = 0; i < comb.getNbPion(); i++ )
+		{
+			for ( int j = 0; j < this.combinaison.getNbPion(); j++ )
+			{
+				if ( comb.getPion( i ) == combinaison.getPion( j ) )
+				{
+					if ( i == j )
+						aide.addPion( Couleur.Noir );
+					else
+						aide.addPion( Couleur.Blanc );
+				}
+			}
+		}
+		this.addAide( aide );
+	}
 		
 	public boolean testCombinaison(Pions comb)
 	{
-		boolean ret = true;
-		if (comb.getNbPion() != this.combinaison.getNbPion())
-			ret = false;
-		else
-		{
-			for (int i=0;i<comb.getNbPion();i++)
-			{
-				if (comb.getPion(i) != this.combinaison.getPion(i))
-					ret = false;
-			}
-		}
-		return ret;
+		this.essais.add(comb);
+		this.valideAide( comb );
+		return this.combinaison.equals(comb);
 	}
-	//*Permet de verifier si la combinaison soumise est la même que la combinaison à deviner
+	//*Vérifie si le joueur à trouvé la combinaison et ajoute des indications dans la variable aides
 	
 	
-	//Pour chaque essai il ajoute l'aide. Pas encore fait
+	//Pour chaque essai il ajoute l'aide, utile pour chargerSolo.
 	public void ajouteAides(){
-		
+		for( int comb = 0; comb < this.essais.size(); comb++ ){
+			this.valideAide( this.essais.get( comb ) );
+		}
 	}
 }
