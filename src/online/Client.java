@@ -136,7 +136,7 @@ public class Client  {
 	public static void main(String[] args) {
 		// Valeurs par défaut
 		int numPort = 1500;
-		String adresseServeur = "localhost";
+		String adresseServeur = "89.2.133.53";
 		String login = "tata";
 
 		// Selon les arguments donnés :
