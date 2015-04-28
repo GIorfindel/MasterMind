@@ -2,210 +2,323 @@ package online;
 
 import java.io.*;
 import java.net.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
+/*
+ * Le serveur
+ */
 public class Serveur {
-	protected static final int port = 15000; // Port sur lequel se connecter
-	protected static ServerSocket socketServeur = null; // Socket qui s'occupe SEULEMENT de l'écoute du port
-	protected static Thread accepte_connexion; // Déclaration d'un thread
-	protected ArrayList<Socket> listeSocket; // Liste contenant les infos réseau
-	protected ArrayList<String> listeJoueurs; //Liste contenant les identifiants
-	protected int nbJoueurs = 0; 
+	// Un identifiant unique pour chaque connexion
+	private static int idUnique;
+	// Une liste contenant les clients
+	private ArrayList<ClientThread> listeClients;
+	// Pour afficher le temps
+	private SimpleDateFormat sdf;
+	// Le numéro du port à écouter pour la connexion
+	private int port;
+	// Booléen qui décide de l'arrêt du serveur
+	private boolean enCours;
 	
-	
-	public Serveur() {
-		this.listeSocket = new ArrayList<Socket>();
-		this.listeJoueurs = new ArrayList<String>();
-	}
-	
-	
-	public void afficheSocket(ArrayList<Socket> listeSocket) {
-		for(int i = 0; i < listeSocket.size(); i++) {
-			System.out.println(i+":"+listeSocket.get(i).getInetAddress());
-		}
-	}
-	
-	public void afficheLogin(ArrayList<String> listeJoueurs) {
-		for(int i = 0; i < listeJoueurs.size(); i++) {
-			System.out.println(i+":"+listeJoueurs.get(i));
-		}
-	}
-	
-	public void envoyerListeJoueurs(PrintWriter sortie) {
-		int j = 0;
-		int nbJoueurs = listeJoueurs.size();
-		if(nbJoueurs < 2) {
-			sortie.println("Il y a "+nbJoueurs+" joueur connecté");	
-		}
-		else {
-			sortie.println("Il y a "+nbJoueurs+" joueurs connectés");	
-		}
-		for(j=0; j<nbJoueurs;j++) {
-			sortie.println(listeJoueurs.get(j));
-		}
-		sortie.flush();
-		
-	}
-	
-	public enum Demande {
-		afficherJoueurs,
-		jouer_avec
-	}
-	 
-	public static void main(String[] args) {
-		
-		try {
-			socketServeur = new ServerSocket(port); // Création d'un socket d'écoute sur le port donnée
-			Serveur serveur = new Serveur(); // Initialisation des ArrayList
-			System.out.println("Le serveur est à l'écoute du port "+socketServeur.getLocalPort());
-			
-			/* Création d'un nouveau thread appelé accepte_connexion, dont la tâche à effectuer (la méthode run() ) 
-			 * se trouve dans la classe Accepter_connexion
-			 * qui est elle-même une implémentation de runnable (voir tuto openclassroom)
-			 */
-			accepte_connexion = new Thread(serveur.new Accepter_connexion(socketServeur));
-			accepte_connexion.start();
-				
-		} catch (IOException e) {
-			System.err.println("Le port " + socketServeur.getLocalPort() + " est déjà utilisé !");
-		}
-		
-	}
-		
-	
-	/*Classe membre qui contient ce que doit exécuter le thread
-	 *Si ça vous pertubre, vous pouvez créer un nouveau fichier et faire un couper/coller.
-	 *Si vous faites ça, n'oubliez pas la portée des variables.
+
+	/*
+	 *  Constructeur du serveur qui reçoit le port à écouter en paramètre
+	 * 
 	 */
-	class Accepter_connexion implements Runnable {
+	public Serveur(int port) {
+		this.port = port;
+		sdf = new SimpleDateFormat("HH:mm:ss");
+		// Liste des Clients
+		listeClients = new ArrayList<ClientThread>();
+	}
 	
-		private ServerSocket socketServeur = null; // Socket qui s'occupe SEULEMENT de l'écoute du port
-		private Socket socketClient = null; // Socket qui s'occupe de l'échange de flux avec le client
-		private PrintWriter sortie = null;
-		private BufferedReader entree = null; // L'entrée sera (presque) toujours lue en utilisant un buffer
-		private String identifiant = null;
-		private Thread traitements = null;
-		
-		// Récupération du socket de serveur de la classe Serveur
-		public Accepter_connexion(ServerSocket ss) {
-			socketServeur = ss;
-		}
-		
-		// Démarrage du thread accepte_connexion
-		public void run() {
-			
+	
+	public void start() {
+		enCours = true;
+		/* Création d'un socket serveur qui attend pour les demandes de connexion */
+		try 
+		{
+			// Le socket utilisé par le serveur
+			ServerSocket socketServeur = new ServerSocket(port);
+
+			// Boucle infinie qui attend pour les connexion
+			while(enCours) 
+			{
+				// Message qui dit que le serveur est en train d'attendnre
+				affiche("Le serveur attend des clients sur le port " + port + ".");
+				
+				Socket socket = socketServeur.accept();  	// Accepte la connexion
+				
+				// Si on arrête le serveur
+				if(!enCours)
+					break; // Sort de la boucle;
+				
+				ClientThread t = new ClientThread(socket);  // crée un Thread pour chaque client connecté
+				listeClients.add(t); // Enregistre le client dans la liste
+				t.start(); // démarre le Thread
+			}
+			// Si le serveur est arrêté, on arrête les clients et on ferme les entrées/sorties
 			try {
-				while(true){ // Normalement c'est un while(true), ou un autre prédicat
-					
-					socketClient = socketServeur.accept(); // On accepte la connexion
-					
-					entree = new BufferedReader(new InputStreamReader(socketClient.getInputStream())); //Initialisation du buffer sur le socketClient
-					sortie = new PrintWriter(socketClient.getOutputStream()); // Initialisation du flux de sortie
-					
-					listeSocket.add(socketClient); // On ajoute le socket dans la liste (peut être utile pour la suite)
-					identifiant = entree.readLine(); // On lit le sortie.println du Client
-					listeJoueurs.add(identifiant); // On ajoute l'identifiant du client dans la liste
-					
-					System.out.println(identifiant+" vient de se connecter"); // Affichage d'un message côté Serveur
-					/* Si on voulait envoyer un message chez le client, on aurait fait :
-					 * sortie.println("blabla") côté Serveur
-					 * sortie.flush() côté Serveur pour vider le buffer
-					 * message = entree.readLine() côté Client
-					 */
-					
-					sortie.println("connecte"); // envoi le statut du client
-					sortie.flush();
-					nbJoueurs++;
-					
-					traitements = new Thread(new Traitement_action(entree, sortie, identifiant));
-					traitements.start();
-
+				socketServeur.close();
+				for(int i = 0; i < listeClients.size(); ++i) {
+					ClientThread client = listeClients.get(i);
+					try {
+					client.sInput.close();
+					client.sOutput.close();
+					client.socket.close();
+					}
+					catch(IOException e) {
+						e.printStackTrace();
+					}
 				}
-				/*afficheSocket(listeSocket);
-				afficheLogin(listeJoueurs);
-				System.out.println("Il y a "+nbJoueurs+" joueurs connectés"); 
-				*/
-				
-				/* Fermeture du socket à la FIN du programme. Obligatoire pour libérer le port.
-				 * Cette méthode n'est utile que si on souhaite fermer le serveur, 
-				 * ce qui serait rare dans des conditions réelles */
-				//socketServeur.close(); 
-				
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
+			}
+			catch(Exception e) {
+				affiche("Exception en fermant le serveur et le client : " + e);
+			}
 		}
+		// Erreur innatendue
+		catch (IOException e) {
+            String msg = sdf.format(new Date()) + " Exception sur le socket du serveur : " + e + "\n";
+			affiche(msg);
+		}
+	}		
+    
+	
+	/*
+	 * Afficher un événement (pas un message) dans la console
+	 */
+	private void affiche(String msg) {
+		String temps = sdf.format(new Date()) + " " + msg;
+		System.out.println(temps);
 	}
 	
 	
-	/* Cette classe traitera les actions envoyés par un client.
-	 * Un client envoie une demande au serveur (par exemple afficherJoueurs) et le serveur retourne un résultat.
-	 * Les demandes sont définies dans un switch. Toute action inconnue ne sera pas traitée.
-	 * Les méthodes System.out.println ne servent qu'au débuggage. On pourrait les utiliser pour faire des logs si on a le temps ?
+	/*
+	 *  Pour envoyer un message à tous les clients
 	 */
-	class Traitement_action implements Runnable {
-
-		private PrintWriter sortie;
-		private BufferedReader entree;
-		private String action = null, identifiant = null, identifiant2 = null;
+	private synchronized void diffusion(String message) {
+		// Ajoute le temps au format HH:mm:ss et \n au message 
+		String temps = sdf.format(new Date());
+		String messageLf = temps + " - " + message + "\n";
 	
-		public Traitement_action(BufferedReader entree, PrintWriter sortie, String identifiant){
-			this.entree = entree;
-			this.sortie = sortie;
-			this.identifiant = identifiant;
-		}
+		// Affiche le message dans console
+		System.out.print(messageLf);
+	
+		
+		// On boucle dans l'ordre inverse au cas où il y aurait un client à supprimer
+		// parce qu'il a été déconnecté
+		for(int i = listeClients.size(); --i >= 0;) {
+			ClientThread ct = listeClients.get(i);
 			
-		public void run() {
-			 
-			while(true){
-				try {
-					action = entree.readLine(); // Lit la demande d'un client
-					System.out.println(identifiant +" : "+ action); 
-					 
-					Demande demandeClient = Demande.valueOf(action);
-					
-					// Liste des demandes possibles
-					switch(demandeClient) {
-					
-						case afficherJoueurs :
-							envoyerListeJoueurs(sortie); // Envoie la liste des joueurs à la sortie
-					 	break;
-					 		
-						case jouer_avec: // Un joueur demande de jouer avec un joueur connecté
-							sortie.println("qui ?");; // Le serveur répond avec qui il voudrait jouer
-							sortie.flush();
-							identifiant2 = entree.readLine(); // Le joueur donne l'identifiant de l'autre joueur avec qui il veut jouer
-							
-							if(listeJoueurs.contains(identifiant2)) { // Si l'identifiant donné existe dans la liste, on fait le traitement
-								System.out.println(identifiant+" veut jouer avec "+ identifiant2); //log
-								Socket joueur2 = listeSocket.get(listeJoueurs.indexOf(identifiant2));
-								PrintWriter sortieJ2 = new PrintWriter(joueur2.getOutputStream());
-								BufferedReader entreeJ2 = new BufferedReader(new InputStreamReader(joueur2.getInputStream())); 
-								sortieJ2.println(identifiant+" souhaite jouer avec vous. Accepter ?"); // On informe un joueur qu'une personne souhaite jouer avec lui
-								sortieJ2.flush();
-								if(entreeJ2.readLine().equals("accepte")) { // Si il accepte, on lance la partie (je bloque pour la suite !!!)
-									System.out.println("test");
-									sortie.println("lancement");
-									sortie.flush();
-									sortieJ2.println("lancement");
-									sortieJ2.flush();
-								}
-							}
-							else {
-								sortie.println("Ce joueur n'existe pas.");
-								sortie.flush();
-							}
-						break;
-							
-					 }
-					 
-					
-				 } catch (IOException e) {
-						
-					 e.printStackTrace();
-				 }
+			// Essaite d'écrire au Client. Si ça échoue, on l'enlève de la liste 
+			// (car ses entrées/sorties son fermées donc il n'est plus là)
+			if(!ct.ecritMsg(messageLf)) {
+				listeClients.remove(i);
+				affiche("Client déconnecté : " + ct.identifiant + ". Il a été supprimé de la liste.");
 			}
 		}
 	}
+
+	// Pour un client qui s'est déconnecté avec le message DECO
+	synchronized void remove(int id) {
+		
+		// Scan la liste jusqu'à trouver l'id
+		for(int i = 0; i < listeClients.size(); ++i) {
+			ClientThread ct = listeClients.get(i);
+			
+			// Trouvé
+			if(ct.id == id) {
+				listeClients.remove(i);
+				return;
+			}
+		}
+	}
+
+	
+	/*
+	 * Pour démarrer l'application en mode console, on peut utiliser les commandes suivantes : 
+	 * java Serveur
+	 * java Serveur numPort
+	 * Si aucun port n'est spécifié, on utilise le port 1500
+	 */ 
+	public static void main(String[] args) {
+		// Démarre le serveur sur le port 1500 sauf si numPort est donné 
+		int numPort = 1500;
+		switch(args.length) {
+			case 1:
+				try {
+					numPort = Integer.parseInt(args[0]);
+				}
+				catch(Exception e) {
+					System.out.println("Numéro de port invalide.");
+					System.out.println("Utilisation : java Serveur [numPort]");
+					return;
+				}
+			case 0:
+				break;
+			default:
+				System.out.println("Utilisation : java Serveur [numPort]");
+				return;
+				
+		}
+		// Création d'un objet serveur, puis on le démarre
+		Serveur serveur = new Serveur(numPort);
+		serveur.start();
+	}
+
+	/** Une instance de ce Thread tournera pour chaque client */
+	class ClientThread extends Thread {
+		// Le socket sur lequel écouter/parler
+		Socket socket;
+		ObjectInputStream sInput;
+		ObjectOutputStream sOutput;
+		// Identifiant unique (pour faciliter la déconnexion
+		int id;
+		// L'identifiant du client
+		String identifiant;
+		// Le seul type de message qui sera reçu
+		ChatMessage cm;
+		// Date de la connexion
+		String date;
+		boolean partieEnCours = false;
+		
+		ClientThread autreJoueur = null;
+
+		// Constructeur
+		ClientThread(Socket socket) {
+			// Identifiant unique
+			id = idUnique++;
+			this.socket = socket;
+			/* Création des flux de données */
+			System.out.println("Le Thread essaie de créer des flux d'entrée/sortie");
+			try
+			{
+				// Création de la sortie en premier
+				sOutput = new ObjectOutputStream(socket.getOutputStream());
+				sInput  = new ObjectInputStream(socket.getInputStream());
+				// Lit l'identifiant du client
+				identifiant = (String) sInput.readObject();
+				affiche(identifiant + " vient de se connecter.");
+			}
+			catch (IOException e) {
+				affiche("Exception lors de la création des entrée/sortie : " + e);
+				return;
+			}
+			catch (ClassNotFoundException e) {
+			}
+            date = new Date().toString() + "\n";
+		}
+		
+		public ClientThread chercheClient(String identifiant) {
+			ClientThread client = null;
+			for(int i = 0; i<listeClients.size(); i++) {
+				client = listeClients.get(i);
+				if(client.identifiant.equals(identifiant)) {
+					return client;
+				}
+			}
+			return client;
+		}
+		
+		public ChatMessage litMessage(ObjectInputStream sInput) {
+			try {
+				return (ChatMessage) sInput.readObject();
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		// Ce qui va tourner tout le temps
+		public void run() {
+
+			// A boucler jusqu'à déconnexion
+			boolean enCours = true;
+			
+			while(enCours) {
+				
+				cm = litMessage(sInput);
+				
+				// La partie message ChatMessage
+				String message = cm.getMessage();
+				
+				//La partie destinataire de ChatMessage
+				String destinataire = cm.getDestinataire();
+				
+				
+				// Switch sur le type de message reçu
+				switch(cm.getType()) {
+
+				case ChatMessage.MESSAGE:
+					diffusion(message);
+					break;
+				case ChatMessage.DECO:
+					affiche(identifiant + " déconnecté.");
+					enCours = false;
+					break;
+				case ChatMessage.PARTIESDISPO:
+					ecritMsg("Liste des parties disponibles à " + sdf.format(new Date()) + "\n");
+					for(int i = 0; i < listeClients.size(); ++i) {
+						ClientThread ct = listeClients.get(i);
+						ecritMsg((i+1) + ") " + ct.identifiant + " depuis " + ct.date);
+					}
+					break;
+				case ChatMessage.JOUERAVEC:
+					autreJoueur = chercheClient(destinataire);
+					autreJoueur.ecritMsg(identifiant + " veut jouer avec vous... accepter ?");
+					break;
+				case ChatMessage.ACCEPTE:
+					autreJoueur = chercheClient(destinataire);
+					ecritMsg("Début de la partie...");
+					autreJoueur.ecritMsg("Début de la partie...");
+					break;
+				case ChatMessage.MESSAGEA:
+					autreJoueur = chercheClient(destinataire);
+					autreJoueur.ecritMsg(message);
+				}
+			}
+			// Supprime le client de la liste des clients connectés
+			remove(id);
+			close();
+		}
+
+		// On essaie de tout fermer
+		private void close() {
+			try {
+				if(sOutput != null) sOutput.close();
+			}
+			catch(Exception e) {}
+			try {
+				if(sInput != null) sInput.close();
+			}
+			catch(Exception e) {};
+			try {
+				if(socket != null) socket.close();
+			}
+			catch (Exception e) {}
+		}
+
+		/*
+		 * Ecrire un String vers le client
+		 */
+		private boolean ecritMsg(String msg) {
+			// Si le client est toujours connecté, on lui envoie un message
+			if(!socket.isConnected()) {
+				close();
+				return false;
+			}
+			// Ecrit le message dans le flux de sortie
+			try {
+				sOutput.writeObject(msg);
+			}
+			// Si il y a une erreur, on en informe l'utilisateur
+			catch(IOException e) {
+				affiche("Erreur en envoyer le message " + identifiant);
+				affiche(e.toString());
+			}
+			return true;
+		}
+	}
 }
+
+
