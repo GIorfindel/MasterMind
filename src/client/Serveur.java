@@ -17,7 +17,7 @@ public class Serveur {
 	private ObjectOutputStream sOutput;
 		
 	//Si le joueur est connecté au serveur
-	private boolean connecter;
+	private boolean connecter;  
 	
 	public Serveur( String addr_serveur, int port_serveur ){
 		this.addr_serveur = addr_serveur;
@@ -97,5 +97,23 @@ public class Serveur {
 			this.ecouteServeur.getReponseServeur();
 		}
 		return null;
+	}
+	
+	private double getTemps(){
+		return System.currentTimeMillis()/1000.0;
+	}
+	
+	public Paquet getAttentPaquet( double limite_temp_max ){
+		double now = this.getTemps();
+		Paquet p = null;
+		while( true ){
+			p = this.getPaquet();
+			if( p != null ){
+				return p;
+			}
+			if( this.getTemps() > now + limite_temp_max ){//Temps ecoule
+				return null;
+			}
+		}
 	}
 }
