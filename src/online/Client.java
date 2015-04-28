@@ -137,7 +137,7 @@ public class Client  {
 		// Valeurs par défaut
 		int numPort = 1500;
 		String adresseServeur = "89.2.133.53";
-		String login = "christ";
+		String login = "toto";
 
 		// Selon les arguments donnés :
 		switch(args.length) {
@@ -187,10 +187,15 @@ public class Client  {
 			
 			// Lit le message de l'utilisateur
 			String entree = scan.nextLine();
-			StringTokenizer t = new StringTokenizer (entree, "%%");
-			while(t.hasMoreTokens()) {
-				msg[i] = t.nextToken();
-				i++;
+			if(!entree.equals("")) {
+				StringTokenizer t = new StringTokenizer (entree, "%%");
+				while(t.hasMoreTokens()) {
+					msg[i] = t.nextToken();
+					i++;
+				}
+			}
+			else {
+				msg[0] = "";
 			}
 			
 			// Déconnexion
@@ -252,9 +257,9 @@ public class Client  {
 			while(true) {
 				try {
 					String msg = (String) sInput.readObject();
-					
-						System.out.println(msg);
-						System.out.print(identifiant + " > ");
+					System.out.println(msg);
+					sOutput.flush();
+					System.out.print(identifiant + " > ");
 				}
 				catch(IOException e) {
 					afficher("La connexion au serveur a échouée : " + e);
