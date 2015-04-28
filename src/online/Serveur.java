@@ -223,7 +223,9 @@ public class Serveur {
 		public ChatMessage litMessage(ObjectInputStream sInput) {
 			try {
 				return (ChatMessage) sInput.readObject();
-			} catch (ClassNotFoundException | IOException e) {
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch ( IOException e ){
 				e.printStackTrace();
 			}
 			return null;
