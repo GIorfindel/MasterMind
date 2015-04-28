@@ -1,6 +1,7 @@
 package client;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 
 public class EcouteServeur extends Thread {
@@ -16,18 +17,29 @@ public class EcouteServeur extends Thread {
 		this.une_reponse = false;
 	}
 	
+	public void interrupt() {
+        super.interrupt();
+        try {
+            this.sInput.close(); // Fermeture du flux si l'interruption n'a pas fonctionné.
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+    } 
+	
 	public void run() {
 		while(true) {
 			try {
 				this.reponseServeur = (Paquet) sInput.readObject();
 				this.une_reponse = true;
-			}
-			catch(IOException e) {//Faire Close_EcouteSErveur()
+			}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
+	            Thread.currentThread().interrupt();
+	            System.out.println("Interrompu via InterruptedIOException");
+	            return;
+	        }catch(IOException e) {//Faire Close_EcouteSErveur()
 				this.close();
 				e.printStackTrace();
 				return;
-			}
-			catch(ClassNotFoundException e) {
+			}catch(ClassNotFoundException e) {
 				this.close();
 				e.printStackTrace();
 				return;
@@ -36,10 +48,12 @@ public class EcouteServeur extends Thread {
 	}
 	
 	public void close(){
-		this.stop();
+		this.interrupt();
 		try{
 			this.reponseServeur = null;
-			this.sInput.close();
+			if( this.sInput != null ){
+				this.sInput.close();
+			}
 			this.une_reponse = false;
 		}catch( Exception e ){
 			//Impossible de fermer le flux, c'est genant !!!

@@ -1,6 +1,7 @@
 package serveur;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -39,8 +40,8 @@ public class Client extends Thread {
 	}
 	
 	public void close(){
-		//Envoyer au joeur deconexion
-		this.stop();
+		this.interrupt();
+		//Envoyer au joueur deconexion
 		try{
 			this.sOutput.close();
 			this.sInput.close();
@@ -67,6 +68,15 @@ public class Client extends Thread {
 		 }
 	}
 	
+	public void interrupt() {
+        super.interrupt();
+        try {
+            this.sInput.close(); // Fermeture du flux si l'interruption n'a pas fonctionné.
+        } catch (IOException e) {
+        	e.printStackTrace();
+        }
+    } 
+	
 	public void run() {
 		Paquet p = null;
 		try{
@@ -74,7 +84,11 @@ public class Client extends Thread {
 				p = (Paquet) this.sInput.readObject();
 				this.gererPaquet( p );
 			}
-		}catch(IOException e) {
+		}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
+            Thread.currentThread().interrupt();
+            System.out.println("Interrompu via InterruptedIOException");
+            return;
+        }catch(IOException e) {
 			this.close();
 			e.printStackTrace();
 			return;
