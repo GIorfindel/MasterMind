@@ -137,7 +137,7 @@ public class Client  {
 		// Valeurs par défaut
 		int numPort = 1500;
 		String adresseServeur = "89.2.133.53";
-		String login = "tata";
+		String login = "christ";
 
 		// Selon les arguments donnés :
 		switch(args.length) {
@@ -175,12 +175,15 @@ public class Client  {
 		
 		// Attends le message de l'utilisateur
 		Scanner scan = new Scanner(System.in);
-		
+		int j = 0;
 		// Boucle infinie qui traite ce qui actionné par l'utilisateur
 		while(true) {
 			String msg[] = new String[3];
 			int i = 0;
-			System.out.print(client.identifiant+"> ");
+			while(j<1) {
+				System.out.print(login + " > ");
+				j++;
+			}
 			
 			// Lit le message de l'utilisateur
 			String entree = scan.nextLine();
@@ -251,7 +254,7 @@ public class Client  {
 					String msg = (String) sInput.readObject();
 					
 						System.out.println(msg);
-						System.out.print("> ");
+						System.out.print(identifiant + " > ");
 				}
 				catch(IOException e) {
 					afficher("La connexion au serveur a échouée : " + e);

@@ -96,10 +96,10 @@ public class Serveur {
 	/*
 	 *  Pour envoyer un message à tous les clients
 	 */
-	private synchronized void diffusion(String message) {
+	private synchronized void diffusion(String expediteur, String message) {
 		// Ajoute le temps au format HH:mm:ss et \n au message 
 		String temps = sdf.format(new Date());
-		String messageLf = temps + " - " + message + "\n";
+		String messageLf = temps + " "   + expediteur + " dit : " + message + "\n";
 	
 		// Affiche le message dans console
 		System.out.print(messageLf);
@@ -250,7 +250,7 @@ public class Serveur {
 				switch(cm.getType()) {
 
 				case ChatMessage.MESSAGE:
-					diffusion(message);
+					diffusion(identifiant, message);
 					break;
 				case ChatMessage.DECO:
 					affiche(identifiant + " déconnecté.");
@@ -309,7 +309,7 @@ public class Serveur {
 			}
 			// Ecrit le message dans le flux de sortie
 			try {
-				sOutput.writeObject(msg);
+				sOutput.writeObject("\n"+msg);
 			}
 			// Si il y a une erreur, on en informe l'utilisateur
 			catch(IOException e) {
