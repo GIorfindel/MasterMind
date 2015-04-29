@@ -70,11 +70,6 @@ public class Serveur {
 		for(int i = 0; i < this.listeClients.size(); ++i) {
 			Client ct = this.listeClients.get(i);
 			if( ct != null) {
-				if( ct.getJoueur() != null ){
-					System.out.println( ct.getJoueur().getIdentifiant() + " c'est déconnecté" );
-				}else{
-					System.out.println("Un client c'est déconnecté");
-				}
 				ct.close();
 				this.listeClients.remove(i);
 				return;
