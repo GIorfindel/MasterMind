@@ -92,6 +92,7 @@ public class Serveur {
 		return false;
 	}
 	
+	//Retourne le paquet que a envoy" le serveur, si il y a un, sinon retourne null
 	public Paquet getPaquet(){
 		if( this.connecter && this.ecouteServeur.getUneReponse() ){
 			this.ecouteServeur.getReponseServeur();
@@ -103,6 +104,8 @@ public class Serveur {
 		return System.currentTimeMillis()/1000.0;
 	}
 	
+	//Comme getPaquet(), sauf que il y a une limite de temps(en seconde), si il y a pas de paquet
+	//au bout de cette limite il retourne null
 	public Paquet getAttentPaquet( double limite_temp_max ){
 		double now = this.getTemps();
 		Paquet p = null;
