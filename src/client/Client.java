@@ -33,7 +33,7 @@ public class Client {
 		String choix = null;
 		do{
 			choix = this.inputClient.getInputS();
-		}while( choix !=null );
+		}while( choix == null );
 		return choix;
 	}
 	
@@ -52,7 +52,7 @@ public class Client {
 			System.out.println( "Identifiant : " + this.joueur.getIdentifiant() );
 		}
 		System.out.println("1	-Se connecter\n" +
-							"3	-Profiln");
+							"3	-Profil");
 	}
 	
 	private int menu(){
