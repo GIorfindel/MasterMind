@@ -10,7 +10,7 @@ public class InputClient extends Thread{
 	
 	public InputClient(){
 		this.input = null;
-		this.inputS = "";
+		this.inputS = null;
 		this.continuer = false;
 	}
 	
@@ -27,7 +27,9 @@ public class InputClient extends Thread{
 	
 	public String getInputS(){
 		if( this.inputS != null ){
-			return new String( this.inputS );
+			String s = new String( this.inputS );
+			this.inputS = null;
+			return s;
 		}
 		return null;
 	}
