@@ -30,9 +30,11 @@ public class EcouteServeur extends Thread {
 		Paquet p;
 		while(true) {
 			try {
-				p = new Paquet( (Paquet) sInput.readObject() );
-				this.reponseServeur = new Paquet( p );
-				this.une_reponse = true;
+				if( !this.une_reponse ){
+					p = new Paquet( (Paquet) sInput.readObject() );
+					this.reponseServeur = new Paquet( p );
+					this.une_reponse = true;
+				}
 			}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
 	            Thread.currentThread().interrupt();
 	            System.out.println("Interrompu via InterruptedIOException");
@@ -65,10 +67,13 @@ public class EcouteServeur extends Thread {
 	
 	//Ontenir le paquet, si y a pas de paquet return null
 	public Paquet getReponseServeur(){
-		this.une_reponse = false;
-		Paquet p = new Paquet( this.reponseServeur );
-		this.reponseServeur = null;
-		return p;
+		if( this.une_reponse ){
+			Paquet p = new Paquet( this.reponseServeur );
+			this.reponseServeur = null;
+			this.une_reponse = false;
+			return p;
+		}
+		return null;
 	}
 	
 	public boolean getUneReponse(){

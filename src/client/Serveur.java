@@ -95,7 +95,7 @@ public class Serveur {
 	//Retourne le paquet que a envoy" le serveur, si il y a un, sinon retourne null
 	public Paquet getPaquet(){
 		if( this.connecter && this.ecouteServeur.getUneReponse() ){
-			this.ecouteServeur.getReponseServeur();
+			return this.ecouteServeur.getReponseServeur();
 		}
 		return null;
 	}
