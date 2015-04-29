@@ -14,11 +14,15 @@ public class Serveur {
 	private boolean enCours;
 	public static int ID = 0;
 	private DB db;
+	private Commande comm;
+	private ServerSocket socketServeur;
 	
 	public Serveur( int port ){
 		this.port = port;
 		this.listeClients = new ArrayList<Client>();
-		this.enCours =false;
+		this.enCours = false;
+		this.comm = null;
+		this.socketServeur = null;
 	}
 	
 	private void initDB(){
@@ -33,12 +37,13 @@ public class Serveur {
 	public void start(){
 		this.enCours = true;
 		this.initDB();
-		ServerSocket socketServeur = null;
 		System.out.println( "Le serveur demarre, il ecoute le port :" + this.port );
+		this.comm = new Commande( this );
+		this.comm.start();
 		try {
-			socketServeur = new ServerSocket( this.port );
-			while( enCours ){
-				Socket socket = socketServeur.accept();  	// Accepte la connexion, cette methode est bloquante
+			this.socketServeur = new ServerSocket( this.port );
+			while( this.enCours ){
+				Socket socket = this.socketServeur.accept();  	// Accepte la connexion, cette methode est bloquante
 				System.out.println( "Un client vient de se connecter" );
 				Client c = new Client( socket, this );  // crée un Thread pour chaque client connecté
 				listeClients.add( c ); // Enregistre le client dans la liste
@@ -48,28 +53,40 @@ public class Serveur {
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
-		// Si le serveur est arrêté, on arrête les clients et on ferme les entrées/sorties
-		try {
-			this.db.deconnexion();
-			if( socketServeur != null ){
-				socketServeur.close();
-			}
-			for(int i = 0; i < listeClients.size(); ++i) {
-				listeClients.get(i).close();
-			}
-		}catch( SQLException e ) {
-			System.out.println( "Impossible de fermer la connexion à la base de donnée" );
+		System.out.println("Arret du serveur");
+	}
+	
+	public void close(){
+		this.enCours = false;
+		try{
+			this.socketServeur.close();
+		}catch(IOException e){
 			e.printStackTrace();
-		}catch( IOException e ) {
-			e.printStackTrace();
+		}
+		this.supprimeTousJoueur();
+	}
+	
+	public void supprimeTousJoueur(){
+		for(int i = 0; i < this.listeClients.size(); ++i) {
+			Client ct = this.listeClients.get(i);
+			if( ct != null) {
+				if( ct.getJoueur() != null ){
+					System.out.println( ct.getJoueur().getIdentifiant() + " c'est déconnecté" );
+				}else{
+					System.out.println("Un client c'est déconnecté");
+				}
+				ct.close();
+				this.listeClients.remove(i);
+				return;
+			}
 		}
 	}
 	
 	public synchronized void supprimeJoueur( int id ) {
 		
 		// Scan la liste jusqu'à trouver l'id
-		for(int i = 0; i < listeClients.size(); ++i) {
-			Client ct = listeClients.get(i);
+		for(int i = 0; i < this.listeClients.size(); ++i) {
+			Client ct = this.listeClients.get(i);
 			
 			// Trouvé
 			if( ct != null && ct.getID() == id) {
