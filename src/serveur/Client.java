@@ -5,6 +5,7 @@ import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Date;
 
 import client.Paquet;
@@ -55,15 +56,35 @@ public class Client extends Thread {
 	
 	public void demandeDeConnection( Paquet paquet ){
 		//On extrait l'identifiant et le mot de passe du paquet
+		String login = (String) paquet.getObjet(0);
+		String mdp = (String) paquet.getObjet(1);
 		//ON regarde si il existe dans la base de donnée
-		//On regarde si il est pas déjà connecter
-		//Si tous ses parametre(ci-dessus) sont OK, on envoie au joueur connection ok
+		Joueur j = null;
+		try{
+			j = this.serveur.getBD().getJoueur( login, mdp );
+		}catch( SQLException e ){
+			System.out.println("Impossible de charger le joueur: " + login );
+			e.printStackTrace();
+		}
+		Paquet p = null;
+		if( j == null ){
+			p = new Paquet( 0, Paquet.REPONSE_CONNECTION );
+		}else{
+			p = new Paquet( 1, Paquet.REPONSE_CONNECTION );
+			p.addObjet( j );
+		}
+		try{
+			this.sOutput.writeObject( p );
+		}catch( IOException e ){
+			System.out.println("Impossible d'envoyer un paquet à :" + login );
+			e.printStackTrace();
+		}
 	}
 	
 	public void gererPaquet( Paquet paquet ){
 		switch ( paquet.getType() ) {
 		case Paquet.DEMANDE_CONNECTION:
-			this.demandeDeConnection( paquet );
+			this.demandeDeConnection( paquet );//objet[0] = identifiant, objet[1] = mot de passe
 			break;
 		 }
 	}

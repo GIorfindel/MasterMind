@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Date;
+
+import BDD.DB;
 
 
-import mastermind.Joueur;
-
-import client.Paquet;
+//Faire close()
 
 public class Serveur {
 	private ArrayList<Client> listeClients;
 	private int port;
 	private boolean enCours;
 	public static int ID = 0;
+	private DB db;
 	
 	public Serveur( int port ){
 		this.port = port;
@@ -23,8 +23,18 @@ public class Serveur {
 		this.enCours =false;
 	}
 	
+	private void initDB(){
+		this.db = new DB( "", "", "", "" );
+		this.db.connexion();
+	}
+	
+	public DB getBD(){
+		return this.db;
+	}
+	
 	public void start(){
 		this.enCours = true;
+		this.initDB();
 		ServerSocket socketServeur = null;
 		try {
 			socketServeur = new ServerSocket( this.port );
