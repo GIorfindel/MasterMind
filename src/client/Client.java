@@ -213,6 +213,7 @@ public class Client {
 				break;
 			}
 		}
+		//Close(), envoyer un deco au serveur
 	}
 
 }
