@@ -3,12 +3,10 @@ package serveur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import BDD.DB;
-
-
-//Faire close()
 
 public class Serveur {
 	private ArrayList<Client> listeClients;
@@ -50,14 +48,17 @@ public class Serveur {
 		}
 		// Si le serveur est arrêté, on arrête les clients et on ferme les entrées/sorties
 		try {
+			this.db.deconnexion();
 			if( socketServeur != null ){
 				socketServeur.close();
 			}
 			for(int i = 0; i < listeClients.size(); ++i) {
 				listeClients.get(i).close();
 			}
-		}
-		catch( IOException e ) {
+		}catch( SQLException e ) {
+			System.out.println( "Impossible de fermer la connexion à la base de donnée" );
+			e.printStackTrace();
+		}catch( IOException e ) {
 			e.printStackTrace();
 		}
 	}
