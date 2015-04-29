@@ -30,8 +30,8 @@ public class EcouteServeur extends Thread {
 		Paquet p;
 		while(true) {
 			try {
-				p = (Paquet) sInput.readObject();
-				this.reponseServeur = p;
+				p = new Paquet( (Paquet) sInput.readObject() );
+				this.reponseServeur = new Paquet( p );
 				this.une_reponse = true;
 			}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
 	            Thread.currentThread().interrupt();

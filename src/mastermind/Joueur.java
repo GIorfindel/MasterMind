@@ -1,6 +1,12 @@
 package mastermind;
 
-public class Joueur {
+import java.io.Serializable;
+
+public class Joueur implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String identifiant;
 	private String mdp;
 	//Le nom(l'adresse) de l'image du joueur

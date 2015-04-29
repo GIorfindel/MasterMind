@@ -58,6 +58,7 @@ public class Client extends Thread {
 		//On extrait l'identifiant et le mot de passe du paquet
 		String login = (String) paquet.getObjet(0);
 		String mdp = (String) paquet.getObjet(1);
+		System.out.println( login + " fait une demande de connection" );
 		//ON regarde si il existe dans la base de donnée
 		Joueur j = null;
 		try{
@@ -75,6 +76,7 @@ public class Client extends Thread {
 		}
 		try{
 			this.sOutput.writeObject( p );
+			System.out.println( "Un paquet a ete envoye a " + login );
 		}catch( IOException e ){
 			System.out.println("Impossible d'envoyer un paquet à :" + login );
 			e.printStackTrace();
