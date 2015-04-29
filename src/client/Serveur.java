@@ -15,11 +15,12 @@ public class Serveur {
 	private Socket socket;
 	private EcouteServeur ecouteServeur;
 	private ObjectOutputStream sOutput;
+	private Client client;
 		
 	//Si le joueur est connecté au serveur
 	private boolean connecter;  
 	
-	public Serveur( String addr_serveur, int port_serveur ){
+	public Serveur( String addr_serveur, int port_serveur, Client client ){
 		this.addr_serveur = addr_serveur;
 		this.port_serveur = port_serveur;
 		this.socket = null;
@@ -27,6 +28,7 @@ public class Serveur {
 		this.connecter = false;
 		this.attent = false;
 		this.ecouteServeur = null;
+		this.client = client;
 	}
 	
 	public boolean getConnecter(){
@@ -73,7 +75,7 @@ public class Serveur {
 			return false;
 		}
 		// Création du Thread à l'écoute du serveur
-		this.ecouteServeur = new EcouteServeur( sInput );
+		this.ecouteServeur = new EcouteServeur( sInput, this.client );
 		this.ecouteServeur.start();
 		return true;
 	}

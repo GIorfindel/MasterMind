@@ -19,13 +19,19 @@ public class Client {
 	public Client( String addr_serveur, int port_serveur ){
 		this.joueur = null;
 		this.partie = null;
-		this.serveur = new Serveur( addr_serveur, port_serveur );
+		this.serveur = new Serveur( addr_serveur, port_serveur, this );
 	}
 	
 	public void initClient(){
 		this.serveur.connectionAuServeur();
 		this.scan = new Scanner( System.in );
 		this.menus();
+	}
+	
+	public void ServeurEteint(){
+		this.joueur = null;
+		this.serveur.close();
+		
 	}
 	
 	private void afficheMenu(){

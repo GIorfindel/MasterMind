@@ -19,11 +19,13 @@ public class Client extends Thread {
 	private Joueur joueur;
 	private Serveur serveur;
 	private int id;
+	private boolean continuer;
 	
 	public Client( Socket socket, Serveur serveur ) {
 		this.socket = socket;
 		this.serveur = serveur;
 		this.id = Serveur.ID ++;
+		this.continuer = false;
 		try{
 			// Création de la sortie en premier
 			this.sOutput = new ObjectOutputStream(socket.getOutputStream());
@@ -44,6 +46,18 @@ public class Client extends Thread {
 		return this.joueur;
 	}
 	
+	public void decoJoueur(){
+		if( this.sOutput != null ){
+			Paquet p =new Paquet( 0, Paquet.SERVEUR_ETEINT );
+			try{
+				this.sOutput.writeObject( p );
+			}catch( IOException e ){
+				System.out.println("Impossible d'envoyer le paquet SERVEUR_ETEINT à un client" );
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void close(){
 		this.interrupt();
 		//Envoyer au joueur deconexion
@@ -52,6 +66,7 @@ public class Client extends Thread {
 			this.sInput.close();
 			this.socket.close();
 			this.serveur.supprimeJoueur( this.id );
+			this.continuer = false;
 		}catch( Exception e ){
 			//Impossible de fermer le flux, c'est genant !!!
 			e.printStackTrace();
@@ -107,8 +122,9 @@ public class Client extends Thread {
 	
 	public void run() {
 		Paquet p = null;
+		this.continuer = true;
 		try{
-			while( true ){
+			while( this.continuer ){
 				p = (Paquet) this.sInput.readObject();
 				this.gererPaquet( p );
 			}

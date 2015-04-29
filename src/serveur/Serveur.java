@@ -71,7 +71,6 @@ public class Serveur {
 			Client ct = this.listeClients.get(i);
 			if( ct != null) {
 				ct.close();
-				this.listeClients.remove(i);
 				return;
 			}
 		}

@@ -8,6 +8,7 @@ public class Paquet implements Serializable{
 	private int nbObjet;
 	public static final int DEMANDE_CONNECTION = 0, REPONSE_CONNECTION = 1 ;
 	public static final int DEMANDE_INSCRIPTION = 2, REPONSE_INSCRIPTION = 3 ;
+	public static final int SERVEUR_ETEINT = 4 ;
 	private int type;
 	
 	public Paquet( int nbObjet, int type ){
