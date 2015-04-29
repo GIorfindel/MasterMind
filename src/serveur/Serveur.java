@@ -73,6 +73,11 @@ public class Serveur {
 			
 			// Trouvé
 			if( ct != null && ct.getID() == id) {
+				if( ct.getJoueur() != null ){
+					System.out.println( ct.getJoueur().getIdentifiant() + " c'est déconnecté" );
+				}else{
+					System.out.println("Un client c'est déconnecté");
+				}
 				listeClients.remove(i);
 				return;
 			}

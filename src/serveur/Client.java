@@ -40,6 +40,10 @@ public class Client extends Thread {
 		return this.id;
 	}
 	
+	public Joueur getJoueur(){
+		return this.joueur;
+	}
+	
 	public void close(){
 		this.interrupt();
 		//Envoyer au joueur deconexion
@@ -71,6 +75,7 @@ public class Client extends Thread {
 		if( j == null ){
 			p = new Paquet( 0, Paquet.REPONSE_CONNECTION );
 		}else{
+			this.joueur = j;
 			p = new Paquet( 1, Paquet.REPONSE_CONNECTION );
 			p.addObjet( j );
 		}
@@ -109,15 +114,13 @@ public class Client extends Thread {
 			}
 		}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
             Thread.currentThread().interrupt();
-            System.out.println("Interrompu via InterruptedIOException");
+            e.printStackTrace();
             return;
-        }catch(IOException e) {
+        }catch(IOException e) {//Joueur deconnecté
 			this.close();
-			e.printStackTrace();
 			return;
 		}
 		catch(ClassNotFoundException e) {
-			this.close();
 			e.printStackTrace();
 			return;
 		}
