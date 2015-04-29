@@ -204,6 +204,7 @@ public class Client {
 			}
 		}
 		this.scan.close();
+		this.serveur.close();
 		//Close(), envoyer un deco au serveur
 	}
 
