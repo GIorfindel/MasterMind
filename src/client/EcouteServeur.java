@@ -29,14 +29,11 @@ public class EcouteServeur extends Thread {
 				this.reponseServeur = new Paquet( (Paquet) sInput.readObject() );
 			}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
 	            Thread.currentThread().interrupt();
-	            System.out.println("Interrompu via InterruptedIOException");
+	            e.printStackTrace();
 	            return;
-	        }catch(IOException e) {
-				this.close();
-				e.printStackTrace();
+	        }catch(IOException e) {//Socket Fermé
 				return;
 			}catch(ClassNotFoundException e) {
-				this.close();
 				e.printStackTrace();
 				return;
 			}
@@ -45,15 +42,7 @@ public class EcouteServeur extends Thread {
 	
 	public void close(){
 		this.interrupt();
-		try{
-			this.reponseServeur = null;
-			if( this.sInput != null ){
-				this.sInput.close();
-			}
-		}catch( Exception e ){
-			//Impossible de fermer le flux, c'est genant !!!
-			e.printStackTrace();
-		}
+		this.reponseServeur = null;
 	}
 	
 	//Ontenir le paquet, si y a pas de paquet return null
