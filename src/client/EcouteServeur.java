@@ -27,15 +27,17 @@ public class EcouteServeur extends Thread {
     } 
 	
 	public void run() {
+		Paquet p;
 		while(true) {
 			try {
-				this.reponseServeur = (Paquet) sInput.readObject();
+				p = (Paquet) sInput.readObject();
+				this.reponseServeur = p;
 				this.une_reponse = true;
 			}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
 	            Thread.currentThread().interrupt();
 	            System.out.println("Interrompu via InterruptedIOException");
 	            return;
-	        }catch(IOException e) {//Faire Close_EcouteSErveur()
+	        }catch(IOException e) {
 				this.close();
 				e.printStackTrace();
 				return;
@@ -61,9 +63,12 @@ public class EcouteServeur extends Thread {
 		}
 	}
 	
+	//Ontenir le paquet, si y a pas de paquet return null
 	public Paquet getReponseServeur(){
 		this.une_reponse = false;
-		return new Paquet( this.reponseServeur );
+		Paquet p = new Paquet( this.reponseServeur );
+		this.reponseServeur = null;
+		return p;
 	}
 	
 	public boolean getUneReponse(){
