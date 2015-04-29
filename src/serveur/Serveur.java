@@ -22,7 +22,7 @@ public class Serveur {
 	}
 	
 	private void initDB(){
-		this.db = new DB( "", "", "", "" );
+		this.db = new DB( "localhost", "ben", "ben", "mastermind" );
 		this.db.connexion();
 	}
 	
@@ -34,10 +34,12 @@ public class Serveur {
 		this.enCours = true;
 		this.initDB();
 		ServerSocket socketServeur = null;
+		System.out.println( "Le serveur demarre, il ecoute le port :" + this.port );
 		try {
 			socketServeur = new ServerSocket( this.port );
 			while( enCours ){
 				Socket socket = socketServeur.accept();  	// Accepte la connexion, cette methode est bloquante
+				System.out.println( "Un client vient de se connecter" );
 				Client c = new Client( socket, this );  // crée un Thread pour chaque client connecté
 				listeClients.add( c ); // Enregistre le client dans la liste
 				c.start(); // démarre le Thread
