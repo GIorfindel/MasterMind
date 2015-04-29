@@ -8,13 +8,9 @@ public class EcouteServeur extends Thread {
 	private ObjectInputStream sInput;
 	private Paquet reponseServeur;
 	
-	//En complement avec attent du serveur
-	private boolean une_reponse;
-	
 	public EcouteServeur( ObjectInputStream sInput ){
 		this.reponseServeur = null;
 		this.sInput = sInput;
-		this.une_reponse = false;
 	}
 	
 	public void interrupt() {
@@ -30,11 +26,7 @@ public class EcouteServeur extends Thread {
 		Paquet p;
 		while(true) {
 			try {
-				if( !this.une_reponse ){
-					p = new Paquet( (Paquet) sInput.readObject() );
-					this.reponseServeur = new Paquet( p );
-					this.une_reponse = true;
-				}
+				this.reponseServeur = new Paquet( (Paquet) sInput.readObject() );
 			}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
 	            Thread.currentThread().interrupt();
 	            System.out.println("Interrompu via InterruptedIOException");
@@ -58,7 +50,6 @@ public class EcouteServeur extends Thread {
 			if( this.sInput != null ){
 				this.sInput.close();
 			}
-			this.une_reponse = false;
 		}catch( Exception e ){
 			//Impossible de fermer le flux, c'est genant !!!
 			e.printStackTrace();
@@ -67,17 +58,12 @@ public class EcouteServeur extends Thread {
 	
 	//Ontenir le paquet, si y a pas de paquet return null
 	public Paquet getReponseServeur(){
-		if( this.une_reponse ){
+		if( this.reponseServeur != null ){
 			Paquet p = new Paquet( this.reponseServeur );
 			this.reponseServeur = null;
-			this.une_reponse = false;
 			return p;
 		}
 		return null;
-	}
-	
-	public boolean getUneReponse(){
-		return this.une_reponse;
 	}
 	
 }
