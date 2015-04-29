@@ -15,6 +15,12 @@ public class Joueur {
 		this.malus = malus;
 	}
 	
+	public Joueur( Joueur j ){
+		this.identifiant = j.identifiant;
+		this.mdp = j.mdp;
+		this.avatar = j.avatar;
+		this.malus = j.malus;
+	}
 	
 	//Methodes get et set
 	
