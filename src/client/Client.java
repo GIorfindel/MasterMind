@@ -1,5 +1,6 @@
-package client;
+	package client;
 
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import mastermind.Joueur;
@@ -11,7 +12,7 @@ public class Client {
 	
 	private Joueur joueur;
 	private Partie partie;
-	private InputClient inputClient;
+	private Scanner scan;
 	
 	private static final int ARRET = 0, MENU = 1, CONNECTION = 2, PROFIL = 3;
 	
@@ -19,27 +20,12 @@ public class Client {
 		this.joueur = null;
 		this.partie = null;
 		this.serveur = new Serveur( addr_serveur, port_serveur );
-		this.inputClient = null;
 	}
 	
 	public void initClient(){
 		this.serveur.connectionAuServeur();
-		this.inputClient = new InputClient();
-		this.inputClient.start();
+		this.scan = new Scanner( System.in );
 		this.menus();
-	}
-	
-	private String getChoixString(){//Obtient le choix en string du joueur, ATTENTION elle est BLOQUANTE
-		String choix = null;
-		do{
-			choix = this.inputClient.getInputS();
-		}while( choix == null );
-		return choix;
-	}
-	
-	private int getChoixInt() throws NumberFormatException{
-		String choix = this.getChoixString();
-		return Integer.parseInt( choix );
 	}
 	
 	private void afficheMenu(){
@@ -52,7 +38,8 @@ public class Client {
 			System.out.println( "Identifiant : " + this.joueur.getIdentifiant() );
 		}
 		System.out.println("1	-Se connecter\n" +
-							"3	-Profil");
+							"3	-Profil\n" +
+							"7	-Arreter");
 	}
 	
 	private int menu(){
@@ -64,12 +51,15 @@ public class Client {
 		while( mauvaisChoix ){
 			this.afficheMenu();
 			try{
-				choix = this.getChoixInt();
+				choix = Integer.parseInt( this.scan.nextLine() );
 				if( choix == 1 ){//Se connecter
 					choix = CONNECTION;
 					mauvaisChoix = false;
 				}else if( choix == 3 ){//Profil
 					choix = PROFIL;
+					mauvaisChoix = false;
+				}else if( choix == 7 ){//Profil
+					choix = ARRET;
 					mauvaisChoix = false;
 				}
 			}catch( NumberFormatException e ){//L'utilisateur n'a pas saisie un entier
@@ -83,7 +73,7 @@ public class Client {
 	}
 	
 	private String[] separeLesChoix( int nbElementsMax ){
-		String choix = this.getChoixString();
+		String choix = this.scan.nextLine();
 		StringTokenizer st = new StringTokenizer( choix, " " );
 		String[] entrees = new String[nbElementsMax];
 		for( int x = 0; x < nbElementsMax; x++ ){
@@ -213,6 +203,7 @@ public class Client {
 				break;
 			}
 		}
+		this.scan.close();
 		//Close(), envoyer un deco au serveur
 	}
 
