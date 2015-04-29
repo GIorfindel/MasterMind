@@ -44,10 +44,8 @@ public class DB {
 		public void connexion(){
 			try {
 				Class.forName("com.mysql.jdbc.Driver");
-				connexion = DriverManager.getConnection("jdbc:mysql://"
-                    +host+
-                    ":3306/"+db_name+""
-                    + "",""+id+"",""+mdp+"");
+				connexion = DriverManager.getConnection( "jdbc:mysql://"+ this.host  + "/" + this.db_name + "?"
+						+ "user=" + this.id + "&password=" + this.mdp );
 			}
 			catch ( SQLException e ) {
 				throw new RuntimeException("Cannot connect the database!", e);
