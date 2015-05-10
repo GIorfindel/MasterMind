@@ -21,7 +21,7 @@ public class Fenetre extends JFrame{
 
   public Fenetre(){
     this.setTitle("Mastermind");
-    this.setSize(480, 640);
+    this.setSize(960, 544);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLocationRelativeTo(null);
     this.setResizable(false);
@@ -33,26 +33,28 @@ public class Fenetre extends JFrame{
     /*** MENU ACCUEIL ***/
     //Création du panel
     JPanel accueil = new JPanel();
-    accueil.setLayout(null);
+    accueil.setLayout(null); // Si on veut positionner les éléments comme on veut (pratique avec Window Builder mais c'est galère sinon)
     accueil.setBackground(Color.blue);	
 
     // Création des différents composants
-    
     JLabel lblMastermind = new JLabel("Mastermind");
-	lblMastermind.setFont(new Font("Tahoma", Font.PLAIN, 35));
-	lblMastermind.setBounds(134, 55, 193, 49);
+	lblMastermind.setFont(new Font("Tahoma", Font.PLAIN, 35)); // Modification de la police
+	lblMastermind.setBounds(380, 43, 200, 50);
 	lblMastermind.setVerticalAlignment(SwingConstants.TOP);
-	lblMastermind.setHorizontalAlignment(SwingConstants.RIGHT);
+	lblMastermind.setHorizontalAlignment(SwingConstants.CENTER);
     
     JButton btnJouer = creerBoutonMenu("Jouer",5);
-	btnJouer.setBounds(185, 241, 112, 25);
+	btnJouer.setBounds(405, 170, 150, 50);
+	
     JButton btnConnexion = creerBoutonMenu("Se connecter", 1);
-    btnConnexion.setBounds(185, 301, 112, 25);
+    btnConnexion.setBounds(405, 230, 150, 50);
+    
     JButton btnInscription = creerBoutonMenu("S'inscrire", 2);
-    btnInscription.setBounds(185, 361, 112, 25);
+    btnInscription.setBounds(405, 290, 150, 50);
+    
     JButton btnQuitter = new JButton("Quitter");
-	btnQuitter.setBounds(185, 421, 112, 25);
-    //Définition de l'action du btn_quitter
+	btnQuitter.setBounds(405, 350, 150, 50);
+    //Définition de l'action du btnQuitter
     btnQuitter.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent event){				
     	 dispose();
