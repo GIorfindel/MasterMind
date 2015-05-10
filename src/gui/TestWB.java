@@ -1,18 +1,17 @@
 package gui;
 
-import java.awt.EventQueue;
-
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
+import java.awt.EventQueue;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -20,18 +19,16 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JTextField;
-
 public class TestWB {
 
 	private JFrame frmMastermind;
 	CardLayout cl = new CardLayout();
-	  JPanel content = new JPanel();
-	  //Liste des noms de nos conteneurs pour la pile de cartes
-	  String[] listeMenus = {"accueil", "connexion", "inscription", "profil", "tab_scores", "choix_mode", "choix_niveau", "personnaliser", "partie"};
-	  private JTextField textField;
-	  private JTextField textField_1;
+	JPanel content = new JPanel();
+	
+	//Liste des noms de nos menus pour la pile de CardLayout
+	String[] listeMenus = {"accueil", "connexion", "inscription", "profil", "tab_scores", "choix_mode", "choix_niveau", "personnaliser", "partie"};
+	private JTextField textField;
+	private JTextField textField_1;
 
 
 	/**
@@ -72,7 +69,9 @@ public class TestWB {
 	    
 	    // ATTENTION : On ne peut PAS utiliser UN MÊME COMPOSANT pour DEUX PANEL DIFFERENTS)
 	    
-	    /*** MENU ACCUEIL ***/
+	    /*******************************************************************/
+	    /**************************** MENU ACCUEIL *************************/
+	    /*******************************************************************/	    
 	    //Création du panel
 	    JPanel accueil = new JPanel();
 	    accueil.setLayout(null); // Si on veut positionner les éléments comme on veut (pratique avec Window Builder mais c'est galère sinon)
@@ -132,7 +131,9 @@ public class TestWB {
 	    
 	    
 	    
-	    /*** MENU JOUER ***/
+	    /*******************************************************************/
+	    /************************** MENU JOUER *****************************/
+	    /*******************************************************************/	    
 	    //Création du panel
 	    JPanel jouer = new JPanel();
 	    jouer.setBackground(Color.yellow);	
@@ -152,7 +153,9 @@ public class TestWB {
 
 	    
 	    
-	    /*** MENU CONNEXION ***/
+	    /*******************************************************************/
+	    /************************** MENU DE CONNEXION **********************/
+	    /*******************************************************************/	    
 	    //Création du panel
 	    JPanel connexion = new JPanel();
 	    connexion.setBackground(Color.WHITE);		
@@ -175,8 +178,10 @@ public class TestWB {
 
 
 	    
-	    
-	    /*** MENU INSCRIPTION ***/
+	    /*******************************************************************/
+	    /************************** MENU INSCRIPTION ***********************/
+	    /*******************************************************************/
+
 	    //Création du panel
 	    JPanel inscription = new JPanel();
 	    inscription.setBackground(Color.green);
@@ -204,6 +209,11 @@ public class TestWB {
 	    content.add(accueil, listeMenus[0]);
 	    content.add(connexion, listeMenus[1]);
 	    
+	    
+	    
+	    /****************************************************************************************/
+	    /****** Code généré par Window Builder (à replacer dans les parties qui vont bien) ******/
+	    /****************************************************************************************/
 	    JLabel lblIdentifiant = new JLabel("Identifiant");
 	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 17));
 	    lblIdentifiant.setBounds(345, 120, 89, 27);
