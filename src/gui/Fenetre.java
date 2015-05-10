@@ -2,11 +2,15 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class Fenetre extends JFrame{
 
@@ -17,7 +21,7 @@ public class Fenetre extends JFrame{
 
   public Fenetre(){
     this.setTitle("Mastermind");
-    this.setSize(640, 480);
+    this.setSize(480, 640);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLocationRelativeTo(null);
     this.setResizable(false);
@@ -29,25 +33,38 @@ public class Fenetre extends JFrame{
     /*** MENU ACCUEIL ***/
     //Création du panel
     JPanel accueil = new JPanel();
+    accueil.setLayout(null);
     accueil.setBackground(Color.blue);	
 
     // Création des différents composants
-    JButton bouton_jouer = creerBoutonMenu("Jouer",5);
-    JButton bouton_connexion = creerBoutonMenu("Se connecter", 1);
-    JButton bouton_inscription = creerBoutonMenu("S'inscrire", 2);
-    JButton bouton_quitter = new JButton("Quitter");
-    //Définition de l'action du bouton_quitter
-    bouton_quitter.addActionListener(new ActionListener(){
+    
+    JLabel lblMastermind = new JLabel("Mastermind");
+	lblMastermind.setFont(new Font("Tahoma", Font.PLAIN, 35));
+	lblMastermind.setBounds(134, 55, 193, 49);
+	lblMastermind.setVerticalAlignment(SwingConstants.TOP);
+	lblMastermind.setHorizontalAlignment(SwingConstants.RIGHT);
+    
+    JButton btnJouer = creerBoutonMenu("Jouer",5);
+	btnJouer.setBounds(185, 241, 112, 25);
+    JButton btnConnexion = creerBoutonMenu("Se connecter", 1);
+    btnConnexion.setBounds(185, 301, 112, 25);
+    JButton btnInscription = creerBoutonMenu("S'inscrire", 2);
+    btnInscription.setBounds(185, 361, 112, 25);
+    JButton btnQuitter = new JButton("Quitter");
+	btnQuitter.setBounds(185, 421, 112, 25);
+    //Définition de l'action du btn_quitter
+    btnQuitter.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent event){				
     	 dispose();
       }
     });
     
     // Ajout des composants au panel
-    accueil.add(bouton_jouer);
-    accueil.add(bouton_connexion);
-    accueil.add(bouton_inscription);
-    accueil.add(bouton_quitter);
+    accueil.add(lblMastermind);
+    accueil.add(btnJouer);
+    accueil.add(btnConnexion);
+    accueil.add(btnInscription);
+    accueil.add(btnQuitter);
     /*** FIN MENU ACCUEIL ***/
     
     
@@ -113,15 +130,15 @@ public class Fenetre extends JFrame{
     this.setVisible(true);
   }
   
-  // Fonction permettant de créer un bouton qui agira sur le CardLayout
+  // Fonction permettant de créer un btn qui agira sur le CardLayout
   public JButton creerBoutonMenu (String nom, int menuDestination) {
-	    JButton bouton = new JButton(nom);
-	    //Définition de l'action du bouton2
-	    bouton.addActionListener(new ActionListener(){
+	    JButton btn = new JButton(nom);
+	    //Définition de l'action du btn2
+	    btn.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent event){				
 	        cl.show(content, listeMenus[menuDestination]);
 	      }
 	    });
-	    return bouton;
+	    return btn;
   }
 }
