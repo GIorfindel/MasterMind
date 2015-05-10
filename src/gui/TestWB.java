@@ -21,6 +21,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 public class TestWB {
 
@@ -29,6 +30,8 @@ public class TestWB {
 	  JPanel content = new JPanel();
 	  //Liste des noms de nos conteneurs pour la pile de cartes
 	  String[] listeMenus = {"accueil", "connexion", "inscription", "profil", "tab_scores", "choix_mode", "choix_niveau", "personnaliser", "partie"};
+	  private JTextField textField;
+	  private JTextField textField_1;
 
 
 	/**
@@ -73,7 +76,7 @@ public class TestWB {
 	    //Création du panel
 	    JPanel accueil = new JPanel();
 	    accueil.setLayout(null); // Si on veut positionner les éléments comme on veut (pratique avec Window Builder mais c'est galère sinon)
-	    accueil.setBackground(Color.blue);	
+	    accueil.setBackground(Color.WHITE);	
 
 	    // Création des différents composants
 	    JLabel lblMastermind = new JLabel("Mastermind");
@@ -152,16 +155,18 @@ public class TestWB {
 	    /*** MENU CONNEXION ***/
 	    //Création du panel
 	    JPanel connexion = new JPanel();
-	    connexion.setBackground(Color.red);		
+	    connexion.setBackground(Color.WHITE);		
 
 	    // Création des différents composants
 	    JButton retour1 = new JButton("Retour");
+	    retour1.setBounds(405, 300, 150, 50);
 	    //Définition de l'action du retour1
 	    retour1.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent event){				
 	        cl.show(content, listeMenus[0]);
 	      }
 	    });
+	    connexion.setLayout(null);
 	    
 	    // Ajout des composants au panel
 	    connexion.add(retour1);
@@ -198,11 +203,41 @@ public class TestWB {
 	    //On ajoute les menuS à la pile avec un nom pour les retrouver
 	    content.add(accueil, listeMenus[0]);
 	    content.add(connexion, listeMenus[1]);
+	    
+	    JLabel lblIdentifiant = new JLabel("Identifiant");
+	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 17));
+	    lblIdentifiant.setBounds(345, 120, 89, 27);
+	    connexion.add(lblIdentifiant);
+	    
+	    textField = new JTextField();
+	    lblIdentifiant.setLabelFor(textField);
+	    textField.setBounds(492, 124, 176, 22);
+	    connexion.add(textField);
+	    textField.setColumns(10);
+	    
+	    JLabel lblMotDePasse = new JLabel("Mot de passe");
+	    lblMotDePasse.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	    lblMotDePasse.setBounds(345, 178, 98, 16);
+	    connexion.add(lblMotDePasse);
+	    
+	    textField_1 = new JTextField();
+	    lblMotDePasse.setLabelFor(textField_1);
+	    textField_1.setBounds(492, 176, 176, 22);
+	    connexion.add(textField_1);
+	    textField_1.setColumns(10);
+	    
+	    JButton btnValider = new JButton("Valider");
+	    btnValider.setForeground(Color.BLACK);
+	    btnValider.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    	}
+	    });
+	    btnValider.setBounds(405, 240, 150, 50);
+	    connexion.add(btnValider);
 	    content.add(inscription, listeMenus[2]);
 	    content.add(jouer, listeMenus[5]);
 
 
 	    frmMastermind.getContentPane().add(content, BorderLayout.CENTER);
 	}
-
 }
