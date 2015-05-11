@@ -5,122 +5,128 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import mastermind.Paquet;
+
 
 public class Serveur {
-	//Si le client attent une reponse du serveur
-	private boolean attent;
-		
 	private String addr_serveur;
 	private int port_serveur;
+	//La connection avec le serveur
 	private Socket socket;
+	//Un thread qui ecoute le serveur
 	private EcouteServeur ecouteServeur;
-	private ObjectOutputStream sOutput;
+	//Pour envoyer des données au serveur
+	private ObjectOutputStream envoi;
 	private Client client;
-		
-	//Si le joueur est connecté au serveur
-	private boolean connecter;  
+	//Si on est connecté au serveur ou pas
+	private boolean connecte;
 	
 	public Serveur( String addr_serveur, int port_serveur, Client client ){
 		this.addr_serveur = addr_serveur;
 		this.port_serveur = port_serveur;
 		this.socket = null;
-		this.sOutput = null;
-		this.connecter = false;
-		this.attent = false;
+		this.envoi = null;
+		this.connecte = false;
 		this.ecouteServeur = null;
 		this.client = client;
 	}
 	
-	public boolean getConnecter(){
-		return this.connecter;
+	public boolean getConnecte(){
+		return this.connecte;
 	}
 	
-	public void close(){
-		try{
-			this.connecter = false;
-			if( this.socket != null ){
-				this.socket.close();
-			}
-			if( this.sOutput != null ){
-				this.sOutput.close();
-			}
-			this.attent = false;
-			this.ecouteServeur.close();
-		}catch( Exception e ){
-			//Impossible de fermer les flux, c'est genant !!!
-			e.printStackTrace();
+	public synchronized boolean connectionAuServeur(){
+		if( this.connecte ){
+			return true;
 		}
-	}
-	
-	public boolean connectionAuServeur(){
-		ObjectInputStream sInput = null;
+		//Ce que le serveur nous envoi
+		ObjectInputStream recoi = null;
 		try {
 			this.socket = new Socket( this.addr_serveur, this.port_serveur );
-			this.connecter = true;
+			this.connecte = true;
 		} 
 		catch(Exception e) {//Impossible de se connecter au serveur
-			this.connecter = false;
-			this.close();
-			e.printStackTrace();
+			this.connecte = false;
+			//e.printStackTrace(); Car si le joueur n'a pas de connection internet, c'est normal qui ne peut pas se connecter
 			return false;
 		}
 		try {
-			sInput  = new ObjectInputStream( this.socket.getInputStream() );
-			this.sOutput = new ObjectOutputStream( this.socket.getOutputStream() );
+			recoi  = new ObjectInputStream( this.socket.getInputStream() );
+			this.envoi = new ObjectOutputStream( this.socket.getOutputStream() );
 		}
 		catch (IOException e) {//Erreur en créant les flux
-			this.connecter = false;
+			this.connecte = false;
 			this.close();
 			e.printStackTrace();
 			return false;
 		}
 		// Création du Thread à l'écoute du serveur
-		this.ecouteServeur = new EcouteServeur( sInput, this.client );
+		this.ecouteServeur = new EcouteServeur( recoi, this.client );
 		this.ecouteServeur.start();
 		return true;
 	}
 	
-	public boolean envoyerPaquet( Paquet paquet, boolean attentReponse ){
-		if( this.connecter ){
-			try{
-				this.sOutput.writeObject( paquet );
-				this.attent = attentReponse;
-				return true;
-			}catch(IOException e) {
-				e.printStackTrace();
-				return false;
+	public boolean close(){
+		this.connecte = false;
+		if( this.ecouteServeur != null ){
+			this.ecouteServeur.close();
+			this.ecouteServeur = null;
+		}
+		try{
+			if( this.envoi != null ){
+				this.envoi.close();
+				this.envoi = null;
 			}
+			if( this.socket != null ){
+				this.socket.close();
+				this.socket = null;
+			}
+			return true;
+		}catch( Exception e ){
+			e.printStackTrace();
 		}
 		return false;
 	}
 	
-	private double getTemps(){
-		return System.currentTimeMillis()/1000.0;
+	public boolean envoyerPaquet( Paquet p ){
+		try {
+			if( this.envoi != null ){
+				this.envoi.writeObject( p );
+				return true;
+			}
+			return false;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
-	private void dormir( double sec ){
-		double now = this.getTemps();
-		while( true ){
-			if( this.getTemps() > now + sec ){
-				return;
-			}
-		}
+	private double getTempsSeconde(){
+		return System.currentTimeMillis()/1000.0;
 	}
 	
 	//il y a une limite de temps(en seconde), si il y a pas de paquet
 	//au bout de cette limite il retourne null
-	public Paquet getAttentPaquet( double limite_temp_max ){
-		double now = this.getTemps();
+	public Paquet getAttentPaquet( double limite_temp_max, int id ){
+		double temps_max = this.getTempsSeconde() + limite_temp_max;
 		Paquet p = null;
 		while( true ){
-			p = this.ecouteServeur.getReponseServeur();
-			this.dormir( 0.2 );//Pour eviter de solliciter le Thread, sinon il fonctionne TRES mal
+			if( this.ecouteServeur == null ){
+				return null;
+			}
+			p = this.ecouteServeur.getPaquet( id );
+			try {
+				Thread.sleep( 200 );//Pour eviter de solliciter le EcouteServeur, sinon il fonctionne TRES mal
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			if( p != null ){
 				return p;
 			}
-			if( this.getTemps() > now + limite_temp_max ){//Temps ecoule
+			if( this.getTempsSeconde() > temps_max ){//Temps ecoule
 				return null;
 			}
 		}
 	}
+	
 }

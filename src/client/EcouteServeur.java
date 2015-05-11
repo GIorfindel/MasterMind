@@ -1,44 +1,42 @@
 package client;
 
+import java.io.EOFException;
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 
+import mastermind.Paquet;
+
+
 public class EcouteServeur extends Thread {
-	private ObjectInputStream sInput;
-	private Paquet reponseServeur;
+	private ObjectInputStream recoi;
+	//Le paquet que nous a envoyé le serveur
+	private Paquet paquet;
 	private Client client;
+	private boolean continuer;
 	
-	public EcouteServeur( ObjectInputStream sInput , Client client ){
-		this.reponseServeur = null;
-		this.sInput = sInput;
+	public EcouteServeur( ObjectInputStream recoi , Client client ){
+		this.paquet = null;
+		this.recoi = recoi;
 		this.client = client;
+		this.continuer = false;
 	}
 	
-	public void interrupt() {
-        super.interrupt();
-        try {
-            this.sInput.close(); // Fermeture du flux si l'interruption n'a pas fonctionné.
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-    } 
-	
 	public void run() {
-		Paquet p;
-		while(true) {
+		Paquet memo;
+		this.continuer = true;
+		while( this.continuer ) {
 			try {
-				this.reponseServeur = new Paquet( (Paquet) sInput.readObject() );
-				if( this.reponseServeur.getType() == Paquet.SERVEUR_ETEINT ){
-					this.client.ServeurEteint();
-					this.reponseServeur = null;
+				if( this.recoi != null ){
+					memo = (Paquet) this.recoi.readObject();
+					this.gererPaquet( memo );
 				}
 				
-			}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
-	            Thread.currentThread().interrupt();
-	            e.printStackTrace();
-	            return;
-	        }catch(IOException e) {//Socket Fermé
+			}catch( EOFException e ){//Le serveur s'arrete brutalement
+				this.client.closeServeur();
+			}catch(IOException e) {
+				if( this.continuer ){ //  sinon c'est qu'on arrete ce thread
+		        	e.printStackTrace();
+				}
 				return;
 			}catch(ClassNotFoundException e) {
 				e.printStackTrace();
@@ -47,19 +45,41 @@ public class EcouteServeur extends Thread {
 		}
 	}
 	
+	//Permet de ferme l'écoute du serveur
 	public void close(){
-		this.interrupt();
-		this.reponseServeur = null;
+		this.continuer = false;
+		try{
+			if( this.recoi != null ){
+				this.recoi.close();
+				this.recoi = null;
+			}
+		}catch( IOException e ){
+			e.printStackTrace();
+		}
+		this.paquet = null;
 	}
 	
-	//Ontenir le paquet, si y a pas de paquet return null
-	public Paquet getReponseServeur(){
-		if( this.reponseServeur != null ){
-			Paquet p = new Paquet( this.reponseServeur );
-			this.reponseServeur = null;
-			return p;
+	//Selon le type de paquet, on le traite puis on le met à null, ou on le sauavegarde dans paquet
+	public void gererPaquet( Paquet p ){
+		if( p.getType() == Paquet.SERVEUR_ETEINT ){
+			//On gere au niveau du client que le serveur est éteint
+			this.client.closeServeur();
+		}else{
+			this.paquet = p;
 		}
+	}
+	
+	//Obtenir le paquet, si y a pas de paquet return null
+	public Paquet getPaquet( int id ){
+		if( this.paquet != null && this.paquet.getId() == id ){
+			Paquet memo = this.paquet;
+			//On met le paquet à null, pour faire de la place à un autre paquet.
+			this.paquet = null;
+			return memo;
+		}
+		this.paquet = null;
 		return null;
 	}
 	
 }
+

@@ -1,217 +1,65 @@
-	package client;
-
-import java.util.Scanner;
-import java.util.StringTokenizer;
+package client;
 
 import mastermind.Joueur;
-import mastermind.Partie;
+import mastermind.Paquet;
 
 public class Client {
 	
+	//Ca communqiue avec le serveur
 	private Serveur serveur;
-	
 	private Joueur joueur;
-	private Partie partie;
-	private Scanner scan;
-	
-	private static final int ARRET = 0, MENU = 1, CONNECTION = 2, PROFIL = 3;
 	
 	public Client( String addr_serveur, int port_serveur ){
 		this.joueur = null;
-		this.partie = null;
 		this.serveur = new Serveur( addr_serveur, port_serveur, this );
 	}
 	
-	public void initClient(){
-		this.serveur.connectionAuServeur();
-		this.scan = new Scanner( System.in );
-		this.menus();
+	public void close(){
+		if( this.serveur.getConnecte() ){
+			this.serveur.envoyerPaquet( Paquet.creeJEMEDECO() );
+		}
+		this.serveur.close();
+		this.joueur = null;
 	}
 	
-	public void ServeurEteint(){
+	//Retourne true si on est connecté au serveur
+	public boolean getConnecteAuServeur(){
+		return this.serveur.getConnecte();
+	}
+	
+	//Retourne true si on est connecté au à notre compte
+	public boolean connecterAuCompte(){
+		return this.getConnecteAuServeur() && this.joueur != null;
+	}
+	
+	public Joueur getJoueur(){
+		return this.joueur;
+	}
+	
+	public void setJoueur( Joueur j ){
+		this.joueur = j;
+	}
+	
+	//Retourne true si on arrvie à se connecter au serveur
+	public boolean seConnecterAuServeur(){
+		if( !this.serveur.getConnecte() ){
+			return this.serveur.connectionAuServeur();
+		}
+		return true;
+	}
+	
+	public void closeServeur(){//Connexion au serveur perdu
 		this.joueur = null;
 		this.serveur.close();
-		
 	}
 	
-	private void afficheMenu(){
-		String connecter = "non";
-		if( this.serveur.getConnecter() ){
-			connecter = "oui";
-		}
-		System.out.println( "Connecté au serveur : " + connecter );
-		if( this.joueur != null ){
-			System.out.println( "Identifiant : " + this.joueur.getIdentifiant() );
-		}
-		System.out.println("1	-Se connecter\n" +
-							"3	-Profil\n" +
-							"7	-Arreter");
+	//Envoi un paquet au serveur
+	public void envoyerPaquet( Paquet p ){
+		this.serveur.envoyerPaquet( p );
 	}
 	
-	private int menu(){
-		int choix = -1;
-		boolean mauvaisChoix = true;
-		if( !this.serveur.getConnecter() ){
-			this.serveur.connectionAuServeur();
-		}
-		while( mauvaisChoix ){
-			this.afficheMenu();
-			try{
-				choix = Integer.parseInt( this.scan.nextLine() );
-				if( choix == 1 ){//Se connecter
-					choix = CONNECTION;
-					mauvaisChoix = false;
-				}else if( choix == 3 ){//Profil
-					choix = PROFIL;
-					mauvaisChoix = false;
-				}else if( choix == 7 ){//Profil
-					choix = ARRET;
-					mauvaisChoix = false;
-				}
-			}catch( NumberFormatException e ){//L'utilisateur n'a pas saisie un entier
-				mauvaisChoix = true;
-			}
-			if( mauvaisChoix ){
-				System.out.println( "Choix incorect, re-essayer" );
-			}
-		}
-		return choix;
+	//Attend un paquet du serveur, avec une limite max de temps en seconde. L'id_paquet est dans paquet.getId()
+	public Paquet recevoirPaquet( double limite_temp_max, int id_paquet ){
+		return this.serveur.getAttentPaquet( limite_temp_max, id_paquet );
 	}
-	
-	private String[] separeLesChoix( int nbElementsMax ){
-		String choix = this.scan.nextLine();
-		StringTokenizer st = new StringTokenizer( choix, " " );
-		String[] entrees = new String[nbElementsMax];
-		for( int x = 0; x < nbElementsMax; x++ ){
-			entrees[x] = null;
-		}
-		int i = 0;
-		while( st.hasMoreTokens() ){
-			if( i == nbElementsMax ){
-				return null;
-			}
-			entrees[i] = st.nextToken();
-			i++;
-		}
-		return entrees;
-	}
-	
-	private void afficheConnection(){
-		System.out.println("Connection\n" + 
-							"Faire: login ton_login mdp ton_mdp\n" +
-							"Ou quit, pour retourner au menu" );
-	}
-	
-	private int connection(){//Ne pas oublier le choix quit
-		if( !this.serveur.getConnecter() ){
-			if( !this.serveur.connectionAuServeur() ){
-				System.out.println("Impossible de se connecter au serveur");
-				return MENU;
-			}
-		}
-		boolean continuer = true;
-		int choixInt = -1;
-		String login = null;
-		String mdp = null;
-		while( continuer ){
-			this.afficheConnection();
-			String[] choix = this.separeLesChoix( 4 );
-			if( choix[0] != null && choix[0].equals( "quit" ) ){
-				continuer = false;
-				choixInt = MENU;
-			}
-			else if( choix[0] != null && choix[1] != null && choix[2] != null && choix[3] != null ){
-				if( choix[0].equals("login") && choix[2].equals("mdp") && !choix[1].equals("") && !choix[3].equals("") ){
-					login = choix[1];
-					mdp = choix[3];
-					continuer = false;
-					choixInt = PROFIL;
-				}
-				
-			}
-			if( continuer ){
-				System.out.println( "Choix incorect, re-essayer" );
-			}
-		}
-		if( choixInt == MENU ){
-			return MENU;
-		}
-		Paquet p = new Paquet( 2, Paquet.DEMANDE_CONNECTION );
-		p.addObjet( new String( login ) );
-		p.addObjet( new String( mdp ) );
-		this.serveur.envoyerPaquet( p, true );
-		Paquet pServeur = this.serveur.getAttentPaquet( 5.0 );//On attend(maximum 5 secondes) que le serveur nous repond
-		if( pServeur == null ){
-			System.out.println("Limite de temps depassé, veuillez essayer plus tard");
-			return MENU;
-		}
-		if( pServeur.getType() == Paquet.REPONSE_CONNECTION ){
-			if( pServeur.getNbObjet() == 0 ){
-				System.out.println("Informations incorrect, veuillez re-essayer");
-				return CONNECTION;
-			}else{
-				this.joueur = new Joueur( (Joueur) pServeur.getObjet( 0 ) );
-				return PROFIL;
-			}
-		}else{
-			System.out.println("Probleme inquietant, ce paquet ne vous est pas destiné");
-			return MENU;
-		}
-	}
-	
-	private void afficheProfil(){
-		System.out.println( "Identifiant :	" + this.joueur.getIdentifiant() );
-		System.out.println( "Avatar :	" + this.joueur.getAvatar() );
-		System.out.println( "Malus :	" + this.joueur.getMalus() );
-		System.out.println("1	-Menu");
-	}
-	
-	private int profil(){
-		if( !this.serveur.getConnecter() ){
-			System.out.println("vous n'êtes pas connecté au serveur");
-			return MENU;
-		}else if( this.joueur == null ) {
-			System.out.println("Vous vous êtes pas connecté, à votre compte");
-			return MENU;
-		}
-		boolean continuer = true;
-		int choixInt = -1;
-		while( continuer ){
-			this.afficheProfil();
-			String[] choix = this.separeLesChoix( 1 );
-			if( choix[0] != null && choix[0].equals("quit") ){
-				continuer = false;
-				choixInt = MENU;
-			}else if( choix[0] != null && choix[0].equals("1") ){
-				continuer = false;
-				choixInt = MENU;
-			}
-			if( continuer ){
-				System.out.println( "Choix incorect, re-essayer" );
-			}
-		}
-		return choixInt;
-		
-	}
-	
-	private void menus(){
-		int menu = MENU;
-		while( menu != ARRET ){
-			switch (menu) {
-			case MENU :
-				menu = this.menu();
-				break;
-			case CONNECTION :
-				menu = this.connection();
-				break;
-			case PROFIL :
-				menu = this.profil();
-				break;
-			}
-		}
-		this.scan.close();
-		this.serveur.close();
-		//Close(), envoyer un deco au serveur
-	}
-
 }
