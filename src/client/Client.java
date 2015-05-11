@@ -18,7 +18,7 @@ public class Client {
 	}
 	
 	public void close(){
-		if( this.serveur.getConnecte() ){
+		if( this.getConnecteAuServeur() ){
 			this.serveur.envoyerPaquet( Paquet.creeJEMEDECO() );
 		}
 		this.serveur.close();
@@ -46,7 +46,7 @@ public class Client {
 	
 	//Retourne true si on arrvie à se connecter au serveur
 	public boolean seConnecterAuServeur(){
-		if( !this.serveur.getConnecte() ){
+		if( !this.getConnecteAuServeur() ){
 			return this.serveur.connectionAuServeur();
 		}
 		return true;
