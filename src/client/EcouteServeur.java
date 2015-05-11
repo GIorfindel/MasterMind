@@ -37,9 +37,11 @@ public class EcouteServeur extends Thread {
 				if( this.continuer ){ //  sinon c'est qu'on arrete ce thread
 		        	e.printStackTrace();
 				}
+				this.client.closeServeur();
 				return;
 			}catch(ClassNotFoundException e) {
 				e.printStackTrace();
+				this.client.closeServeur();
 				return;
 			}
 		}
