@@ -17,6 +17,15 @@ public class Client {
 		this.serveur = new Serveur( addr_serveur, port_serveur, this );
 	}
 	
+	//Peut renvoyer null si le client n'est pas connecté à son compte
+	public Joueur getJoueur(){
+		return this.joueur;
+	}
+		
+	public void setJoueur( Joueur j ){
+		this.joueur = j;
+	}
+	
 	public void close(){
 		if( this.getConnecteAuServeur() ){
 			this.serveur.envoyerPaquet( Paquet.creeJEMEDECO() );
@@ -33,15 +42,6 @@ public class Client {
 	//Retourne true si on est connecté au à notre compte
 	public boolean connecterAuCompte(){
 		return this.getConnecteAuServeur() && this.joueur != null;
-	}
-	
-	//Peut renvoyer null si le client n'est pas connecté à son compte
-	public Joueur getJoueur(){
-		return this.joueur;
-	}
-	
-	public void setJoueur( Joueur j ){
-		this.joueur = j;
 	}
 	
 	//Retourne true si on arrvie à se connecter au serveur
