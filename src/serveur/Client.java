@@ -53,22 +53,20 @@ public class Client extends Thread {
 						this.gererPaquet( p );
 					}
 				}catch( EOFException e ){//Le client s'arrete brutalement
-					if( this.continuer ){
-						this.close();
-					}
+					this.close();
 				}catch( SocketException e ){//Le client s'arrete brutalement
-					if( this.continuer ){
-						this.close();
-					}
+					this.close();
 				}catch( IOException e ) {
 					if( this.continuer ){
 						this.serveur.afficher( "Probleme de readObject du client " + this.id );
 						e.printStackTrace();
 					}
+					this.close();
 				}
 				catch( ClassNotFoundException e ) {
 					e.printStackTrace();
 					this.serveur.afficher( "Le client " + this.id + " n'as pas envoyé une Classe Paquet" );
+					this.close();
 				}
 			}
 	}
