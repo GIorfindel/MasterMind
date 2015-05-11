@@ -55,8 +55,8 @@ public class Client {
 	}
 	
 	//Envoi un paquet au serveur
-	public void envoyerPaquet( Paquet p ){
-		this.serveur.envoyerPaquet( p );
+	public boolean envoyerPaquet( Paquet p ){
+		return this.serveur.envoyerPaquet( p );
 	}
 	
 	//Attend un paquet du serveur, avec une limite max de temps en seconde. L'id_paquet est dans paquet.getId()
