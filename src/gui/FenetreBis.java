@@ -1,3 +1,5 @@
+package gui;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +19,7 @@ import javax.swing.JRadioButtonMenuItem;
 
  
  
-public class Fenetre extends JFrame {
+public class FenetreBis extends JFrame {
 	
 	/**
 	 * 
@@ -46,21 +48,21 @@ public class Fenetre extends JFrame {
 	Font police = new Font("Times New Roman",Font.BOLD,12);
 	
 	//Images de chaques pions
-	private ImageIcon iconeRed= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/1.png"));
-	private ImageIcon iconeBlue= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/2.png"));
-	private ImageIcon iconeGreen= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/3.png"));
-	private ImageIcon iconeOrange= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/4.png"));
-	private ImageIcon iconeYellow= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/5.png"));
-	private ImageIcon iconeWhite= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/6.png"));
-	private ImageIcon iconeFushia= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/7.png"));
-	private ImageIcon iconePurple= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/8.png"));
-	private ImageIcon iconeBlack= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/10.png"));
-	private ImageIcon iconeTurquoise= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/11.png"));
-	private ImageIcon iconeGrey= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/9.png"));
-	private ImageIcon iconeResBlack= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/test.png"));
-	private ImageIcon iconeResWhite= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/res_white.png"));
-	private ImageIcon iconeVoid= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/void.png"));
-	private ImageIcon iconeVoid2= new ImageIcon(Fenetre.class.getClass().getResource("/ressources/void2.png"));
+	private ImageIcon iconeRed= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/1.png"));
+	private ImageIcon iconeBlue= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/2.png"));
+	private ImageIcon iconeGreen= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/3.png"));
+	private ImageIcon iconeOrange= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/4.png"));
+	private ImageIcon iconeYellow= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/5.png"));
+	private ImageIcon iconeWhite= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/6.png"));
+	private ImageIcon iconeFushia= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/7.png"));
+	private ImageIcon iconePurple= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/8.png"));
+	private ImageIcon iconeBlack= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/10.png"));
+	private ImageIcon iconeTurquoise= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/11.png"));
+	private ImageIcon iconeGrey= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/9.png"));
+	private ImageIcon iconeResBlack= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/test.png"));
+	private ImageIcon iconeResWhite= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/res_white.png"));
+	private ImageIcon iconeVoid= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/void.png"));
+	private ImageIcon iconeVoid2= new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/void2.png"));
 	
 	//Buttons de chaque pions
 	private JButton boutonRed = new JButton(iconeRed);
@@ -136,7 +138,7 @@ public class Fenetre extends JFrame {
 	/*******************INITIALISATION DE LA FENETRE*************************/
 	/************************************************************************/
 	
-	public Fenetre(){
+	public FenetreBis(){
 		 //Titre de la fenetre
 		 this.setTitle("Mastermind");
 		 
@@ -152,7 +154,7 @@ public class Fenetre extends JFrame {
 	     images =new ImageIcon[12];
 			for (int i=1;i<12;i++){
 				
-				images[i] = new ImageIcon(Fenetre.class.getClass().getResource("/ressources/"+i+".png"));
+				images[i] = new ImageIcon(FenetreBis.class.getClass().getResource("/ressources/"+i+".png"));
 
 			}
 	     //initialisation de la fenetre
