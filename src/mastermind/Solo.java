@@ -1,22 +1,19 @@
 package mastermind;
 
-public class Solo extends Partie{
-	
+import java.io.Serializable;
+
+public class Solo extends Partie implements Serializable{
+	private static final long serialVersionUID = 457371753046172924L;
 	/* Variables */
 	private Integer coups; //le nombre de coup que le joueur a fait
 	private int nbTour;
 	private Tour tour; //le tour que l’on fait
 	
-public Solo(){
-	super();
+public Solo( String nom, Niveau niveau, Joueur joueur ){
+	super( nom, niveau, joueur );
 	this.coups = 0;
 	this.nbTour = 0;
-}
-
-public Solo( String nom ){
-	super( nom );
-	this.coups = 0;
-	this.nbTour = 0;
+	this.tour = new Tour( this.niveau.getPions() );
 }
 	
 public void setCoups( int coups ) {
@@ -48,4 +45,13 @@ public void addNbTour(){
 	this.nbTour ++;
 }
 
+public void addCoups(){
+	this.coups ++;
+}
+
+
+public void nouveauTour(){
+	this.nbTour ++;
+	this.tour.nouveauTour( this.niveau.genererCombinaisonAle() );
+}
 }

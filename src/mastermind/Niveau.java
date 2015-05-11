@@ -1,9 +1,12 @@
 package mastermind;
 
+import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
-public abstract class Niveau {
+public abstract class Niveau implements Serializable {
+	private static final long serialVersionUID = 42439481627517922L;
 	protected int pions;
 	/*definie le nombre de pions à deviner*/
 	protected int couleurs;
@@ -137,5 +140,27 @@ public abstract class Niveau {
 		}else{
 			return new TresDifficile();
 		}
+	}
+	
+	public boolean pionValide( Pions comb, Couleur c ){
+		if( !this.doubl && !comb.pionMemeCouleur( c ) && comb.nbCouleur( c ) <= this.couleurs ){
+			return true;
+		}else if( this.doubl && comb.nbCouleur( c ) <= this.couleurs ){
+			return true;
+		}
+		return false;
+	}
+	
+	public Pions genererCombinaisonAle(){
+		Random rand = new Random();
+		Pions comb = new Pions( this.pions );
+		Couleur c= null;
+		while( comb.getNbPion() < this.pions ){
+			c = Couleur.values()[ rand.nextInt( Couleur.values().length ) ];
+			if( this.pionValide(comb, c) ){
+				comb.addPion( c );
+			}
+		}
+		return comb;
 	}
 }

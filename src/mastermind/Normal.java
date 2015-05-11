@@ -1,12 +1,16 @@
 package mastermind;
 
 public class Normal extends Niveau {
-	protected static final int pions=4;
-	protected  static final int couleurs=8;
-	protected static final boolean doubl=false;
+	private static final long serialVersionUID = -2028286672649281065L;
+
+	public Normal(){
+		this.pions = 4;
+		this.couleurs = 8;
+		this.doubl = false;
+	}
 	
 	@Override public String toString()
 	{
-		return "normal";
+		return "Normal";
 	}
 }

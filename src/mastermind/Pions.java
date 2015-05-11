@@ -1,6 +1,11 @@
 package mastermind;
 
-public class Pions {
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+public class Pions  implements Serializable{
+	private static final long serialVersionUID = 4295593891497008282L;
 	private Couleur[] combinaison;
 	private int nbPions;
 	
@@ -36,6 +41,22 @@ public class Pions {
 		return this.combinaison;
 	}
 	
+	public boolean pionMemeCouleur( Couleur pion ){
+		for( int i = 0; i < this.nbPions; i++ ){
+			if( this.getPion( i ) == pion ){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public int nbCouleur( Couleur pion ){
+		Set<Couleur> unicColors = new HashSet<Couleur>();
+		for (Couleur c : this.combinaison) unicColors.add(c);
+		int unicNB = unicColors.size();
+		return unicNB;
+	}
+	
 	public boolean equals(Pions comb){
 		if (comb.getNbPion() != this.getNbPion())
 			return false;
@@ -48,5 +69,13 @@ public class Pions {
 			}
 		}
 		return true;
+	}
+	
+	public String toString(){
+		String s = "Combinaison :";
+		for( int pion = 0; pion < this.nbPions; pion++ ){
+			s += this.combinaison[pion] + " ";
+		}
+		return s;
 	}
 }

@@ -1,13 +1,17 @@
 package mastermind;
 
 public class TresDifficile extends Niveau {
-	protected static final int pions=4;
-	protected  static final int couleurs=10;
-	protected static final boolean doubl=true;
-	protected static final int coupMax=14;
+	private static final long serialVersionUID = -6527184611263400561L;
+
+	public TresDifficile(){
+		this.pions = 4;
+		this.couleurs = 10;
+		this.doubl = true;
+		this.coupMax = 14;
+	}
 	
 	@Override public String toString()
 	{
-		return "tres_difficile";
+		return "TresDifficile";
 	}
 }

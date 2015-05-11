@@ -1,20 +1,19 @@
 package mastermind;
 
-public class Partie {
-	
+import java.io.Serializable;
+
+public class Partie implements Serializable{
+	private static final long serialVersionUID = 4274082376020017127L;
 	/* Variables */
-	private String nom; //Nom de la partie
-	private Niveau niveau;
-	private Joueur joueur;
-	
-	/* Constructeur par défaut */
-	public Partie() {
-		this.nom = "Partie";
-	}
+	protected String nom; //Nom de la partie 
+	protected Niveau niveau;
+	protected Joueur joueur;
 	
 	/* Constructeur selon les paramètres */
-	public Partie(String nom) {
+	public Partie( String nom, Niveau niveau, Joueur joueur ) {
 		this.nom = nom;
+		this.niveau = niveau;
+		this.joueur = joueur;
 	}
 	
 	
@@ -43,23 +42,6 @@ public class Partie {
 	
 	public void setJoueur(Joueur joueur) {
 		this.joueur = joueur;
-	}
-	
-	public void gagner( int coups, Niveau niveau, Joueur joueur) {
-		if (coups < niveau.getCoupMax()) { // Si le nombre de coups est inférieur à coupsMax && si la combinaison est exacte
-			/*Le joueur gagne la partie*/
-		}
-	}
-
-	public void perdre( int coups, Niveau niveau, Joueur joueur) {
-		if (coups == niveau.getCoupMax()) { // Si le nombre de coups est égal à coupsMax && si la combinaison est inexacte 
-			/*Le joueur perd la partie*/
-		}
-	}
-	
-	//Créé une partie personnalisée
-	public void personnaliserNiveau(int pions, int couleurs, boolean doubl, int coupMax) {
-		this.niveau = new NiveauPerso(pions, couleurs, doubl, coupMax);
 	}
 	
 		
