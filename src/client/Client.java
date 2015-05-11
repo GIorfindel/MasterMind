@@ -9,6 +9,9 @@ public class Client {
 	private Serveur serveur;
 	private Joueur joueur;
 	
+	//Nécessaire pour les paquets
+	public static int ID_ACTUEL = 0;
+	
 	public Client( String addr_serveur, int port_serveur ){
 		this.joueur = null;
 		this.serveur = new Serveur( addr_serveur, port_serveur, this );

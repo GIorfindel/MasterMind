@@ -2,6 +2,8 @@ package mastermind;
 
 import java.io.Serializable;
 
+import client.Client;
+
 
 //Un paquet permet d'envoyer des paramètres sur le réseau
 
@@ -42,7 +44,6 @@ public class Paquet implements Serializable{
 	 * Il faut que le paquet que l'on envoi qui a un id est le même id que le paquet qu'on recoi
 	 */
 	private int id;
-	private static int ID_ACTUEL = 0;
 	private final static int MAX_ID = 10;
 	
 	public Paquet( int nbObjet, int type, int id ){
@@ -73,12 +74,13 @@ public class Paquet implements Serializable{
 		return this.id;
 	}
 	
-	public static int creerId(){
-		if( ID_ACTUEL + 1 > MAX_ID ){
+	private static int creerId(){
+		if( Client.ID_ACTUEL + 1 > MAX_ID ){
+			Client.ID_ACTUEL = 0;
 			return 0;
 		}
-		ID_ACTUEL += 1;
-		return ID_ACTUEL;
+		Client.ID_ACTUEL += 1;
+		return Client.ID_ACTUEL;
 	}
 	
 	public static Paquet creeSERVEUR_ETEINT(){
