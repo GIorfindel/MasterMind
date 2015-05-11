@@ -133,7 +133,7 @@ public class Fenetre extends JFrame{
   }
   
   // Fonction permettant de créer un btn qui agira sur le CardLayout
-  public JButton creerBoutonMenu (String nom, int menuDestination) {
+  public JButton creerBoutonMenu (String nom, final int menuDestination) {
 	    JButton btn = new JButton(nom);
 	    //Définition de l'action du btn2
 	    btn.addActionListener(new ActionListener(){
