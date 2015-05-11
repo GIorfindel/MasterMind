@@ -5,6 +5,13 @@ import java.io.Serializable;
 
 //Un paquet permet d'envoyer des paramètres sur le réseau
 
+/*
+ * Un paquet a:
+ * 		-des objets : ce que l'on veut mettre dedans
+ * 		-Un type : c'est la raison du paquet (ex: demande de connexion, inscription)
+ * 		-Un id : C'est pour le différencier d'un autre paquet
+ */
+
 public class Paquet implements Serializable{
 	private static final long serialVersionUID = 673008779401442195L;
 	private Object[] objets;
