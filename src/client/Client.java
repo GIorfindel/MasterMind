@@ -32,6 +32,7 @@ public class Client {
 		return this.getConnecteAuServeur() && this.joueur != null;
 	}
 	
+	//Peut renvoyer null si le client n'est pas connecté à son compte
 	public Joueur getJoueur(){
 		return this.joueur;
 	}
