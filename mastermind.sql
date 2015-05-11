@@ -15,7 +15,7 @@ CREATE TABLE Score(
 	tours INT,
 	niveau VARCHAR(20),
 	CHECK ( mode_solo_multi = 'solo' OR mode_solo_multi = 'multi' ),
-	CHECK ( niveau = 'tres_facile' OR niveau = 'facile' OR niveau = 'normal' OR niveau = 'difficile' OR niveau = 'tres_difficile' )
+	CHECK ( niveau = 'TresFacile' OR niveau = 'Facile' OR niveau = 'Normal' OR niveau = 'Difficile' OR niveau = 'TresDifficile' )
 );
 
 CREATE TABLE Joueur_Score(
@@ -31,7 +31,7 @@ CREATE TABLE Partie(
 	nom VARCHAR(20),
 	niveau VARCHAR(20) NOT NULL,
 	FOREIGN KEY (id_joueur) REFERENCES Joueur(id),
-	CHECK ( niveau = 'tres_facile' OR niveau = 'facile' OR niveau = 'normal' OR niveau = 'difficile' OR niveau = 'tres_difficile' )	
+	CHECK ( niveau = 'TresFacile' OR niveau = 'Facile' OR niveau = 'Normal' OR niveau = 'Difficile' OR niveau = 'TresDifficile' )	
 );
 
 CREATE TABLE Essais(
