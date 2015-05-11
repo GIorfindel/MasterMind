@@ -10,6 +10,16 @@ import java.io.Serializable;
  * 		-des objets : ce que l'on veut mettre dedans
  * 		-Un type : c'est la raison du paquet (ex: demande de connexion, inscription)
  * 		-Un id : C'est pour le différencier d'un autre paquet
+ * 
+ * Pour créer un paquet, envoyer et attendre une réponse du serveur : 
+ * 	Paquet p = Paquet.creeDEMANDE_......( parametres )
+ * 						  REPONSE_.......( parametres )
+ *  int id = p.getID()
+ * 	if( client.envoyerPaquet( p, id ) == true ) paquet envoyé
+ *  Paquet pServeur = client.recevoirPaquet( X seconde , id )
+ *  if( pServeur == null ) Limite de temps écoulé, donc paquet pas recu
+ *  
+ *  Si tous c'est bien fait, vous avez votre réponse (pServeur.getObjet( indice ))
  */
 
 public class Paquet implements Serializable{
