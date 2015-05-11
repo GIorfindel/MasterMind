@@ -3,10 +3,12 @@ package serveur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import BDD.DB;
+import mastermind.Paquet;
+
+import bdd.DB;
+
 
 public class Serveur {
 	private ArrayList<Client> listeClients;
@@ -16,12 +18,14 @@ public class Serveur {
 	private DB db;
 	private Commande comm;
 	private ServerSocket socketServeur;
+	private static int MAX_CLIENT = 10;
 	
 	public Serveur( int port ){
 		this.port = port;
 		this.listeClients = new ArrayList<Client>();
 		this.enCours = false;
 		this.comm = null;
+		this.db = null;
 		this.socketServeur = null;
 	}
 	
@@ -34,36 +38,66 @@ public class Serveur {
 		return this.db;
 	}
 	
+	public synchronized void afficher( String message ){
+		System.out.println( message );
+	}
+	
 	public void start(){
 		this.enCours = true;
 		this.initDB();
-		System.out.println( "Le serveur demarre, il ecoute le port :" + this.port );
+		this.afficher( "Le serveur demarre, il ecoute sur le port :" + this.port );
 		this.comm = new Commande( this );
 		this.comm.start();
 		try {
 			this.socketServeur = new ServerSocket( this.port );
-			while( this.enCours ){
-				Socket socket = this.socketServeur.accept();  	// Accepte la connexion, cette methode est bloquante
-				System.out.println( "Un client vient de se connecter" );
-				Client c = new Client( socket, this );  // crée un Thread pour chaque client connecté
-				listeClients.add( c ); // Enregistre le client dans la liste
-				c.start(); // démarre le Thread
-			}
-		// Erreur innatendue
 		}catch (IOException e) {
+			this.afficher( "Problème lors de la connection au port " + this.port );
 			e.printStackTrace();
+			return;
 		}
-		System.out.println("Arret du serveur");
+		try{
+			while( this.enCours ){
+				if( this.listeClients.size() < MAX_CLIENT ){
+					if( this.socketServeur != null ){
+						Socket socket = this.socketServeur.accept();  	// Accepte la connexion, cette methode est bloquante
+						Client c = new Client( socket, this );  // crée un Thread pour chaque client connecté
+						listeClients.add( c ); // Enregistre le client dans la liste
+						c.start(); // démarre le Thread
+					}
+				}
+			}
+		}catch (IOException e) {//Si on arrete le serveur et ba il lance cette exception (Socket closed), mais je pense que le serveur s'arrête correctement
+			if( this.enCours ){
+				this.afficher( "Problème lors de l'écoute du port " + this.port );
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 	public void close(){
 		this.enCours = false;
+		this.envoyerAtousServeurClose();
 		try{
-			this.socketServeur.close();
+			if( this.socketServeur != null ){
+				this.socketServeur.close();
+				this.socketServeur = null;
+			}
+			this.supprimeTousJoueur();
+			this.afficher( "Arret du serveur" );
 		}catch(IOException e){
+			this.afficher( "Problème lors de l'arret du serveur" );
 			e.printStackTrace();
 		}
-		this.supprimeTousJoueur();
+	}
+	
+	public void envoyerAtousServeurClose(){
+		for(int i = 0; i < this.listeClients.size(); ++i) {
+			Client ct = this.listeClients.get(i);
+			if( ct != null) {
+				this.listeClients.get( i ).envoyerPaquet( Paquet.creeSERVEUR_ETEINT() );
+			}
+		}
 	}
 	
 	public void supprimeTousJoueur(){
@@ -71,27 +105,19 @@ public class Serveur {
 			Client ct = this.listeClients.get(i);
 			if( ct != null) {
 				ct.close();
-				return;
 			}
 		}
 	}
 	
 	public synchronized void supprimeJoueur( int id ) {
-		
-		// Scan la liste jusqu'à trouver l'id
 		for(int i = 0; i < this.listeClients.size(); ++i) {
 			Client ct = this.listeClients.get(i);
-			
-			// Trouvé
 			if( ct != null && ct.getID() == id) {
-				if( ct.getJoueur() != null ){
-					System.out.println( ct.getJoueur().getIdentifiant() + " c'est déconnecté" );
-				}else{
-					System.out.println("Un client c'est déconnecté");
-				}
+				this.afficher( "Le client " + ct.getID() + " est supprimé" );
 				listeClients.remove(i);
 				return;
 			}
 		}
 	}
 }
+

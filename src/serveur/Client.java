@@ -1,21 +1,22 @@
 package serveur;
 
+import java.io.EOFException;
 import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.sql.SQLException;
-import java.util.Date;
-
-import client.Paquet;
 
 import mastermind.Joueur;
+import mastermind.Paquet;
+import mastermind.Solo;
+
 
 public class Client extends Thread {
 	private Socket socket;
-	private ObjectInputStream sInput;
-	private ObjectOutputStream sOutput;
+	private ObjectInputStream recoi;
+	private ObjectOutputStream envoi;
 	private Joueur joueur;
 	private Serveur serveur;
 	private int id;
@@ -26,15 +27,85 @@ public class Client extends Thread {
 		this.serveur = serveur;
 		this.id = Serveur.ID ++;
 		this.continuer = false;
+		this.joueur = null;
+		this.envoi = null;
+		this.recoi = null;
+		this.serveur.afficher( "Nouveau client: " + this.id );
+	}
+	
+	
+	public void run() {
 		try{
 			// Création de la sortie en premier
-			this.sOutput = new ObjectOutputStream(socket.getOutputStream());
-			this.sInput  = new ObjectInputStream(socket.getInputStream());
-			this.joueur = null;
+			this.envoi = new ObjectOutputStream( this.socket.getOutputStream() );
+			this.recoi  = new ObjectInputStream( this.socket.getInputStream() );
 		}catch (IOException e) {
-			this.close();
-			System.out.println( "Impossible de se connecter avec:" + joueur.getIdentifiant() );
+			this.serveur.afficher( "Impossible de charger les flux du client " + this.id );
 			e.printStackTrace();
+			return;
+		}
+		Paquet p = null;
+		this.continuer = true;
+			while( this.continuer ){
+				try{
+					if( this.recoi != null ){
+						p = (Paquet) this.recoi.readObject();
+						this.gererPaquet( p );
+					}
+				}catch( EOFException e ){//Le client s'arrete brutalement
+					if( this.continuer ){
+						this.close();
+					}
+				}catch( SocketException e ){//Le client s'arrete brutalement
+					if( this.continuer ){
+						this.close();
+					}
+				}catch( IOException e ) {
+					if( this.continuer ){
+						this.serveur.afficher( "Probleme de readObject du client " + this.id );
+						e.printStackTrace();
+					}
+				}
+				catch( ClassNotFoundException e ) {
+					e.printStackTrace();
+					this.serveur.afficher( "Le client " + this.id + " n'as pas envoyé une Classe Paquet" );
+				}
+			}
+	}
+	
+	
+	public void close(){
+		this.continuer = false;
+		try{
+			if( this.envoi != null ){
+				this.envoi.close();
+				this.envoi = null;
+			}
+			if( this.recoi != null ){
+				this.recoi.close();
+				this.recoi = null;
+			}
+			if( this.socket != null ){
+				this.socket.close();
+				this.socket = null;
+			}
+			this.serveur.supprimeJoueur( this.id );
+			this.joueur = null;
+			this.serveur.afficher( "Client " + this.id +" est fermé" );
+		}catch( IOException e ){
+			this.serveur.afficher( "Impossible de fermer le client " + this.id );
+			e.printStackTrace();
+		}
+	}
+	
+	public synchronized void envoyerPaquet( Paquet p ){
+		if( this.envoi != null ){
+			try {
+				this.envoi.writeObject( p );
+			} catch (IOException e) {
+				this.serveur.afficher( "Impossible d'envoyer un paquet de type :" + p.getType() + ", à " + this.id );
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -42,33 +113,69 @@ public class Client extends Thread {
 		return this.id;
 	}
 	
-	public Joueur getJoueur(){
-		return this.joueur;
+	public void gererPaquet( Paquet paquet ){
+		switch ( paquet.getType() ) {
+		case Paquet.JEMEDECO:
+			this.close();
+			break;
+		case Paquet.DEMANDE_CONNECTION:
+			this.demandeDeConnection( paquet );
+			break;
+		case Paquet.MODIFI_AVATAR:
+			this.modifieAvatar( paquet );
+			break;
+		case Paquet.DEMANDE_MAJ_JOUEUR:
+			this.MAJJoueur( paquet );
+			break;
+		case Paquet.DEMANDE_INSCRIPTION:
+			this.demandeInscription( paquet );
+			break;
+		case Paquet.DEMANDE_SAVE_SOLO:
+			this.demandeSaveSolo( paquet );
+			break;
+		case Paquet.DEMANDE_NOMS_CHARGER_SOLO:
+			this.demandeNomsChargerSolo( paquet );
+			break;
+		case Paquet.DEMANDE_CHARGER_SOLO:
+			this.demandeChargerSolo( paquet );
+			break;
+		case Paquet.DEMANDE_SUPP_SOLO:
+			this.demandeSuppSolo( paquet );
+			break;
+		 }
 	}
 	
-	public void decoJoueur(){
-		if( this.sOutput != null ){
-			Paquet p =new Paquet( 0, Paquet.SERVEUR_ETEINT );
+	public void MAJJoueur( Paquet p ){
+		Joueur j = null;
+		if( this.joueur == null ){
+			this.serveur.afficher( "Le client " + this.id + " re-demande son profil, mais son joueur est null" );
+		}else{
+		
 			try{
-				this.sOutput.writeObject( p );
-			}catch( IOException e ){
-				System.out.println("Impossible d'envoyer le paquet SERVEUR_ETEINT à un client" );
+				j = this.serveur.getBD().getJoueur( this.joueur.getIdentifiant(), this.joueur.getMDP() );
+			}catch( SQLException e ){
+				this.serveur.afficher( "Impossible de faire la mise à jour du joueur(" + this.id + ") : " + this.joueur.getIdentifiant() );
 				e.printStackTrace();
+				return;
+			}
+			if( j == null ){
+				this.serveur.afficher( "Le client (" + this.id + ") " + this.joueur.getIdentifiant() + " re-demande son profil, mais la BD lui repond null" );
 			}
 		}
+		this.envoyerPaquet( Paquet.creeREPONSE_MAJ_JOUEUR( j, p.getId() ) );
+		
 	}
 	
-	public void close(){
-		this.interrupt();
-		//Envoyer au joueur deconexion
+	public void modifieAvatar( Paquet paquet ){
+		if( this.joueur == null ){
+			this.serveur.afficher( "Le client " + this.id + " veut changer son avatar, mais son joueur est null" );
+			return;
+		}
+		String avatar = (String) paquet.getObjet( 0 );
 		try{
-			this.sOutput.close();
-			this.sInput.close();
-			this.socket.close();
-			this.serveur.supprimeJoueur( this.id );
-			this.continuer = false;
-		}catch( Exception e ){
-			//Impossible de fermer le flux, c'est genant !!!
+			this.serveur.getBD().modifieAvatar( this.joueur, avatar );
+		}catch( SQLException e ){
+			this.serveur.afficher( "Impossible de modifier l'avatar du joueur(" + this.id + ") : " + this.joueur.getIdentifiant() );
 			e.printStackTrace();
 		}
 	}
@@ -77,68 +184,89 @@ public class Client extends Thread {
 		//On extrait l'identifiant et le mot de passe du paquet
 		String login = (String) paquet.getObjet(0);
 		String mdp = (String) paquet.getObjet(1);
-		System.out.println( login + " fait une demande de connection" );
+		this.serveur.afficher( login + ", client " + this.id + " fait une demande de connexion" );
 		//ON regarde si il existe dans la base de donnée
 		Joueur j = null;
 		try{
 			j = this.serveur.getBD().getJoueur( login, mdp );
 		}catch( SQLException e ){
-			System.out.println("Impossible de charger le joueur: " + login );
+			this.serveur.afficher( "Impossible de charger le joueur(" + this.id + "): " + login );
 			e.printStackTrace();
+			return;
 		}
-		Paquet p = null;
-		if( j == null ){
-			p = new Paquet( 0, Paquet.REPONSE_CONNECTION );
-		}else{
+		if( j != null ){
 			this.joueur = j;
-			p = new Paquet( 1, Paquet.REPONSE_CONNECTION );
-			p.addObjet( j );
 		}
+		this.envoyerPaquet( Paquet.creeREPONSE_CONNECTION( j, paquet.getId() ) );
+	}
+	
+	public void demandeInscription( Paquet paquet ){
+		//On extrait l'identifiant et le mot de passe du paquet
+		String login = (String) paquet.getObjet(0);
+		String mdp = (String) paquet.getObjet(1);
+		Joueur j = null;
 		try{
-			this.sOutput.writeObject( p );
-			System.out.println( "Un paquet a ete envoye a " + login );
-		}catch( IOException e ){
-			System.out.println("Impossible d'envoyer un paquet à :" + login );
+			j = this.serveur.getBD().inscrireJoueur( login, mdp );
+		}catch( SQLException e ){
+			this.serveur.afficher( "Impossible d'inscrire le joueur(" + this.id + "): " + login );
+			e.printStackTrace();
+			return;
+		}
+		//Si j == null joueur existe deja, donc on l'ajoute pas dans la BDD
+		this.joueur = j;
+		this.envoyerPaquet( Paquet.creeREPONSE_INSCRIPTION( j, paquet.getId() ) );
+	}
+	
+	public void demandeSaveSolo( Paquet paquet ){
+		Solo s = (Solo) paquet.getObjet( 0 );
+		boolean reussi = false;
+		try {
+			reussi = this.serveur.getBD().sauvegarderSolo( s );
+			this.envoyerPaquet( Paquet.creeREPONSE_SAVE_SOLO( reussi, paquet.getId() ) );
+		} catch (SQLException e) {
+			this.serveur.afficher("Le client demande de sauver une partie solo, mais une erreur");
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void gererPaquet( Paquet paquet ){
-		switch ( paquet.getType() ) {
-		case Paquet.DEMANDE_CONNECTION:
-			this.demandeDeConnection( paquet );//objet[0] = identifiant, objet[1] = mot de passe
-			break;
-		 }
-	}
-	
-	public void interrupt() {
-        super.interrupt();
-        try {
-            this.sInput.close(); // Fermeture du flux si l'interruption n'a pas fonctionné.
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-    } 
-	
-	public void run() {
-		Paquet p = null;
-		this.continuer = true;
-		try{
-			while( this.continuer ){
-				p = (Paquet) this.sInput.readObject();
-				this.gererPaquet( p );
-			}
-		}catch (InterruptedIOException e) { // Si l'interruption a été gérée correctement.
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-            return;
-        }catch(IOException e) {//Joueur deconnecté
-			this.close();
-			return;
-		}
-		catch(ClassNotFoundException e) {
+	public void demandeNomsChargerSolo( Paquet paquet ){
+		String[] noms_parties = null;
+		try {
+			noms_parties = this.serveur.getBD().getNomsPartieSolo( this.joueur );
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
+		} catch( Exception e ){
+			e.printStackTrace();
+			return;
+		}
+		this.envoyerPaquet( Paquet.creeREPONSE_NOMS_CHARGER_SOLO( paquet.getId(), noms_parties) );
+	}
+	
+	public void demandeChargerSolo( Paquet p ){
+		String nom = (String) p.getObjet( 0 );
+		try {
+			Solo s = this.serveur.getBD().chargerSolo( nom, this.joueur );
+			this.envoyerPaquet( Paquet.creeREPONSE_CHARGER_SOLO( s, p.getId() ) );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void demandeSuppSolo( Paquet paquet ){
+		String nom_partie = (String) paquet.getObjet( 0 );
+		Joueur j = (Joueur) paquet.getObjet( 1 );
+		try {
+			this.serveur.getBD().supprimerSolo( nom_partie, j );
+		} catch (SQLException e) {
+			this.serveur.afficher( "Impossible de supprimer la partie solo: " + nom_partie + ", du joueur(" + this.id + ") " + j.getIdentifiant() );
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

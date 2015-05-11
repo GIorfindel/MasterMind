@@ -20,16 +20,19 @@ public class Commande extends Thread {
 		while( this.continuer ){
 			com = this.scan.nextLine();
 			if( com.equals( "stop" ) ){
-				this.serveur.close();
-				this.scan.close();
-				this.continuer = false;
+				this.close();
 			}
 		}
-		System.out.println( "Arret de la commande" );
 	}
 	
 	public void close(){
-		this.scan.close();
+		this.serveur.close();
+		if( this.scan != null ){
+			this.scan.close();
+			this.scan = null;
+		}
 		this.continuer = false;
+		this.serveur.afficher( "La commande s'arrête" );
 	}
 }
+
