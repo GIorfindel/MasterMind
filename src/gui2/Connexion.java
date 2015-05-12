@@ -1,6 +1,5 @@
 package gui2;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -15,6 +14,9 @@ public class Connexion extends Menu{
 	
 	private Fenetre fenetre;
 	private JLabel information;
+	private JTextField identifiant;
+	private JTextField mdp;
+	private JButton valider;
 	
 	public Connexion( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -32,10 +34,15 @@ public class Connexion extends Menu{
 	}
 	
 	public void clic(){
-		
+		if( this.fenetre.getClient().seConnecterAuServeur() ){
+			this.PasGriser();
+		}else{
+			this.griser();
+			this.information.setText( "Vous n'êtes pas connecté au réseaux" );
+		}
 	}
 	
-	public void addBoutonRetour(){
+	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
 		btn.setBounds( 405, 300, 150, 50 );
 		btn.addActionListener(new ActionListener(){
@@ -46,50 +53,63 @@ public class Connexion extends Menu{
 		this.add( btn );
 	}
 	
-	public void addLabelInformation(){
+	private void addLabelInformation(){
 		this.information = new JLabel("Informations");
-		int w = 200;
-		this.information.setBounds( (this.fenetre.getWidth()/2) - w/2, 300, w, 50 );
+		this.information.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		this.information.setForeground( Color.red );
+		this.information.setBounds( 345, 80, 400, 27 );
 		this.add( this.information );
 	}
 	
 
-	public void addIdentifiant(){
+	private void addIdentifiant(){
 		JLabel lblIdentifiant = new JLabel("Identifiant");
 	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 17));
 	    lblIdentifiant.setBounds(345, 120, 89, 27);
 	    this.add(lblIdentifiant);
 	    
-	    JTextField textField = new JTextField();
-	    lblIdentifiant.setLabelFor(textField);
-	    textField.setBounds(492, 124, 176, 22);
-	    this.add(textField);
-	    textField.setColumns(10);
+	    this.identifiant = new JTextField();
+	    lblIdentifiant.setLabelFor( this.identifiant );
+	    this.identifiant.setBounds(492, 124, 176, 22);
+	    this.add( this.identifiant );
+	    this.identifiant.setColumns(10);
 	}
 	
-	public void addMDP(){
+	private void addMDP(){
 		JLabel lblMotDePasse = new JLabel("Mot de passe");
 	    lblMotDePasse.setFont(new Font("Tahoma", Font.PLAIN, 16));
 	    lblMotDePasse.setBounds(345, 178, 98, 16);
 	    this.add(lblMotDePasse);
 	    
-	    JTextField textField_1 = new JTextField();
-	    lblMotDePasse.setLabelFor(textField_1);
-	    textField_1.setBounds(492, 176, 176, 22);
-	    this.add(textField_1);
-	    textField_1.setColumns(10);
+	    this.mdp = new JTextField();
+	    lblMotDePasse.setLabelFor(this.mdp);
+	    this.mdp.setBounds(492, 176, 176, 22);
+	    this.add(this.mdp);
+	    this.mdp.setColumns(10);
 	}
 	
-	public void addValider(){
-		JButton btnValider = new JButton("Valider");
-		btnValider.setBounds(405, 240, 150, 50);
-	    btnValider.setForeground(Color.BLACK);
-	    btnValider.addActionListener(new ActionListener() {
+	private void addValider(){
+		this.valider = new JButton("Valider");
+		this.valider.setBounds(405, 240, 150, 50);
+		this.valider.setForeground(Color.BLACK);
+		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		//Envoi au serveur
 	    	}
 	    });
-	    this.add(btnValider);
+	    this.add(this.valider);
+	}
+	
+	private void griser(){
+		this.mdp.setEnabled( false );
+		this.identifiant.setEnabled( false );
+		this.valider.setEnabled( false );
+	}
+	
+	private void PasGriser(){
+		this.mdp.setEnabled( true );
+		this.identifiant.setEnabled( true );
+		this.valider.setEnabled( true );
 	}
 	
 }
