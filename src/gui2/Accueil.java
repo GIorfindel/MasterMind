@@ -44,7 +44,6 @@ public class Accueil extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.CONNEXION );
-		        fenetre.clicPanel( Fenetre.CONNEXION );
 		      }
 		    });
 		this.add( btn );

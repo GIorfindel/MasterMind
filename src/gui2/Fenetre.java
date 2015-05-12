@@ -37,6 +37,7 @@ public class Fenetre extends JFrame {
 	
 	public void showMenu( final String menu ){
 		this.cl.show( this.content, menu);
+		this.clicPanel( menu );
 	}
 	
 	private void initPanel(){
