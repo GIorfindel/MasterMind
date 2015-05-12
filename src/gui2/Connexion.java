@@ -52,7 +52,7 @@ public class Connexion extends Menu{
 		btn.setBounds( 405, 300, 150, 50 );
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        fenetre.showMenu( Fenetre.ACCEUIL );
+		        fenetre.showMenu( Fenetre.ACCUEIL );
 		      }
 		    });
 		this.add( btn );
