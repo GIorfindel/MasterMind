@@ -14,7 +14,8 @@ public class Fenetre extends JFrame {
 	private CardLayout cl;
 	private JPanel content;
 	
-	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4";
+	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
+			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7";
 	private Menu accueil, connexion, inscription, jouer;
 	
 	public Fenetre(){

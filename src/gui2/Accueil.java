@@ -22,7 +22,7 @@ public class Accueil extends Menu{
 	
 	private void init(){
 		this.setLayout( null );
-		this.setBackground( Color.blue );
+		this.setBackground( Color.WHITE );
 		this.addLabelMastermind();
 		this.addBoutonJouer();
 		this.addBoutonConnexion();

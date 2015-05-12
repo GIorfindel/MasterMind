@@ -23,7 +23,7 @@ public class Jouer extends Menu{
 	
 	private void init() {
 		this.setLayout( null );
-		this.setBackground( Color.blue );
+		this.setBackground( Color.WHITE );
 		this.addLabelChoixMode();
 		this.addBoutonUnJoueur();
 		this.addBouton2Joueurs();
