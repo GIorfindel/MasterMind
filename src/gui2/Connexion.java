@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import mastermind.Joueur;
 import mastermind.Paquet;
 
+@SuppressWarnings("serial")
 public class Connexion extends Menu{
 	
 	private Fenetre fenetre;
