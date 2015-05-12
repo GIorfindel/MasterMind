@@ -29,6 +29,7 @@ public class Connexion extends Menu{
 	private void init(){
 		this.setLayout( null );
 		this.setBackground( Color.WHITE );
+		this.addLabelConnection();
 		this.addBoutonRetour();
 		this.addLabelInformation();
 		this.addIdentifiant();
@@ -56,11 +57,18 @@ public class Connexion extends Menu{
 		this.add( btn );
 	}
 	
+	public void addLabelConnection(){
+		JLabel lblIdentifiant = new JLabel("Connection");
+	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 30));
+	    lblIdentifiant.setBounds(345, 40, 200, 27);
+	    this.add(lblIdentifiant);
+	}
+	
 	private void addLabelInformation(){
 		this.information = new JLabel("Informations");
 		this.information.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		this.information.setForeground( Color.red );
-		this.information.setBounds( 345, 80, 400, 27 );
+		this.information.setBounds( 345, 360, 400, 27 );
 		this.add( this.information );
 	}
 	
