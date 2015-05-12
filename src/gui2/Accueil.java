@@ -9,8 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+@SuppressWarnings("serial")
 public class Accueil extends Menu{
-	private static final long serialVersionUID = -5434763775202800235L;
 
 	private Fenetre fenetre;
 	

@@ -12,8 +12,8 @@ import javax.swing.JTextField;
 import mastermind.Joueur;
 import mastermind.Paquet;
 
+@SuppressWarnings("serial")
 public class Connexion extends Menu{
-	private static final long serialVersionUID = -2364882675854659595L;
 	
 	private Fenetre fenetre;
 	private JLabel information;
