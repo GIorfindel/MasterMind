@@ -25,8 +25,10 @@ public class Accueil extends Menu{
 		this.setLayout( null );
 		this.setBackground( Color.blue );
 		this.addLabelMastermind();
+		this.addBoutonJouer();
 		this.addBoutonConnexion();
 		this.addBoutonInscription();
+		this.addBoutonQuitter();
 
 	}
 	
@@ -37,6 +39,18 @@ public class Accueil extends Menu{
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );
+	}
+	
+	private void addBoutonJouer(){
+		JButton btn = new JButton( "Jouer" );
+		btn.setBounds( X, Y, W, H );
+		Y += H+10;
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		        fenetre.showMenu( Fenetre.JOUER );
+		      }
+		    });
+		this.add( btn );
 	}
 	
 	private void addBoutonConnexion(){
@@ -58,6 +72,18 @@ public class Accueil extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.INSCRIPTION );
+		      }
+		    });
+		this.add( btn );
+	}
+	
+	private void addBoutonQuitter(){
+		JButton btn = new JButton( "Quitter" );
+		btn.setBounds( X, Y, W, H );
+		Y += H+10;
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		        fenetre.dispose();
 		      }
 		    });
 		this.add( btn );

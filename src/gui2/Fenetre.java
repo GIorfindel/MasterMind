@@ -14,8 +14,8 @@ public class Fenetre extends JFrame {
 	private CardLayout cl;
 	private JPanel content;
 	
-	public static final String ACCEUIL = "0", CONNEXION = "1", INSCRIPTION = "3";
-	private Menu acceuil, connexion, inscription;
+	public static final String ACCEUIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4";
+	private Menu acceuil, connexion, inscription, jouer;
 	
 	public Fenetre(){
 		this.setTitle( "Mastermind" );
@@ -44,9 +44,12 @@ public class Fenetre extends JFrame {
 		this.acceuil = new Accueil( this );
 		this.connexion = new Connexion( this );
 		this.inscription = new Inscription( this );
+		this.jouer = new Jouer( this );
 		this.content.add( this.acceuil, ACCEUIL );
 		this.content.add( this.connexion, CONNEXION );
 		this.content.add( this.inscription, INSCRIPTION );
+		this.content.add( this.jouer, JOUER );
+
 
 		
 		this.getContentPane().add( this.content, BorderLayout.CENTER );
@@ -60,6 +63,9 @@ public class Fenetre extends JFrame {
 			this.connexion.clic();
 		}else if( menu.equals( INSCRIPTION ) ){
 			this.inscription.clic();
+		}
+		else if( menu.equals( JOUER ) ){
+			this.jouer.clic();
 		}
 	}
 }
