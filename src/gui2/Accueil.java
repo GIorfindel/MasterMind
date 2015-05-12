@@ -2,21 +2,23 @@ package gui2;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import client.Client;
-
 public class Accueil extends JPanel{
-	private Client client;
+	private static final long serialVersionUID = -5434763775202800235L;
+
+	private Fenetre fenetre;
 	
 	private static int X = 405, Y = 170, W = 150, H = 50;
 	
-	public Accueil( Client client ){
-		this.client = client;
+	public Accueil( Fenetre fenetre ){
+		this.fenetre = fenetre;
 		this.init();
 	}
 	
@@ -24,7 +26,7 @@ public class Accueil extends JPanel{
 		this.setLayout( null );
 		this.setBackground( Color.blue );
 		this.addLabelMastermind();
-		this.addBoutonJouer();
+		this.addBoutonConnexion();
 	}
 	
 	private void addLabelMastermind(){
@@ -36,9 +38,16 @@ public class Accueil extends JPanel{
 		this.add( lblMastermind );
 	}
 	
-	private void addBoutonJouer(){
-		JButton btnJouer = new JButton( "Jouer" );
-		btnJouer.setBounds( X, Y, W, H );
+	private void addBoutonConnexion(){
+		JButton btn = new JButton( "Connexion" );
+		btn.setBounds( X, Y, W, H );
+		Y += H;
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		        fenetre.showMenu( Fenetre.CONNEXION );
+		      }
+		    });
+		this.add( btn );
 	}
 
 }
