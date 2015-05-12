@@ -7,10 +7,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class Accueil extends JPanel{
+public class Accueil extends Menu{
 	private static final long serialVersionUID = -5434763775202800235L;
 
 	private Fenetre fenetre;
@@ -45,6 +44,7 @@ public class Accueil extends JPanel{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.CONNEXION );
+		        fenetre.clicPanel( Fenetre.CONNEXION );
 		      }
 		    });
 		this.add( btn );
