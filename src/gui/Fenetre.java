@@ -137,7 +137,7 @@ public class Fenetre extends JFrame{
 	    JButton btn = new JButton(nom);
 	    //Définition de l'action du btn2
 	    btn.addActionListener(new ActionListener(){
-	      public void actionPerformed(ActionEvent event){				
+	      public void actionPerformed(ActionEvent event){		
 	        cl.show(content, listeMenus[menuDestination]);
 	      }
 	    });
