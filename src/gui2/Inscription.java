@@ -109,13 +109,13 @@ public class Inscription extends Menu{
 	    			String login = identifiant.getText();
 	    			String motdp = mdp.getText();
 	    			if( login != null && motdp != null && !login.equals("") && !motdp.equals("") ){
-	    				Paquet p = Paquet.creeDEMANDE_CONNECTION( login, motdp );
+	    				Paquet p = Paquet.creeDEMANDE_INSCRIPTION( login, motdp );
 	    				int id = p.getId();
 	    				fenetre.getClient().envoyerPaquet(p);
 	    				Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id);
 	    				if( ps != null ){
 	    					if( ps.getNbObjet() == 0 ){
-	    						information.setText("Informations incorect");
+	    						information.setText("L'indentifiant existe déjà");
 	    					}else{
 	    						Joueur j = (Joueur) ps.getObjet(0);
 	    						fenetre.getClient().setJoueur( j );
