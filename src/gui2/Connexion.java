@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import mastermind.Joueur;
+import mastermind.Paquet;
+
 public class Connexion extends Menu{
 	private static final long serialVersionUID = -2364882675854659595L;
 	
@@ -94,7 +97,26 @@ public class Connexion extends Menu{
 		this.valider.setForeground(Color.BLACK);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		//Envoi au serveur
+	    		if( fenetre.getClient().getConnecteAuServeur() ){
+	    			String login = identifiant.getText();
+	    			String motdp = mdp.getText();
+	    			if( login != null && motdp != null && !login.equals("") && !motdp.equals("") ){
+	    				Paquet p = Paquet.creeDEMANDE_CONNECTION( login, motdp );
+	    				int id = p.getId();
+	    				fenetre.getClient().envoyerPaquet(p);
+	    				Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id);
+	    				if( ps != null ){
+	    					if( ps.getNbObjet() == 0 ){
+	    						information.setText("Informations incorect");
+	    					}else{
+	    						Joueur j = (Joueur) ps.getObjet(0);
+	    						fenetre.getClient().setJoueur( j );
+	    					}
+	    				}else{
+	    					information.setText("Limite de temps dépassé, essayé plus tard");
+	    				}
+	    			}
+	    		}
 	    	}
 	    });
 	    this.add(this.valider);
