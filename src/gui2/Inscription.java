@@ -115,7 +115,7 @@ public class Inscription extends Menu{
 	    				Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id);
 	    				if( ps != null ){
 	    					if( ps.getNbObjet() == 0 ){
-	    						information.setText("L'indentifiant existe déjà");
+	    						information.setText("L'identifiant existe déjà");
 	    					}else{
 	    						Joueur j = (Joueur) ps.getObjet(0);
 	    						fenetre.getClient().setJoueur( j );
