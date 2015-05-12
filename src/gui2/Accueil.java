@@ -26,6 +26,8 @@ public class Accueil extends Menu{
 		this.setBackground( Color.blue );
 		this.addLabelMastermind();
 		this.addBoutonConnexion();
+		this.addBoutonInscription();
+
 	}
 	
 	private void addLabelMastermind(){
@@ -40,10 +42,22 @@ public class Accueil extends Menu{
 	private void addBoutonConnexion(){
 		JButton btn = new JButton( "Connexion" );
 		btn.setBounds( X, Y, W, H );
-		Y += H;
+		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.CONNEXION );
+		      }
+		    });
+		this.add( btn );
+	}
+	
+	private void addBoutonInscription(){
+		JButton btn = new JButton( "Inscription" );
+		btn.setBounds( X, Y, W, H );
+		Y += H+10;
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		        fenetre.showMenu( Fenetre.INSCRIPTION );
 		      }
 		    });
 		this.add( btn );

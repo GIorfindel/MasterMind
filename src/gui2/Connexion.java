@@ -16,6 +16,7 @@ public class Connexion extends Menu{
 	private static final long serialVersionUID = -2364882675854659595L;
 	
 	private Fenetre fenetre;
+	private JLabel titre;
 	private JLabel information;
 	private JTextField identifiant;
 	private JTextField mdp;
@@ -29,7 +30,7 @@ public class Connexion extends Menu{
 	private void init(){
 		this.setLayout( null );
 		this.setBackground( Color.WHITE );
-		this.addLabelConnection();
+		this.addLabelTitre();
 		this.addBoutonRetour();
 		this.addLabelInformation();
 		this.addIdentifiant();
@@ -42,7 +43,7 @@ public class Connexion extends Menu{
 			this.PasGriser();
 		}else{
 			this.griser();
-			this.information.setText( "Vous n'êtes pas connecté au réseaux" );
+			this.information.setText( "Vous n'êtes pas connecté au réseau" );
 		}
 	}
 	
@@ -57,11 +58,11 @@ public class Connexion extends Menu{
 		this.add( btn );
 	}
 	
-	public void addLabelConnection(){
-		JLabel lblIdentifiant = new JLabel("Connection");
-	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 30));
-	    lblIdentifiant.setBounds(345, 40, 200, 27);
-	    this.add(lblIdentifiant);
+	private void addLabelTitre() {
+		this.titre = new JLabel("Connexion");
+		this.titre.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		this.titre.setBounds(405, 43, 141, 70);
+	    this.add(this.titre);
 	}
 	
 	private void addLabelInformation(){

@@ -29,6 +29,8 @@ public class TestWB {
 	String[] listeMenus = {"accueil", "connexion", "inscription", "profil", "tab_scores", "choix_mode", "choix_niveau", "personnaliser", "partie"};
 	private JTextField textField;
 	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 
 
 	/**
@@ -184,16 +186,18 @@ public class TestWB {
 
 	    //Création du panel
 	    JPanel inscription = new JPanel();
-	    inscription.setBackground(Color.green);
+	    inscription.setBackground(Color.WHITE);
 	    
 	    // Création des différents composants
 	    JButton retour2 = new JButton("Retour");
+	    retour2.setBounds(405, 300, 150, 50);
 	    //Définition de l'action du retour2
 	    retour2.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent event){				
 	        cl.show(content, listeMenus[0]);
 	      }
 	    });	    
+	    inscription.setLayout(null);
 	    // Ajout des composants au panel
 	    inscription.add(retour2);
 
@@ -214,6 +218,11 @@ public class TestWB {
 	    /****************************************************************************************/
 	    /****** Code généré par Window Builder (à replacer dans les parties qui vont bien) ******/
 	    /****************************************************************************************/
+	    JLabel labelConnexion = new JLabel("Connexion");
+	    labelConnexion.setFont(new Font("Tahoma", Font.PLAIN, 25));
+	    labelConnexion.setBounds(405, 43, 141, 70);
+	    connexion.add(labelConnexion);
+
 	    JLabel lblIdentifiant = new JLabel("Identifiant");
 	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 17));
 	    lblIdentifiant.setBounds(345, 120, 89, 27);
@@ -245,6 +254,36 @@ public class TestWB {
 	    btnValider.setBounds(405, 240, 150, 50);
 	    connexion.add(btnValider);
 	    content.add(inscription, listeMenus[2]);
+	    
+	    JButton btnValider2 = new JButton("S'inscrire");
+	    btnValider2.setForeground(Color.BLACK);
+	    btnValider2.setBounds(405, 240, 150, 50);
+	    inscription.add(btnValider2);
+	    
+	    JLabel labelInscription = new JLabel("Inscription");
+	    labelInscription.setFont(new Font("Tahoma", Font.PLAIN, 25));
+	    labelInscription.setBounds(405, 43, 132, 70);
+	    inscription.add(labelInscription);
+	    
+	    JLabel labelIdentifiant2 = new JLabel("Identifiant");
+	    labelIdentifiant2.setFont(new Font("Tahoma", Font.PLAIN, 17));
+	    labelIdentifiant2.setBounds(345, 120, 89, 27);
+	    inscription.add(labelIdentifiant2);
+	    
+	    JLabel lblMotDePasse2 = new JLabel("Mot de passe");
+	    lblMotDePasse2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	    lblMotDePasse2.setBounds(345, 178, 98, 16);
+	    inscription.add(lblMotDePasse2);
+	    
+	    textField_2 = new JTextField();
+	    textField_2.setColumns(10);
+	    textField_2.setBounds(492, 124, 176, 22);
+	    inscription.add(textField_2);
+	    
+	    textField_3 = new JTextField();
+	    textField_3.setColumns(10);
+	    textField_3.setBounds(492, 176, 176, 22);
+	    inscription.add(textField_3);
 	    content.add(jouer, listeMenus[5]);
 
 
