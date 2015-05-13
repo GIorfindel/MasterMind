@@ -23,15 +23,20 @@ public class Fenetre extends JFrame {
 	public Fenetre(){
 		this.setTitle( "Mastermind" );
 	    this.setSize( 960, 544 );
-	    this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+	    this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 	    this.setLocationRelativeTo( null );
 	    this.setResizable( false );
 	    
-	    this.client = new Client( "192.168.0.15", 15000, this );
+	    this.client = new Client( "192.168.0.16", 15000, this );
 	    this.cl = new CardLayout();
 	    this.content = new JPanel();
 	    content.setLayout( cl );
 	    this.initPanel();
+	}
+	
+	public void dispose(){
+		super.dispose();
+		this.client.close();
 	}
 	
 	public Client getClient(){
