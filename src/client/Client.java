@@ -65,11 +65,17 @@ public class Client {
 	
 	//Envoi un paquet au serveur
 	public boolean envoyerPaquet( Paquet p ){
+		if( !this.getConnecteAuServeur() ){
+			return false;
+		}
 		return this.serveur.envoyerPaquet( p );
 	}
 	
 	//Attend un paquet du serveur, avec une limite max de temps en seconde. L'id_paquet est dans paquet.getId()
 	public Paquet recevoirPaquet( double limite_temp_max, int id_paquet ){
+		if( !this.getConnecteAuServeur() ){
+			return null;
+		}
 		return this.serveur.getAttentPaquet( limite_temp_max, id_paquet );
 	}
 }
