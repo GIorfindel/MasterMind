@@ -1,5 +1,7 @@
 package serveur;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.EOFException;
@@ -176,7 +178,7 @@ public class Client extends Thread {
 		}
 		ImageIcon avatar = (ImageIcon) paquet.getObjet( 0 );
 		try {
-			ImageIO.write( (RenderedImage) avatar.getImage(), "png", new File("/images/avatar/" + this.joueur.getIdentifiant()));
+			ImageIO.write( this.getRenderedImage(avatar), "png", new File("~/workspace/MasterMind/images/avatar" + this.joueur.getIdentifiant()));
 			this.serveur.getBD().modifieAvatar( this.joueur );
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -184,6 +186,15 @@ public class Client extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	private RenderedImage getRenderedImage(ImageIcon in)
+    {
+		BufferedImage bImage = new BufferedImage(in.getImage().getWidth(null), in.getImage().getHeight(null), BufferedImage.TYPE_INT_RGB);
+		Graphics2D bImageGraphics = bImage.createGraphics();
+		bImageGraphics.drawImage(in.getImage(), null, null);
+		RenderedImage rImage = (RenderedImage)bImage;
+		return rImage;
+    }
 	
 	public void demandeDeConnection( Paquet paquet ){
 		//On extrait l'identifiant et le mot de passe du paquet
