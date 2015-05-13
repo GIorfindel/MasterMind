@@ -45,9 +45,9 @@ public class Profil extends Menu{
 	    this.add(laIDenti);
 	    
 	    this.identifiant = new JLabel("Aucun");
-		laIDenti.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		laIDenti.setBounds(440, 200, 141, 30);
-	    this.add(laIDenti);
+	    this.identifiant.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	    this.identifiant.setBounds(440, 200, 141, 30);
+	    this.add(this.identifiant);
 	}
 	
 	private void addAvatar(){
