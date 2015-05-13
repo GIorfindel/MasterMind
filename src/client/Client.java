@@ -1,5 +1,6 @@
 package client;
 
+import gui2.Fenetre;
 import mastermind.Joueur;
 import mastermind.Paquet;
 
@@ -8,13 +9,15 @@ public class Client {
 	//Ca communqiue avec le serveur
 	private Serveur serveur;
 	private Joueur joueur;
+	private Fenetre fenetre;
 	
 	//Nécessaire pour les paquets
 	public static int ID_ACTUEL = 0;
 	
-	public Client( String addr_serveur, int port_serveur ){
+	public Client( String addr_serveur, int port_serveur, Fenetre fenetre ){
 		this.joueur = null;
 		this.serveur = new Serveur( addr_serveur, port_serveur, this );
+		this.fenetre = fenetre;
 	}
 	
 	//Peut renvoyer null si le client n'est pas connecté à son compte
@@ -54,6 +57,9 @@ public class Client {
 	
 	public void closeServeur(){//Connexion au serveur perdu
 		this.joueur = null;
+		if( this.getConnecteAuServeur() ){
+			this.fenetre.decoServeur();
+		}
 		this.serveur.close();
 	}
 	

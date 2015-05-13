@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import mastermind.Joueur;
 import mastermind.Paquet;
 
+@SuppressWarnings("serial")
 public class Inscription extends Menu{
 	
 	private Fenetre fenetre;

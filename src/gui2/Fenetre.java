@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import client.Client;
 
+@SuppressWarnings("serial")
 public class Fenetre extends JFrame {
 	
 	private Client client;
@@ -17,6 +18,7 @@ public class Fenetre extends JFrame {
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
 			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7";
 	private Menu accueil, connexion, inscription, jouer;
+	private Menu menu_actuel;
 	
 	public Fenetre(){
 		this.setTitle( "Mastermind" );
@@ -25,7 +27,7 @@ public class Fenetre extends JFrame {
 	    this.setLocationRelativeTo( null );
 	    this.setResizable( false );
 	    
-	    this.client = new Client( "192.168.0.15", 15000 );
+	    this.client = new Client( "192.168.0.15", 15000, this );
 	    this.cl = new CardLayout();
 	    this.content = new JPanel();
 	    content.setLayout( cl );
@@ -43,6 +45,7 @@ public class Fenetre extends JFrame {
 	
 	private void initPanel(){
 		this.accueil = new Accueil( this );
+		this.menu_actuel = this.accueil;
 		this.connexion = new Connexion( this );
 		this.inscription = new Inscription( this );
 		this.jouer = new Jouer( this );
@@ -60,13 +63,20 @@ public class Fenetre extends JFrame {
 	public void clicPanel( final String menu ){
 		if( menu.equals( ACCUEIL ) ){
 			this.accueil.clic();
+			this.menu_actuel = this.accueil;
 		}else if( menu.equals( CONNEXION ) ){
 			this.connexion.clic();
+			this.menu_actuel = this.connexion;
 		}else if( menu.equals( INSCRIPTION ) ){
 			this.inscription.clic();
-		}
-		else if( menu.equals( JOUER ) ){
+			this.menu_actuel = this.inscription;
+		}else if( menu.equals( JOUER ) ){
 			this.jouer.clic();
+			this.menu_actuel = this.jouer;
 		}
+	}
+	
+	public void decoServeur(){
+		this.menu_actuel.decoServeur();
 	}
 }
