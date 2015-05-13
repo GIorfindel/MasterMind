@@ -101,7 +101,7 @@ public class Profil extends Menu{
 		    			  ImageIcon i = new ImageIcon( b );
 		    			  fenetre.getClient().getJoueur().setAvatar( i );
 		    			  avatar.setIcon( fenetre.getClient().getJoueur().getAvatar() );
-		    			  fenetre.getClient().envoyerPaquet( Paquet.creeMODIFI_AVATAR( b ) );
+		    			  fenetre.getClient().envoyerPaquet( Paquet.creeMODIFI_AVATAR( i ) );
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

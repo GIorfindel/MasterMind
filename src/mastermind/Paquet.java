@@ -1,6 +1,5 @@
 package mastermind;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import javax.swing.ImageIcon;
@@ -110,7 +109,7 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
-	public static Paquet creeMODIFI_AVATAR( BufferedImage img ){
+	public static Paquet creeMODIFI_AVATAR( ImageIcon img ){
 		Paquet p = new Paquet( 1, MODIFI_AVATAR, -1 );
 		p.addObjet( img );
 		return p;
