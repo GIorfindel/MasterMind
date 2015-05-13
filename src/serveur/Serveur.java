@@ -3,6 +3,7 @@ package serveur;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import mastermind.Paquet;
@@ -78,6 +79,12 @@ public class Serveur {
 	public void close(){
 		this.enCours = false;
 		this.envoyerAtousServeurClose();
+		try {
+			this.db.deconnexion();
+		} catch (SQLException e) {
+			this.afficher( "Impossible de se déconnecté de la bdd" );
+			e.printStackTrace();
+		}
 		try{
 			if( this.socketServeur != null ){
 				this.socketServeur.close();
