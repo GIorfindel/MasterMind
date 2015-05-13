@@ -2,6 +2,8 @@ package mastermind;
 
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
+
 import client.Client;
 
 
@@ -107,9 +109,9 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
-	public static Paquet creeMODIFI_AVATAR( String avatar ){
+	public static Paquet creeMODIFI_AVATAR( ImageIcon img ){
 		Paquet p = new Paquet( 1, MODIFI_AVATAR, -1 );
-		p.addObjet( avatar );
+		p.addObjet( img );
 		return p;
 	}
 	
