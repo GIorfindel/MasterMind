@@ -54,9 +54,10 @@ public class Joueur implements Serializable{
 		
 		//Fin des methodes get set
 		
+		//C'est que le serveur qui utilise cette méthode
 		public void loadAvatar( String nom ){
 			if( nom != null ){
-				this.avatar = new ImageIcon( "/ressources/" + nom + ".png" );
+				this.avatar = new ImageIcon( "/avatar/" + nom);
 			}else{
 				this.avatar = null;
 			}

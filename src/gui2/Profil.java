@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 import mastermind.Joueur;
@@ -16,10 +18,14 @@ public class Profil extends Menu{
 	private Fenetre fenetre;
 	private JLabel identifiant;
 	private JLabel avatar;
+	private JLabel nomAvatar;
+	private File imageChoisit;
+	private JButton valideAvatar;
 	
 	public Profil( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.init();
+		this.imageChoisit = null;
 	}
 	
 	private void init(){
@@ -28,6 +34,7 @@ public class Profil extends Menu{
 		this.addLabelTitre();
 		this.addIdentifiant();
 		this.addAvatar();
+		this.addChoisitAvatar();
 		this.addBoutonRetour();
 	}
 	
@@ -41,13 +48,54 @@ public class Profil extends Menu{
 	private void addIdentifiant(){
 		JLabel laIDenti = new JLabel("Identifiant: ");
 		laIDenti.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		laIDenti.setBounds(405, 200, 100, 70);
+		laIDenti.setBounds(405, 100, 100, 30);
 	    this.add(laIDenti);
 	    
 	    this.identifiant = new JLabel("Aucun");
 	    this.identifiant.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	    this.identifiant.setBounds(510, 200, 100, 70);
+	    this.identifiant.setBounds(510, 100, 100, 30);
 	    this.add(this.identifiant);
+	}
+	
+	public void addChoisitAvatar(){
+		JButton btn = new JButton( "Choisir un avatar" );
+		btn.setBounds( 405, 150, 150, 20 );
+		btn.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		    	  JFileChooser choix = new JFileChooser();
+		    	  choix.setFileSelectionMode( JFileChooser.FILES_ONLY );
+		    	  choix.setFileFilter( new FiltreImage() );
+		    	  int retour = choix.showOpenDialog( fenetre );
+		    	  if( retour == JFileChooser.APPROVE_OPTION ){
+		    		  imageChoisit = choix.getSelectedFile();
+		    		  nomAvatar.setText( imageChoisit.getName() );
+		    		  valideAvatar.setEnabled(true);
+		    	  }else{
+		    		  valideAvatar.setEnabled(false);
+		    		  imageChoisit = null;
+		    		  nomAvatar.setText("Aucune image selectioné");
+		    	  }
+		      }
+		    });
+		this.add(btn);
+		
+		this.nomAvatar = new JLabel("Aucune image selectioné");
+		this.nomAvatar.setBounds( 600, 150, 200, 30 );
+		this.nomAvatar.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		this.add( this.nomAvatar );
+		
+		this.valideAvatar = new JButton( "Valider" );
+		this.valideAvatar.setBounds( 405, 180, 100, 20 );
+		this.valideAvatar.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.valideAvatar.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		    	  if( imageChoisit != null ){
+		    		  //fenetre.getClient().envoyerPaquet( Paquet.creedemande );
+		    	  }
+		      }
+		    });
+		this.add(this.valideAvatar);
 	}
 	
 	private void addAvatar(){
@@ -71,6 +119,9 @@ public class Profil extends Menu{
 		if( this.fenetre.getClient().getJoueur().getAvatar() != null ){
 			this.avatar.setIcon( this.fenetre.getClient().getJoueur().getAvatar() );
 		}
+		this.imageChoisit = null;
+		this.nomAvatar.setText("Aucune image selectioné");
+		this.valideAvatar.setEnabled(false);
 	}
 	
 	public void decoServeur(){
