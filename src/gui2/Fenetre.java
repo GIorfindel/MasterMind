@@ -16,8 +16,8 @@ public class Fenetre extends JFrame {
 	private JPanel content;
 	
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
-			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8";
-	private Menu accueil, connexion, inscription, jouer, profil;
+			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9";
+	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser;
 	private Menu menu_actuel;
 	
 	public Fenetre(){
@@ -55,11 +55,19 @@ public class Fenetre extends JFrame {
 		this.inscription = new Inscription( this );
 		this.jouer = new Jouer( this );
 		this.profil = new Profil( this );
+		this.unjoueur = new UnJoueur( this );
+		this.deuxjoueurs = new DeuxJoueurs( this );
+		this.regles = new Regles( this );
+		this.personnaliser = new Personnaliser( this );
 		this.content.add( this.accueil, ACCUEIL );
 		this.content.add( this.connexion, CONNEXION );
 		this.content.add( this.inscription, INSCRIPTION );
 		this.content.add( this.jouer, JOUER );
 		this.content.add( this.profil, PROFIL );
+		this.content.add( this.unjoueur, UNJOUEUR );
+		this.content.add( this.deuxjoueurs, DEUXJOUEURS );
+		this.content.add( this.regles, REGLES );
+		this.content.add( this.personnaliser, PERSONNALISER );
 
 		
 		this.getContentPane().add( this.content, BorderLayout.CENTER );
@@ -82,6 +90,18 @@ public class Fenetre extends JFrame {
 		}else if( menu.equals( PROFIL ) ){
 			this.profil.clic();
 			this.menu_actuel = this.profil;
+		}else if( menu.equals( UNJOUEUR ) ){
+			this.unjoueur.clic();
+			this.menu_actuel = this.unjoueur;
+		}else if( menu.equals( DEUXJOUEURS ) ){
+			this.deuxjoueurs.clic();
+			this.menu_actuel = this.deuxjoueurs;
+		}else if( menu.equals( REGLES ) ){
+			this.regles.clic();
+			this.menu_actuel = this.regles;
+		}else if( menu.equals( PERSONNALISER ) ){
+			this.personnaliser.clic();
+			this.menu_actuel = this.personnaliser;
 		}
 	}
 	
