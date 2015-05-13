@@ -1,7 +1,6 @@
 package serveur;
 
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.EOFException;
@@ -178,7 +177,7 @@ public class Client extends Thread {
 		}
 		ImageIcon avatar = (ImageIcon) paquet.getObjet( 0 );
 		try {
-			ImageIO.write( this.getRenderedImage(avatar), "png", new File("~/workspace/MasterMind/images/avatar" + this.joueur.getIdentifiant()));
+			ImageIO.write( this.getRenderedImage(avatar), "png", new File( "images/avatar/" + this.joueur.getIdentifiant() + ".png" ) );
 			this.serveur.getBD().modifieAvatar( this.joueur );
 		} catch (IOException e) {
 			e.printStackTrace();
