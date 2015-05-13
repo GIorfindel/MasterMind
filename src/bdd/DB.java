@@ -80,10 +80,10 @@ public class DB {
 		return null;
 	}
 	
-	public void modifieAvatar( Joueur j, String avatar ) throws SQLException{
+	public void modifieAvatar( Joueur j ) throws SQLException{
 		String query = "update Joueur set avatar = ? where identifiant = ?";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
-		preparedStmt.setString(1, avatar );
+		preparedStmt.setString(1, j.getIdentifiant() + ".png" );
 		preparedStmt.setString(2, j.getIdentifiant() );
 		preparedStmt.executeUpdate();
 		preparedStmt.close();
