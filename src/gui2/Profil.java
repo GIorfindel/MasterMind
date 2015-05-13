@@ -4,13 +4,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 import mastermind.Joueur;
+import mastermind.Paquet;
 
 @SuppressWarnings("serial")
 public class Profil extends Menu{
@@ -91,7 +96,15 @@ public class Profil extends Menu{
 		this.valideAvatar.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		    	  if( imageChoisit != null ){
-		    		  //fenetre.getClient().envoyerPaquet( Paquet.creedemande );
+		    		  try {
+		    			  BufferedImage b = ImageIO.read( imageChoisit );
+		    			  ImageIcon i = new ImageIcon( b );
+		    			  fenetre.getClient().getJoueur().setAvatar( i );
+		    			  avatar.setIcon( fenetre.getClient().getJoueur().getAvatar() );
+		    			  fenetre.getClient().envoyerPaquet( Paquet.creeMODIFI_AVATAR( b ) );
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 		    	  }
 		      }
 		    });

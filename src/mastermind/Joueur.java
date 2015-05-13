@@ -44,6 +44,10 @@ public class Joueur implements Serializable{
 			return this.avatar;
 		}
 		
+		public void setAvatar( ImageIcon img ){
+			this.avatar = img;
+		}
+		
 		public int getMalus(){
 			return this.malus;
 		}

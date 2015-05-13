@@ -1,5 +1,6 @@
 package serveur;
 
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.EOFException;
 import java.io.File;
@@ -9,9 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.sql.SQLException;
-
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 import mastermind.Joueur;
 import mastermind.Paquet;
@@ -174,9 +173,9 @@ public class Client extends Thread {
 			this.serveur.afficher( "Le client " + this.id + " veut changer son avatar, mais son joueur est null" );
 			return;
 		}
-		ImageIcon avatar = (ImageIcon) paquet.getObjet( 0 );
+		BufferedImage avatar = (BufferedImage) paquet.getObjet( 0 );
 		try {
-			ImageIO.write( (RenderedImage) avatar.getImage(), "png", new File("/images/avatar/" + this.joueur.getIdentifiant()));
+			ImageIO.write( (RenderedImage) avatar, "png", new File("/images/avatar/" + this.joueur.getIdentifiant()));
 			this.serveur.getBD().modifieAvatar( this.joueur );
 		} catch (IOException e) {
 			e.printStackTrace();
