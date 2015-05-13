@@ -60,9 +60,9 @@ public class Connexion extends Menu{
 	}
 	
 	private void addLabelTitre() {
-		this.titre = new JLabel("Connexion");
-		this.titre.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		this.titre.setBounds(405, 43, 141, 70);
+		this.titre = new JLabel("Se connecter");
+		this.titre.setFont(new Font("Agency FB", Font.PLAIN, 50));
+		this.titre.setBounds(175, 30, 600, 100);
 	    this.add(this.titre);
 	}
 	

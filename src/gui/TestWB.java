@@ -81,8 +81,8 @@ public class TestWB {
 
 	    // Création des différents composants
 	    JLabel lblMastermind = new JLabel("Mastermind");
-		lblMastermind.setFont(new Font("Tahoma", Font.PLAIN, 35)); // Modification de la police
-		lblMastermind.setBounds(380, 43, 200, 50);
+		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 66)); // Modification de la police
+		lblMastermind.setBounds(149, 13, 600, 100);
 		lblMastermind.setVerticalAlignment(SwingConstants.TOP);
 		lblMastermind.setHorizontalAlignment(SwingConstants.CENTER);
 	    
@@ -93,7 +93,7 @@ public class TestWB {
 	        cl.show(content, listeMenus[5]);
 	      }
 	    });
-		btnJouer.setBounds(405, 170, 150, 50);
+		btnJouer.setBounds(405, 124, 150, 40);
 		
 	    JButton btnConnexion = new JButton("Se connecter");
 	    //Définition de l'action du btnConnexion
@@ -102,7 +102,7 @@ public class TestWB {
 	        cl.show(content, listeMenus[1]);
 	      }
 	    });
-	    btnConnexion.setBounds(405, 230, 150, 50);
+	    btnConnexion.setBounds(405, 184, 150, 40);
 	    
 	    JButton btnInscription = new JButton("S'inscrire");
 	    //Définition de l'action du btnInscription
@@ -111,10 +111,10 @@ public class TestWB {
 	        cl.show(content, listeMenus[2]);
 	      }
 	    });
-	    btnInscription.setBounds(405, 290, 150, 50);
+	    btnInscription.setBounds(405, 237, 150, 40);
 	    
 	    JButton btnQuitter = new JButton("Quitter");
-		btnQuitter.setBounds(405, 350, 150, 50);
+		btnQuitter.setBounds(405, 290, 150, 40);
 	    //Définition de l'action du btnQuitter
 	    btnQuitter.addActionListener(new ActionListener(){
 	      public void actionPerformed(ActionEvent event){				

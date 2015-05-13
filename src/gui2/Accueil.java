@@ -17,7 +17,7 @@ public class Accueil extends Menu{
 	private JLabel connectServeur;
 	private JLabel connectCompte;
 	
-	private static int X = 405, Y = 170, W = 150, H = 50;
+	private static int X = 405, Y = 130, W = 150, H = 40;
 	
 	public Accueil( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -38,9 +38,9 @@ public class Accueil extends Menu{
 	}
 	
 	private void addLabelMastermind(){
-		JLabel lblMastermind = new JLabel( "Mastermind" );
-		lblMastermind.setFont(new Font( "Tahoma", Font.PLAIN, 35 ) ); // Modification de la police
-		lblMastermind.setBounds( 380, 43, 200, 50 );
+		JLabel lblMastermind = new JLabel("Mastermind");
+		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 66)); // Modification de la police
+		lblMastermind.setBounds(175, 30, 600, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );

@@ -14,7 +14,7 @@ public class Personnaliser extends Menu{
 
 	private Fenetre fenetre;
 	
-	private static int X = 405, Y = 170, W = 150, H = 50;
+	private static int X = 405, Y = 130, W = 150, H = 40;
 	
 	public Personnaliser( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -30,8 +30,8 @@ public class Personnaliser extends Menu{
 	
 	private void addLabelChoixMode(){
 		JLabel lblMastermind = new JLabel( "Règles du jeu" );
-		lblMastermind.setFont(new Font( "Tahoma", Font.PLAIN, 27 ) ); // Modification de la police
-		lblMastermind.setBounds( 380, 43, 300, 50 );
+		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
+		lblMastermind.setBounds(175, 30, 600, 100);;
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );
