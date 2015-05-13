@@ -6,7 +6,7 @@ import java.io.Serializable;
 import javax.swing.ImageIcon;
 
 public class Joueur implements Serializable{
-	private static final long serialVersionUID = -8229360749975284610L;
+	private static final long serialVersionUID = -3297928743639074673L;
 	private String identifiant;
 	private String mdp;
 	//l'image du joueur
