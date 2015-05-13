@@ -16,8 +16,8 @@ public class Fenetre extends JFrame {
 	private JPanel content;
 	
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
-			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9";
-	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser;
+			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9", JEU = "10";
+	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser, jeu;
 	private Menu menu_actuel;
 	
 	public Fenetre(){

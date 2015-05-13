@@ -50,7 +50,6 @@ public class UnJoueur extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        fenetre.showMenu( Fenetre.UNJOUEUR );
 		      }
 		    });
 		this.add( btn );
@@ -62,7 +61,6 @@ public class UnJoueur extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        fenetre.showMenu( Fenetre.DEUXJOUEURS );
 		      }
 		    });
 		this.add( btn );
@@ -74,7 +72,6 @@ public class UnJoueur extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        fenetre.showMenu( Fenetre.REGLES );
 		      }
 		    });
 		this.add( btn );
@@ -86,7 +83,6 @@ public class UnJoueur extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        fenetre.showMenu( Fenetre.REGLES );
 		      }
 		    });
 		this.add( btn );
@@ -98,7 +94,6 @@ public class UnJoueur extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        fenetre.showMenu( Fenetre.REGLES );
 		      }
 		    });
 		this.add( btn );
@@ -110,7 +105,7 @@ public class UnJoueur extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		        fenetre.showMenu( Fenetre.REGLES );
+		        fenetre.showMenu( Fenetre.PERSONNALISER );
 		      }
 		    });
 		this.add( btn );

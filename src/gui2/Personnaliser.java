@@ -29,7 +29,7 @@ public class Personnaliser extends Menu{
 	}
 	
 	private void addLabelChoixMode(){
-		JLabel lblMastermind = new JLabel( "Règles du jeu" );
+		JLabel lblMastermind = new JLabel( "Personnaliser une partie" );
 		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
 		lblMastermind.setBounds(175, 30, 600, 100);;
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
