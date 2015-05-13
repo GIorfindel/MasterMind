@@ -58,9 +58,9 @@ public class Client {
 	public void closeServeur(){//Connexion au serveur perdu
 		this.joueur = null;
 		if( this.getConnecteAuServeur() ){
+			this.serveur.close();
 			this.fenetre.decoServeur();
 		}
-		this.serveur.close();
 	}
 	
 	//Envoi un paquet au serveur
