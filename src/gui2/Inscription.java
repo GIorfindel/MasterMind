@@ -41,6 +41,7 @@ public class Inscription extends Menu{
 	public void clic(){
 		if( this.fenetre.getClient().seConnecterAuServeur() ){
 			this.PasGriser();
+			this.information.setText( "" );
 		}else{
 			this.griser();
 			this.information.setText( "Vous n'êtes pas connecté au réseau" );
@@ -141,6 +142,11 @@ public class Inscription extends Menu{
 		this.mdp.setEnabled( true );
 		this.identifiant.setEnabled( true );
 		this.valider.setEnabled( true );
+	}
+	
+	public void decoServeur(){
+		this.griser();
+		this.information.setText( "Vous n'êtes pas connecté au réseau" );
 	}
 	
 }
