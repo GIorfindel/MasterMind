@@ -126,6 +126,7 @@ public class Profil extends Menu{
 	private void addAvatar(){
 		this.avatar = new JLabel();
 		this.avatar.setBounds(0, 0, Joueur.WIDTH_AVATAR, Joueur.HEIGHT_AVATAR);
+		this.add(this.avatar);
 	}
 	
 	private void addBoutonRetour(){

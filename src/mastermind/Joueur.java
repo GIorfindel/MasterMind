@@ -10,7 +10,7 @@ public class Joueur implements Serializable{
 	private String identifiant;
 	private String mdp;
 	//l'image du joueur
-	public static int WIDTH_AVATAR = 100, HEIGHT_AVATAR = 200;
+	public static int WIDTH_AVATAR = 200, HEIGHT_AVATAR = 200;
 	private ImageIcon avatar;
 	//Les malus du à ses partie
 	private int malus;
