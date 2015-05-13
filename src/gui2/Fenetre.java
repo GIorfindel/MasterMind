@@ -16,8 +16,8 @@ public class Fenetre extends JFrame {
 	private JPanel content;
 	
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
-			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7";
-	private Menu accueil, connexion, inscription, jouer;
+			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8";
+	private Menu accueil, connexion, inscription, jouer, profil;
 	private Menu menu_actuel;
 	
 	public Fenetre(){
@@ -54,11 +54,12 @@ public class Fenetre extends JFrame {
 		this.connexion = new Connexion( this );
 		this.inscription = new Inscription( this );
 		this.jouer = new Jouer( this );
+		this.profil = new Profil( this );
 		this.content.add( this.accueil, ACCUEIL );
 		this.content.add( this.connexion, CONNEXION );
 		this.content.add( this.inscription, INSCRIPTION );
 		this.content.add( this.jouer, JOUER );
-
+		this.content.add( this.profil, PROFIL );
 
 		
 		this.getContentPane().add( this.content, BorderLayout.CENTER );
@@ -78,6 +79,9 @@ public class Fenetre extends JFrame {
 		}else if( menu.equals( JOUER ) ){
 			this.jouer.clic();
 			this.menu_actuel = this.jouer;
+		}else if( menu.equals( PROFIL ) ){
+			this.profil.clic();
+			this.menu_actuel = this.profil;
 		}
 	}
 	

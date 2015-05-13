@@ -121,6 +121,7 @@ public class Inscription extends Menu{
 	    					}else{
 	    						Joueur j = (Joueur) ps.getObjet(0);
 	    						fenetre.getClient().setJoueur( j );
+	    						fenetre.showMenu( Fenetre.PROFIL );
 	    					}
 	    				}else{
 	    					information.setText("Limite de temps dépassé, essayé plus tard");

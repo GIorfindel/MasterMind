@@ -1,20 +1,24 @@
 package mastermind;
 
+
+
 import java.io.Serializable;
+import javax.swing.ImageIcon;
 
 public class Joueur implements Serializable{
 	private static final long serialVersionUID = -8229360749975284610L;
 	private String identifiant;
 	private String mdp;
-	//Le nom(l'adresse) de l'image du joueur
-	private String avatar;
+	//l'image du joueur
+	public static int WIDTH_AVATAR = 100, HEIGHT_AVATAR = 200;
+	private ImageIcon avatar;
 	//Les malus du à ses partie
 	private int malus;
 	
 	public Joueur( String identifiant, String mdp, String avatar, int malus ){
 		this.identifiant = identifiant;
 		this.mdp = mdp;
-		this.avatar = avatar;
+		this.loadAvatar( avatar );
 		this.malus = malus;
 	}
 	
@@ -36,12 +40,8 @@ public class Joueur implements Serializable{
 			this.mdp = mdp;
 		}
 		
-		public String getAvatar(){
+		public ImageIcon getAvatar(){
 			return this.avatar;
-		}
-		
-		public void setAvatar( String avatar ){
-			this.avatar = avatar;
 		}
 		
 		public int getMalus(){
@@ -53,5 +53,13 @@ public class Joueur implements Serializable{
 		}
 		
 		//Fin des methodes get set
+		
+		public void loadAvatar( String nom ){
+			if( nom != null ){
+				this.avatar = new ImageIcon( "/ressources/" + nom + ".png" );
+			}else{
+				this.avatar = null;
+			}
+		}
 
 }
