@@ -59,7 +59,6 @@ public class Personnaliser extends Menu{
 	    
 	    JComboBox selectNbPions = new JComboBox();
 	    selectNbPions.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    selectNbPions.setEditable(true);
 	    selectNbPions.setModel(new DefaultComboBoxModel(new String[] {"3", "4", "5", "6", "7", "8"}));
 	    selectNbPions.setBounds(440, 140, 61, 34);
 	    this.add(selectNbPions);
