@@ -199,8 +199,8 @@ public class Personnaliser extends Menu{
 	    lblCouleursMultiples.setBounds(151, 265, 200, 50);
 	    this.add(lblCouleursMultiples);
 	    
-	    JRadioButton rdbtnDsactiver = new JRadioButton("Désactiver");
-	    JRadioButton rdbtnActiver = new JRadioButton("Activer");
+	    final JRadioButton rdbtnDsactiver = new JRadioButton("Désactiver");
+	    final JRadioButton rdbtnActiver = new JRadioButton("Activer");
 
 	    rdbtnActiver.setFont(new Font("Tahoma", Font.PLAIN, 17));
 	    rdbtnActiver.setBackground(Color.WHITE);
