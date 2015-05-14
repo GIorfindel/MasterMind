@@ -129,12 +129,12 @@ public abstract class Niveau implements Serializable {
 		return false;
 	}
 	
-	public Pions genererCombinaisonAle(){
+	public Pions genererCombinaisonAle(Couleur[] couleurPossible){
 		Random rand = new Random();
 		Pions comb = new Pions( this.pions );
 		Couleur c= null;
 		while( comb.getNbPion() < this.pions ){
-			c = Couleur.values()[ rand.nextInt( Couleur.values().length ) ];
+			c = couleurPossible[ rand.nextInt( couleurPossible.length ) ];
 			if( this.pionValide(comb, c) ){
 				comb.addPion( c );
 			}

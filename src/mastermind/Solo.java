@@ -50,9 +50,9 @@ public void addCoups(){
 }
 
 
-public void nouveauTour(){
+public void nouveauTour( Couleur[] couleurPossible ){
 	this.nbTour ++;
-	this.tour.nouveauTour( this.niveau.genererCombinaisonAle() );
+	this.tour.nouveauTour( this.niveau.genererCombinaisonAle( couleurPossible ) );
 }
 
 public void reset(){

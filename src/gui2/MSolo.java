@@ -37,6 +37,7 @@ public class MSolo extends Menu{
 	
 	JButton valider;
 	JButton suivant;
+	JButton effEssai;
 	
 	
 	public MSolo( Fenetre fenetre ){
@@ -68,7 +69,7 @@ public class MSolo extends Menu{
 		this.add( bouton );
 		
 		this.valider = new JButton("Valider");
-		this.valider.setBounds(350,415,200,50);
+		this.valider.setBounds(350,415,100,30);
 		this.valider.setEnabled(false);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -77,6 +78,7 @@ public class MSolo extends Menu{
 	    			if (solo.getTour().testCombinaison( essai )){
 	    				maquette.dessineSolution( solo.getTour().getComb() );
 	    				suivant.setEnabled(true);
+	    				effEssai.setEnabled(false);
 	    			}else{
 	    				maquette.addAide( coups, solo.getTour().getNombreBonnePosition(coups), solo.getTour().getNombreBonneCouleur(coups));
 	    			}
@@ -91,8 +93,19 @@ public class MSolo extends Menu{
 		});
 		this.add(this.valider);
 		
+		this.effEssai = new JButton("Effacer l'essai");
+		this.effEssai.setBounds(470,415,200,30);
+		this.effEssai.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		essai = new Pions(solo.getNiveau().getPions());;
+	    		maquette.popEssai( solo.getTour().getCoups() );
+	    		valider.setEnabled(false);
+	    	}
+		});
+		this.add(this.effEssai);
+		
 		this.suivant = new JButton("Suivant");
-		this.suivant.setBounds(350,500,200,50);
+		this.suivant.setBounds(350,450,100,30);
 		this.suivant.setEnabled(false);
 		this.suivant.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -101,9 +114,20 @@ public class MSolo extends Menu{
 	    		}
 	    		nouveauTour();
 				suivant.setEnabled(false);
+				effEssai.setEnabled(true);
 	    	}
 		});
 		this.add(this.suivant);
+		
+		JButton quit = new JButton("Quitter");
+		quit.setBounds(800,0,100,30);
+		quit.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		quitter();
+	    		fenetre.showMenu( Fenetre.ACCUEIL );
+	    	}
+		});
+		this.add(quit);
 		
 	}
 	
@@ -130,7 +154,7 @@ public class MSolo extends Menu{
 	}
 	
 	public void nouveauTour(){
-		solo.nouveauTour();
+		solo.nouveauTour( this.couleursAutorise );
 		maquette.reset();
 		this.maquette.dessineSolution( solo.getTour().getComb() );
 	}
