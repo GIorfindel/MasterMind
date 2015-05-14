@@ -80,28 +80,6 @@ public abstract class Niveau implements Serializable {
 		//Sinon on renvoie faux
 	}
 	//*permet de vérifier que la combinaison comporte le bon nombre de pions*/
-
-	public boolean valideCouleurs(Pions comb)
-	{
-		Couleur[] coul = comb.getCombinaison();
-		Set<Couleur> unicColors = new HashSet<Couleur>();
-		//On va utiliser un HashSet qui ne peut pas contenir de doublons
-		for (Couleur c : coul) unicColors.add(c);
-		//On ajoute les couleurs au HashSet, si un element est deja present il ne sera pas insere
-		int unicNB = unicColors.size();
-		//On recupere la taille du HashSet qui correspond au nombre de couleurs utilises
-		if (unicNB>this.couleurs)
-		{
-			return false;
-		}
-		//Si le nombre de couleurs utilise est superieur a la valeur specifiee dans la classe, on renvoie faux
-		else
-		{
-			return true;
-		}
-		//Sinon on renvoie vrai
-	}
-	//*permet de vérifier que la combinaison comporte le bon nombre de couleurs*/
 	
 	public boolean valideDoubl(Pions comb)
 	{
@@ -124,7 +102,7 @@ public abstract class Niveau implements Serializable {
 	
 	public boolean valideCombinaison(Pions comb)
 	{
-		return (this.valideCouleurs(comb) && this.valideDoubl(comb) && this.validePions(comb));
+		return (this.valideDoubl(comb) && this.validePions(comb));
 	}
 	//*Permet de verifier la validite d'une combinaison
 	
