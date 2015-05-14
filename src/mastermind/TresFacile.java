@@ -13,4 +13,14 @@ public class TresFacile extends Niveau {
 	{
 		return "TresFacile";
 	}
+	
+	public Couleur[] getCouleurAutorise(){
+		Couleur[] cs = new Couleur[5];
+		cs[0] = Couleur.Blanc;
+		cs[1] = Couleur.Noir;
+		cs[2] = Couleur.Bleu;
+		cs[3] = Couleur.Cyan;
+		cs[4] = Couleur.Jaune;
+		return cs;
+	}
 }

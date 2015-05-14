@@ -13,4 +13,15 @@ public class Facile extends Niveau {
 	{
 		return "Facile";
 	}
+	
+	public Couleur[] getCouleurAutorise(){
+		Couleur[] cs = new Couleur[6];
+		cs[0] = Couleur.Blanc;
+		cs[1] = Couleur.Noir;
+		cs[2] = Couleur.Bleu;
+		cs[3] = Couleur.Cyan;
+		cs[4] = Couleur.Jaune;
+		cs[5] = Couleur.Orange;
+		return cs;
+	}
 }

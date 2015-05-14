@@ -163,4 +163,9 @@ public abstract class Niveau implements Serializable {
 		}
 		return comb;
 	}
+	
+	//Doit être redéfini pas les classe qui hérite de niveau
+	public Couleur[] getCouleurAutorise(){
+		return null;
+	}
 }

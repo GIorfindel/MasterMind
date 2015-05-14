@@ -14,4 +14,19 @@ public class TresDifficile extends Niveau {
 	{
 		return "TresDifficile";
 	}
+	
+	public Couleur[] getCouleurAutorise(){
+		Couleur[] cs = new Couleur[10];
+		cs[0] = Couleur.Blanc;
+		cs[1] = Couleur.Noir;
+		cs[2] = Couleur.Bleu;
+		cs[3] = Couleur.Cyan;
+		cs[4] = Couleur.Jaune;
+		cs[5] = Couleur.Orange;
+		cs[6] = Couleur.Rose;
+		cs[7] = Couleur.Rouge;
+		cs[8] = Couleur.Vert;
+		cs[9] = Couleur.Violet;
+		return cs;
+	}
 }
