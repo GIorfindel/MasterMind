@@ -41,7 +41,7 @@ public class CreerPartie extends Menu{
 	}
 	
 	private void addLabelChoixMode(){
-		JLabel lblMastermind = new JLabel( "Personnaliser une partie" );
+		JLabel lblMastermind = new JLabel( "Créer une partie" );
 		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
 		lblMastermind.setBounds(150, 30, 660, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
@@ -241,7 +241,7 @@ public class CreerPartie extends Menu{
     
     private void addBoutonValider() {
     
-	    JButton btnValider = new JButton("Valider");
+	    JButton btnValider = new JButton("Créer");
 	    btnValider.setBounds(405, 440, 150, 50);
 	    btnValider.addActionListener(new ActionListener(){
 	    	public void actionPerformed(ActionEvent event){				
