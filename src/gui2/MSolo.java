@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import mastermind.Couleur;
@@ -35,9 +36,11 @@ public class MSolo extends Menu{
 	
 	private Pions essai;
 	
-	JButton valider;
-	JButton suivant;
-	JButton effEssai;
+	private JButton valider;
+	private JButton suivant;
+	private JButton effEssai;
+	
+	private JLabel information;
 	
 	
 	public MSolo( Fenetre fenetre ){
@@ -77,6 +80,7 @@ public class MSolo extends Menu{
 	    			int coups = solo.getTour().getCoups();
 	    			if (solo.getTour().testCombinaison( essai )){
 	    				maquette.dessineSolution( solo.getTour().getComb() );
+	    				information.setText("Bravo! encore " + ( 10 - solo.getNbTour()) + " tours" );
 	    				suivant.setEnabled(true);
 	    				effEssai.setEnabled(false);
 	    			}else{
@@ -86,7 +90,10 @@ public class MSolo extends Menu{
 	    			valider.setEnabled(false);
 	    			if(solo.getTour().getCoups() == solo.getNiveau().getCoupMax()){
 	    				//Vous avez perdu A faire*************************************************************
-	    				nouveauTour();
+	    				information.setText("Vous avez perdu!" );
+	    				suivant.setEnabled(false);
+	    				valider.setEnabled(false);
+	    				effEssai.setEnabled(false);
 	    			}
 	    		}
 	    	}
@@ -110,7 +117,10 @@ public class MSolo extends Menu{
 		this.suivant.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( solo.getNbTour() == 10 ){
+	    			information.setText("Vous avez gagné!" );
 	    			//Vous avez gagné***************************************************************************
+	    		}else{
+	    			information.setText("" );
 	    		}
 	    		nouveauTour();
 				suivant.setEnabled(false);
@@ -118,6 +128,10 @@ public class MSolo extends Menu{
 	    	}
 		});
 		this.add(this.suivant);
+		
+		this.information = new JLabel();
+		this.information.setBounds(350,500,300,30);
+		this.add(this.information);
 		
 		JButton quit = new JButton("Quitter");
 		quit.setBounds(800,0,100,30);
@@ -128,7 +142,6 @@ public class MSolo extends Menu{
 	    	}
 		});
 		this.add(quit);
-		
 	}
 	
 	public void quitter(){
@@ -139,6 +152,7 @@ public class MSolo extends Menu{
 		this.couleursAutorise = null;
 		this.solo.reset();
 		this.suivant.setEnabled(false);
+		this.information.setText("");
 	}
 	
 	public void clic(){
@@ -156,6 +170,8 @@ public class MSolo extends Menu{
 	public void nouveauTour(){
 		solo.nouveauTour( this.couleursAutorise );
 		maquette.reset();
+		information.setText("");
+		
 		this.maquette.dessineSolution( solo.getTour().getComb() );
 	}
 	
@@ -181,7 +197,7 @@ public class MSolo extends Menu{
 	}
 	
 	private void clicBoutonCouleur( Couleur c ){
-		if( this.essai.getNbPion() < this.solo.getNiveau().getPions() ){
+		if( this.essai.getNbPion() < this.solo.getNiveau().getPions() && this.solo.getNiveau().getCoupMax() > this.solo.getTour().getCoups() ){
 			this.maquette.addPion(this.solo.getTour().getCoups(), this.essai.getNbPion(), c);
 			this.essai.addPion( c );
 		}
