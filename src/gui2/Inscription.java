@@ -51,7 +51,7 @@ public class Inscription extends Menu{
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds( 405, 300, 150, 40 );
+		btn.setBounds( 405, 340, 150, 50 );
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.ACCUEIL );
@@ -81,12 +81,12 @@ public class Inscription extends Menu{
 	private void addIdentifiant(){
 		JLabel lblIdentifiant = new JLabel("Identifiant");
 	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    lblIdentifiant.setBounds(300, 120, 100, 27);
+	    lblIdentifiant.setBounds(300, 160, 100, 27);
 	    this.add(lblIdentifiant);
 	    
 	    this.identifiant = new JTextField();
 	    lblIdentifiant.setLabelFor( this.identifiant );
-	    this.identifiant.setBounds(450, 124, 176, 22);
+	    this.identifiant.setBounds(450, 164, 176, 22);
 	    this.add( this.identifiant );
 	    this.identifiant.setColumns(10);
 	}
@@ -94,19 +94,19 @@ public class Inscription extends Menu{
 	private void addMDP(){
 		JLabel lblMotDePasse = new JLabel("Mot de passe");
 	    lblMotDePasse.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	    lblMotDePasse.setBounds(300, 178, 100, 17);
+	    lblMotDePasse.setBounds(300, 218, 100, 27);
 	    this.add(lblMotDePasse);
 	    
 	    this.mdp = new JTextField();
 	    lblMotDePasse.setLabelFor(this.mdp);
-	    this.mdp.setBounds(450, 176, 176, 22);
+	    this.mdp.setBounds(450, 222, 176, 22);
 	    this.add(this.mdp);
 	    this.mdp.setColumns(10);
 	}
 	
 	private void addValider(){
 		this.valider = new JButton("Valider");
-		this.valider.setBounds(405, 240, 150, 40);
+		this.valider.setBounds(405, 280, 150, 50);
 		this.valider.setForeground(Color.BLACK);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
