@@ -7,15 +7,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
 public class DeuxJoueurs extends Menu{
 
 	private Fenetre fenetre;
-	
-	private static int X = 405, Y = 130, W = 150, H = 50;
-	
+		
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.init();
@@ -25,6 +25,10 @@ public class DeuxJoueurs extends Menu{
 		this.setLayout( null );
 		this.setBackground( Color.WHITE );
 		this.addLabelChoixMode();
+		this.addLabelPartiesDispo();
+		this.addListeParties();
+		this.addBoutonRejoindre();
+		this.addBoutonCreer();
 		this.addBoutonRetour();
 
 	}
@@ -38,13 +42,118 @@ public class DeuxJoueurs extends Menu{
 		this.add( lblMastermind );
 	}
 	
+	private void addLabelPartiesDispo() {
+	    JLabel lblPartiesDisponibles = new JLabel("Parties disponibles");
+	    this.add(lblPartiesDisponibles);
+	}
+	
+	private void addListeParties() {
+		Object[][] data = {
+				{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
+	    		{"Supraime", "Difficile", "4", "10", "43", "Non"}
+		};
+	    
+		String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
+	    JScrollPane scrollPane = new JScrollPane();
+	    scrollPane.setBounds(100, 130, 770, 210);
+	    this.add(scrollPane);
+	    JTable table = new JTable(data, nomsColonnes);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	    scrollPane.setViewportView(table);
+	    table.setBackground(Color.WHITE);
+	}
+	
+	private void addBoutonRejoindre(){
+	    JButton btnRejoindre = new JButton("Rejoindre la partie");
+	    btnRejoindre.setBounds(174, 368, 150, 40);
+	    btnRejoindre.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		      }
+		    });
+	    this.add(btnRejoindre);
+	}
+	
+	private void addBoutonCreer(){
+	    JButton btnCrerUnePartie = new JButton("Créer une partie");
+	    btnCrerUnePartie.setBounds(174, 421, 150, 40);
+	    btnCrerUnePartie.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		    	  fenetre.showMenu( Fenetre.PERSONNALISER );
+		      }
+		    });
+	    this.add(btnCrerUnePartie);
+	}
+	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds( X, Y, W, H );
-		Y += H+10;
+		btn.setBounds(657, 421, 150, 40);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		    	  fenetre.showMenu( Fenetre.JOUER );
+		    	  fenetre.showMenu( Fenetre.UNJOUEUR );
 		      }
 		    });
 		this.add( btn );
