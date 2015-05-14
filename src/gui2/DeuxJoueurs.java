@@ -29,6 +29,7 @@ public class DeuxJoueurs extends Menu{
 		this.addListeParties();
 		this.addBoutonRejoindre();
 		this.addBoutonCreer();
+		this.addBoutonRafraichir();
 		this.addBoutonRetour();
 
 	}
@@ -44,6 +45,8 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addLabelPartiesDispo() {
 	    JLabel lblPartiesDisponibles = new JLabel("Parties disponibles");
+	    lblPartiesDisponibles.setFont(new Font("Tahoma", Font.PLAIN, 17));
+	    lblPartiesDisponibles.setBounds(99, 100, 200, 40);
 	    this.add(lblPartiesDisponibles);
 	}
 	
@@ -119,7 +122,7 @@ public class DeuxJoueurs extends Menu{
 	    
 		String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setBounds(100, 130, 770, 210);
+	    scrollPane.setBounds(100, 140, 770, 210);
 	    this.add(scrollPane);
 	    JTable table = new JTable(data, nomsColonnes);
 	    table.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -129,7 +132,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonRejoindre(){
 	    JButton btnRejoindre = new JButton("Rejoindre la partie");
-	    btnRejoindre.setBounds(174, 368, 150, 40);
+	    btnRejoindre.setBounds(250, 370, 150, 40);
 	    btnRejoindre.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		      }
@@ -139,7 +142,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonCreer(){
 	    JButton btnCrerUnePartie = new JButton("Créer une partie");
-	    btnCrerUnePartie.setBounds(174, 421, 150, 40);
+	    btnCrerUnePartie.setBounds(250, 420, 150, 40);
 	    btnCrerUnePartie.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		    	  fenetre.showMenu( Fenetre.PERSONNALISER );
@@ -148,9 +151,19 @@ public class DeuxJoueurs extends Menu{
 	    this.add(btnCrerUnePartie);
 	}
 	
+	private void addBoutonRafraichir(){
+		JButton btn = new JButton( "Rafraîchir" );
+		btn.setBounds(550, 370, 150, 40);
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		      }
+		    });
+		this.add( btn );
+	}
+	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds(657, 421, 150, 40);
+		btn.setBounds(550, 420, 150, 40);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		    	  fenetre.showMenu( Fenetre.UNJOUEUR );
