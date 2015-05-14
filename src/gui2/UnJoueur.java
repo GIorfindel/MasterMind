@@ -38,7 +38,7 @@ public class UnJoueur extends Menu{
 	private void addLabelChoixNiveau(){
 		JLabel lblMastermind = new JLabel( "Choix du niveau de difficulté" );
 		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
-		lblMastermind.setBounds(175, 30, 600, 100);
+		lblMastermind.setBounds(175, 30, 700, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );

@@ -43,7 +43,7 @@ public class Personnaliser extends Menu{
 	private void addLabelChoixMode(){
 		JLabel lblMastermind = new JLabel( "Personnaliser une partie" );
 		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
-		lblMastermind.setBounds(175, 30, 600, 100);;
+		lblMastermind.setBounds(175, 30, 700, 100);;
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );
@@ -199,16 +199,29 @@ public class Personnaliser extends Menu{
 	    lblCouleursMultiples.setBounds(151, 265, 200, 50);
 	    this.add(lblCouleursMultiples);
 	    
+	    JRadioButton rdbtnDsactiver = new JRadioButton("Désactiver");
 	    JRadioButton rdbtnActiver = new JRadioButton("Activer");
+
 	    rdbtnActiver.setFont(new Font("Tahoma", Font.PLAIN, 17));
 	    rdbtnActiver.setBackground(Color.WHITE);
-	    rdbtnActiver.setBounds(440, 278, 115, 25);
+	    rdbtnActiver.setBounds(440, 278, 120, 25);
+	    rdbtnActiver.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		    	  rdbtnActiver.setSelected(true);
+		    	  rdbtnDsactiver.setSelected(false);
+		      }
+		    });
 	    this.add(rdbtnActiver);
 	    
-	    JRadioButton rdbtnDsactiver = new JRadioButton("Désactiver");
 	    rdbtnDsactiver.setFont(new Font("Tahoma", Font.PLAIN, 17));
 	    rdbtnDsactiver.setBackground(Color.WHITE);
-	    rdbtnDsactiver.setBounds(571, 278, 115, 25);
+	    rdbtnDsactiver.setBounds(571, 278, 130, 25);
+	    rdbtnDsactiver.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		    	  rdbtnDsactiver.setSelected(true);
+		    	  rdbtnActiver.setSelected(false);
+		      }
+		    });
 	    this.add(rdbtnDsactiver);
 	    
 	}
