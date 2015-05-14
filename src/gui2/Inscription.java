@@ -73,7 +73,7 @@ public class Inscription extends Menu{
 		this.information = new JLabel("Informations");
 		this.information.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		this.information.setForeground( Color.red );
-		this.information.setBounds( 345, 360, 400, 27 );
+		this.information.setBounds( 345, 400, 400, 27 );
 		this.add( this.information );
 	}
 	
