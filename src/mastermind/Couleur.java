@@ -8,7 +8,6 @@ public enum Couleur {
 	Orange,
 	Blanc,
 	Violet,
-	Fuchsia,
 	Cyan,
 	Rose,
 	Noir
