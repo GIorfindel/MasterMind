@@ -6,6 +6,8 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import mastermind.Niveau;
+
 import client.Client;
 
 @SuppressWarnings("serial")
@@ -16,13 +18,14 @@ public class Fenetre extends JFrame {
 	private JPanel content;
 	
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
-			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9", JEU = "10";
-	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser, jeu;
+			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9",
+			SOLO = "10";
+	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser, solo;
 	private Menu menu_actuel;
 	
 	public Fenetre(){
 		this.setTitle( "Mastermind" );
-	    this.setSize( 960, 544 );
+	    this.setSize( 960, 700 );
 	    this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 	    this.setLocationRelativeTo( null );
 	    this.setResizable( false );
@@ -59,6 +62,7 @@ public class Fenetre extends JFrame {
 		this.deuxjoueurs = new DeuxJoueurs( this );
 		this.regles = new Regles( this );
 		this.personnaliser = new Personnaliser( this );
+		this.solo = new MSolo( this );
 		this.content.add( this.accueil, ACCUEIL );
 		this.content.add( this.connexion, CONNEXION );
 		this.content.add( this.inscription, INSCRIPTION );
@@ -68,7 +72,7 @@ public class Fenetre extends JFrame {
 		this.content.add( this.deuxjoueurs, DEUXJOUEURS );
 		this.content.add( this.regles, REGLES );
 		this.content.add( this.personnaliser, PERSONNALISER );
-
+		this.content.add( this.solo, SOLO );
 		
 		this.getContentPane().add( this.content, BorderLayout.CENTER );
 	    this.setVisible( true );
@@ -102,10 +106,17 @@ public class Fenetre extends JFrame {
 		}else if( menu.equals( PERSONNALISER ) ){
 			this.personnaliser.clic();
 			this.menu_actuel = this.personnaliser;
+		}else if( menu.equals( SOLO ) ){
+			this.solo.clic();
+			this.menu_actuel = this.solo;
 		}
 	}
 	
 	public void decoServeur(){
 		this.menu_actuel.decoServeur();
+	}
+	
+	public void setNiveauSolo( Niveau niveau ){
+		((MSolo) this.solo).setNiveau(niveau);
 	}
 }

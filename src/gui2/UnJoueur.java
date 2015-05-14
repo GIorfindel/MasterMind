@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import mastermind.Niveau;
+
 @SuppressWarnings("serial")
 public class UnJoueur extends Menu{
 
@@ -49,7 +51,9 @@ public class UnJoueur extends Menu{
 		btn.setBounds( X, Y, W, H );
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){
+		    	  fenetre.setNiveauSolo( Niveau.niveauString( "TresFacile" ) );
+		    	  fenetre.showMenu( Fenetre.SOLO );
 		      }
 		    });
 		this.add( btn );
@@ -60,7 +64,9 @@ public class UnJoueur extends Menu{
 		btn.setBounds( X, Y, W, H );
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){
+		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Facile" ) );
+		    	  fenetre.showMenu( Fenetre.SOLO );
 		      }
 		    });
 		this.add( btn );
@@ -71,7 +77,9 @@ public class UnJoueur extends Menu{
 		btn.setBounds( X, Y, W, H );
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){
+		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Normal" ) );
+		    	  fenetre.showMenu( Fenetre.SOLO );
 		      }
 		    });
 		this.add( btn );
@@ -82,7 +90,9 @@ public class UnJoueur extends Menu{
 		btn.setBounds( X, Y, W, H );
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){
+		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Difficile" ) );
+		    	  fenetre.showMenu( Fenetre.SOLO );
 		      }
 		    });
 		this.add( btn );
@@ -93,7 +103,9 @@ public class UnJoueur extends Menu{
 		btn.setBounds( X, Y, W, H );
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){
+		    	  fenetre.setNiveauSolo( Niveau.niveauString( "TresDifficile" ) );
+		    	  fenetre.showMenu( Fenetre.SOLO );
 		      }
 		    });
 		this.add( btn );

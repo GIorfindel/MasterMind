@@ -54,4 +54,9 @@ public void nouveauTour(){
 	this.nbTour ++;
 	this.tour.nouveauTour( this.niveau.genererCombinaisonAle() );
 }
+
+public void reset(){
+	this.coups = 0;
+	this.nbTour = 0;
+}
 }
