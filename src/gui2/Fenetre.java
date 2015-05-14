@@ -19,8 +19,8 @@ public class Fenetre extends JFrame {
 	
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
 			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9",
-			SOLO = "10";
-	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser, solo;
+			SOLO = "10", CREER="11";
+	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser, solo, creer;
 	private Menu menu_actuel;
 	
 	public Fenetre(){
@@ -63,6 +63,7 @@ public class Fenetre extends JFrame {
 		this.regles = new Regles( this );
 		this.personnaliser = new Personnaliser( this );
 		this.solo = new MSolo( this );
+		this.creer = new CreerPartie( this );
 		this.content.add( this.accueil, ACCUEIL );
 		this.content.add( this.connexion, CONNEXION );
 		this.content.add( this.inscription, INSCRIPTION );
@@ -73,6 +74,8 @@ public class Fenetre extends JFrame {
 		this.content.add( this.regles, REGLES );
 		this.content.add( this.personnaliser, PERSONNALISER );
 		this.content.add( this.solo, SOLO );
+		this.content.add( this.creer, CREER );
+
 		
 		this.getContentPane().add( this.content, BorderLayout.CENTER );
 	    this.setVisible( true );
@@ -109,6 +112,9 @@ public class Fenetre extends JFrame {
 		}else if( menu.equals( SOLO ) ){
 			this.solo.clic();
 			this.menu_actuel = this.solo;
+		}else if( menu.equals( CREER ) ){
+			this.creer.clic();
+			this.menu_actuel = this.creer;
 		}
 	}
 	

@@ -37,7 +37,7 @@ public class DeuxJoueurs extends Menu{
 	private void addLabelChoixMode(){
 		JLabel lblMastermind = new JLabel( "Mode deux joueurs" );
 		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
-		lblMastermind.setBounds(175, 30, 600, 100);
+		lblMastermind.setBounds(150, 30, 660, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );
@@ -45,8 +45,8 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addLabelPartiesDispo() {
 	    JLabel lblPartiesDisponibles = new JLabel("Parties disponibles");
-	    lblPartiesDisponibles.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    lblPartiesDisponibles.setBounds(99, 100, 200, 40);
+	    lblPartiesDisponibles.setFont(new Font("Agency FB", Font.PLAIN, 19));
+	    lblPartiesDisponibles.setBounds(100, 130, 200, 50);
 	    this.add(lblPartiesDisponibles);
 	}
 	
@@ -122,7 +122,7 @@ public class DeuxJoueurs extends Menu{
 	    
 		String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setBounds(100, 140, 770, 210);
+	    scrollPane.setBounds(100, 180, 770, 210);
 	    this.add(scrollPane);
 	    JTable table = new JTable(data, nomsColonnes);
 	    table.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -132,7 +132,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonRejoindre(){
 	    JButton btnRejoindre = new JButton("Rejoindre la partie");
-	    btnRejoindre.setBounds(250, 370, 150, 40);
+	    btnRejoindre.setBounds(405, 410, 150, 50);
 	    btnRejoindre.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		      }
@@ -142,10 +142,10 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonCreer(){
 	    JButton btnCrerUnePartie = new JButton("Créer une partie");
-	    btnCrerUnePartie.setBounds(250, 420, 150, 40);
+	    btnCrerUnePartie.setBounds(405, 470, 150, 50);
 	    btnCrerUnePartie.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		    	  fenetre.showMenu( Fenetre.PERSONNALISER );
+		    	  fenetre.showMenu( Fenetre.CREER );
 		      }
 		    });
 	    this.add(btnCrerUnePartie);
@@ -153,7 +153,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonRafraichir(){
 		JButton btn = new JButton( "Rafraîchir" );
-		btn.setBounds(550, 370, 150, 40);
+		btn.setBounds(405, 530, 150, 50);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		      }
@@ -163,10 +163,10 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds(550, 420, 150, 40);
+		btn.setBounds(405, 590, 150, 50);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
-		    	  fenetre.showMenu( Fenetre.UNJOUEUR );
+		    	  fenetre.showMenu( Fenetre.JOUER );
 		      }
 		    });
 		this.add( btn );

@@ -14,7 +14,7 @@ public class Jouer extends Menu{
 
 	private Fenetre fenetre;
 	
-	private static int X = 405, Y = 130, W = 150, H = 40;
+	private static int X = 405, Y = 160, W = 150, H = 50;
 	
 	public Jouer( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -35,7 +35,7 @@ public class Jouer extends Menu{
 	private void addLabelChoixMode(){
 		JLabel lblMastermind = new JLabel( "Choix du mode de jeu" );
 		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
-		lblMastermind.setBounds(175, 30, 600, 100);
+		lblMastermind.setBounds(150, 30, 660, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );

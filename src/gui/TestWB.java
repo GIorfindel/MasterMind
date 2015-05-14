@@ -80,10 +80,10 @@ public class TestWB {
 	    accueil.setBackground(Color.WHITE);	
 
 	    // Création des différents composants
-	    JLabel lblMastermind = new JLabel("Mastermind");
+	    JLabel lblMastermind = new JLabel("0");
+	    lblMastermind.setVerticalAlignment(SwingConstants.TOP);
 		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 66)); // Modification de la police
-		lblMastermind.setBounds(149, 13, 600, 100);
-		lblMastermind.setVerticalAlignment(SwingConstants.TOP);
+		lblMastermind.setBounds(150, 13, 660, 100);
 		lblMastermind.setHorizontalAlignment(SwingConstants.CENTER);
 	    
 	    JButton btnJouer = new JButton("Jouer");

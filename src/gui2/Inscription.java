@@ -63,7 +63,7 @@ public class Inscription extends Menu{
 	private void addLabelTitre() {
 		this.titre = new JLabel("S'inscrire");
 		this.titre.setFont(new Font("Agency FB", Font.PLAIN, 50));
-		this.titre.setBounds(175, 30, 600, 100);
+		this.titre.setBounds(150, 30, 660, 100);
 		this.titre.setVerticalAlignment( SwingConstants.TOP );
 		this.titre.setHorizontalAlignment( SwingConstants.CENTER );
 	    this.add(this.titre);
