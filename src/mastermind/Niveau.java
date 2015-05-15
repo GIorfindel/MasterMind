@@ -130,6 +130,7 @@ public abstract class Niveau implements Serializable {
 	}
 	
 	public Pions genererCombinaisonAle(Couleur[] couleurPossible){
+	
 		Random rand = new Random();
 		Pions comb = new Pions( this.pions );
 		Couleur c= null;
@@ -140,6 +141,7 @@ public abstract class Niveau implements Serializable {
 			}
 		}
 		return comb;
+		
 	}
 	
 	//Doit être redéfini pas les classe qui hérite de niveau

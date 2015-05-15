@@ -51,10 +51,12 @@ public class Pions  implements Serializable{
 	}
 	
 	public int nbCouleur( Couleur pion ){
+		Pions p = new Pions(this.nbPions + 1);
+		p.addPion(pion);
 		Set<Couleur> unicColors = new HashSet<Couleur>();
-		for (Couleur c : this.combinaison) unicColors.add(c);
+		for (Couleur c : p.getCombinaison()) unicColors.add(c);
 		int unicNB = unicColors.size();
-		return unicNB;
+		return unicNB - 1 ;
 	}
 	
 	public boolean equals(Pions comb){

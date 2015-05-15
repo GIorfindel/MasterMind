@@ -15,10 +15,33 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import mastermind.Couleur;
+import mastermind.Niveau;
+import mastermind.NiveauPerso;
+
 @SuppressWarnings("serial")
 public class Personnaliser extends Menu{
 
 	private Fenetre fenetre;
+	
+	private JComboBox selectNbPions;
+	private JCheckBox checkRouge;
+	private JCheckBox checkBleu;
+	private JCheckBox checkVert;
+	private JCheckBox checkOrange;
+	private JCheckBox checkBlanc;
+	private JCheckBox checkJaune;
+	private JCheckBox checkRose;
+	private JCheckBox checkViolet;
+	private JCheckBox checkNoir;
+	private JCheckBox checkCyan;
+	
+	private JRadioButton rdbtnDsactiver;
+    private JRadioButton rdbtnActiver;
+    
+    private JTextField txtNbCoupsMax;
+    
+    private JLabel information;
 	
 	@SuppressWarnings("unused")
 	private static int X = 405, Y = 130, W = 150, H = 40;
@@ -32,6 +55,7 @@ public class Personnaliser extends Menu{
 		this.setLayout( null );
 		this.setBackground( Color.WHITE );
 		this.addLabelChoixMode();
+		this.addInformation();
 		this.addNbPions();
 		this.addCouleurs();
 		this.addCouleursMultiples();
@@ -49,7 +73,14 @@ public class Personnaliser extends Menu{
 		this.add( lblMastermind );
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void addInformation(){
+		this.information = new JLabel();
+		this.information.setBounds(150, 100, 500, 30);
+		this.information.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		this.information.setForeground(Color.red);
+		this.add(this.information);
+	}
+	
 	private void addNbPions() {
 	
 		JLabel labelNbPions = new JLabel("Nombre de pions");
@@ -57,11 +88,11 @@ public class Personnaliser extends Menu{
 	    labelNbPions.setBounds(151, 130, 182, 50);
 	    this.add(labelNbPions);
 	    
-	    JComboBox selectNbPions = new JComboBox();
-	    selectNbPions.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    selectNbPions.setModel(new DefaultComboBoxModel(new String[] {"3", "4", "5", "6", "7", "8"}));
-	    selectNbPions.setBounds(440, 140, 61, 34);
-	    this.add(selectNbPions);
+	    this.selectNbPions = new JComboBox();
+	    this. selectNbPions.setFont(new Font("Tahoma", Font.PLAIN, 17));
+	    this. selectNbPions.setModel(new DefaultComboBoxModel(new String[] {"3", "4", "5", "6", "7", "8"}));
+	    this.selectNbPions.setBounds(440, 140, 61, 34);
+	    this.add(this.selectNbPions);
 	}
 	
 	private void addCouleurs() {
@@ -71,55 +102,55 @@ public class Personnaliser extends Menu{
 	    lblCouleurs.setBounds(151, 210, 200, 50);
 	    this.add(lblCouleurs);
 	    
-	    JCheckBox checkRouge = new JCheckBox("");
-	    checkRouge.setBackground(Color.WHITE);
-	    checkRouge.setBounds(440, 210, 25, 25);
-	    this.add(checkRouge);
+	    this.checkRouge = new JCheckBox("");
+	    this.checkRouge.setBackground(Color.WHITE);
+	    this.checkRouge.setBounds(440, 210, 25, 25);
+	    this.add(this.checkRouge);
 	    
-	    JCheckBox checkBleu = new JCheckBox("");
-	    checkBleu.setBackground(Color.WHITE);
-	    checkBleu.setBounds(534, 210, 25, 25);
-	    this.add(checkBleu);
+	    this.checkBleu = new JCheckBox("");
+	    this.checkBleu.setBackground(Color.WHITE);
+	    this.checkBleu.setBounds(534, 210, 25, 25);
+	    this.add(this.checkBleu);
 	    
-	    JCheckBox checkVert = new JCheckBox("");
-	    checkVert.setBackground(Color.WHITE);
-	    checkVert.setBounds(628, 210, 25, 25);
-	    this.add(checkVert);
+	    this.checkVert = new JCheckBox("");
+	    this.checkVert.setBackground(Color.WHITE);
+	    this.checkVert.setBounds(628, 210, 25, 25);
+	    this.add(this.checkVert);
 	    
-	    JCheckBox checkOrange = new JCheckBox("");
-	    checkOrange.setBackground(Color.WHITE);
-	    checkOrange.setBounds(722, 210, 25, 25);
-	    this.add(checkOrange);
+	    this.checkOrange = new JCheckBox("");
+	    this.checkOrange.setBackground(Color.WHITE);
+	    this.checkOrange.setBounds(722, 210, 25, 25);
+	    this.add(this.checkOrange);
 	    
-	    JCheckBox checkBlanc = new JCheckBox("");
-	    checkBlanc.setBackground(Color.WHITE);
-	    checkBlanc.setBounds(816, 210, 25, 25);
-	    this.add(checkBlanc);
+	    this.checkBlanc = new JCheckBox("");
+	    this.checkBlanc.setBackground(Color.WHITE);
+	    this.checkBlanc.setBounds(816, 210, 25, 25);
+	    this.add(this.checkBlanc);
 	    
-	    JCheckBox checkJaune = new JCheckBox("");
-	    checkJaune.setBackground(Color.WHITE);
-	    checkJaune.setBounds(440, 250, 25, 25);
-	    this.add(checkJaune);
+	    this.checkJaune = new JCheckBox("");
+	    this.checkJaune.setBackground(Color.WHITE);
+	    this.checkJaune.setBounds(440, 250, 25, 25);
+	    this.add(this.checkJaune);
 	    
-	    JCheckBox checkMauve = new JCheckBox("");
-	    checkMauve.setBackground(Color.WHITE);
-	    checkMauve.setBounds(534, 250, 25, 25);
-	    this.add(checkMauve);
+	    this.checkRose = new JCheckBox("");
+	    this.checkRose.setBackground(Color.WHITE);
+	    this.checkRose.setBounds(534, 250, 25, 25);
+	    this.add(this.checkRose);
 	    
-	    JCheckBox checkViolet = new JCheckBox("");
-	    checkViolet.setBackground(Color.WHITE);
-	    checkViolet.setBounds(628, 250, 25, 25);
-	    this.add(checkViolet);
+	    this.checkViolet = new JCheckBox("");
+	    this.checkViolet.setBackground(Color.WHITE);
+	    this.checkViolet.setBounds(628, 250, 25, 25);
+	    this.add(this.checkViolet);
 	    
-	    JCheckBox checkNoir = new JCheckBox("");
-	    checkNoir.setBackground(Color.WHITE);
-	    checkNoir.setBounds(722, 250, 25, 25);
-	    this.add(checkNoir);
+	    this.checkNoir = new JCheckBox("");
+	    this.checkNoir.setBackground(Color.WHITE);
+	    this.checkNoir.setBounds(722, 250, 25, 25);
+	    this.add(this.checkNoir);
 	    
-	    JCheckBox checkBVert = new JCheckBox("");
-	    checkBVert.setBackground(Color.WHITE);
-	    checkBVert.setBounds(816, 250, 25, 25);
-	    this.add(checkBVert);
+	    this.checkCyan = new JCheckBox("");
+	    this.checkCyan.setBackground(Color.WHITE);
+	    this.checkCyan.setBounds(816, 250, 25, 25);
+	    this.add(this.checkCyan);
 	    
         JLabel vert = new JLabel();
         vert.setLabelFor(checkVert);
@@ -164,7 +195,7 @@ public class Personnaliser extends Menu{
 	    this.add(jaune);
 	    
 	    JLabel mauve = new JLabel();
-	    mauve.setLabelFor(checkMauve);
+	    mauve.setLabelFor(checkRose);
 	    mauve.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/7.png")));
 	    mauve.setHorizontalAlignment(SwingConstants.CENTER);
 	    mauve.setBounds(565, 240, 42, 40);
@@ -184,12 +215,12 @@ public class Personnaliser extends Menu{
 	    noir.setBounds(753, 240, 42, 40);
 	    this.add(noir);
 	    
-	    JLabel bVert = new JLabel();
-	    bVert.setLabelFor(checkBVert);
-	    bVert.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/11.png")));
-	    bVert.setHorizontalAlignment(SwingConstants.CENTER);
-	    bVert.setBounds(847, 240, 42, 40);
-	    this.add(bVert);
+	    JLabel cyan = new JLabel();
+	    cyan.setLabelFor(checkCyan);
+	    cyan.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/11.png")));
+	    cyan.setHorizontalAlignment(SwingConstants.CENTER);
+	    cyan.setBounds(847, 240, 42, 40);
+	    this.add(cyan);
 	}
 	
 	private void addCouleursMultiples() {
@@ -198,30 +229,30 @@ public class Personnaliser extends Menu{
 	    lblCouleursMultiples.setBounds(151, 310, 200, 50);
 	    this.add(lblCouleursMultiples);
 	    
-	    final JRadioButton rdbtnDsactiver = new JRadioButton("Désactiver");
-	    final JRadioButton rdbtnActiver = new JRadioButton("Activer");
+	    this.rdbtnDsactiver = new JRadioButton("Désactiver");
+	    this.rdbtnActiver = new JRadioButton("Activer");
 
-	    rdbtnActiver.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    rdbtnActiver.setBackground(Color.WHITE);
-	    rdbtnActiver.setBounds(440, 320, 120, 25);
-	    rdbtnActiver.addActionListener(new ActionListener(){
+	    this.rdbtnActiver.setFont(new Font("Tahoma", Font.PLAIN, 17));
+	    this.rdbtnActiver.setBackground(Color.WHITE);
+	    this.rdbtnActiver.setBounds(440, 320, 120, 25);
+	    this.rdbtnActiver.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		    	  rdbtnActiver.setSelected(true);
 		    	  rdbtnDsactiver.setSelected(false);
 		      }
 		    });
-	    this.add(rdbtnActiver);
+	    this.add(this.rdbtnActiver);
 	    
-	    rdbtnDsactiver.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    rdbtnDsactiver.setBackground(Color.WHITE);
-	    rdbtnDsactiver.setBounds(570, 320, 130, 25);
-	    rdbtnDsactiver.addActionListener(new ActionListener(){
+	    this.rdbtnDsactiver.setFont(new Font("Tahoma", Font.PLAIN, 17));
+	    this.rdbtnDsactiver.setBackground(Color.WHITE);
+	    this.rdbtnDsactiver.setBounds(570, 320, 130, 25);
+	    this.rdbtnDsactiver.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		    	  rdbtnDsactiver.setSelected(true);
 		    	  rdbtnActiver.setSelected(false);
 		      }
 		    });
-	    this.add(rdbtnDsactiver);
+	    this.add(this.rdbtnDsactiver);
 	    
 	}
     
@@ -231,11 +262,11 @@ public class Personnaliser extends Menu{
 	    lblNombreDeCoups.setBounds(151, 370, 245, 50);
         this.add(lblNombreDeCoups);
         
-        JTextField txtNbCoupsMax = new JTextField();
-        txtNbCoupsMax.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    txtNbCoupsMax.setBounds(440, 375, 60, 35);
-        this.add(txtNbCoupsMax);
-        txtNbCoupsMax.setColumns(3);
+        this.txtNbCoupsMax = new JTextField();
+        this.txtNbCoupsMax.setFont(new Font("Tahoma", Font.PLAIN, 17));
+        this.txtNbCoupsMax.setBounds(440, 375, 60, 35);
+        this.add(this.txtNbCoupsMax);
+        this.txtNbCoupsMax.setColumns(3);
     }
     
     
@@ -244,7 +275,118 @@ public class Personnaliser extends Menu{
 	    JButton btnValider = new JButton("Valider");
 	    btnValider.setBounds(405, 440, 150, 50);
 	    btnValider.addActionListener(new ActionListener(){
-	    	public void actionPerformed(ActionEvent event){				
+	    	public void actionPerformed(ActionEvent event){
+	    		String s = (String) selectNbPions.getSelectedItem();
+	    		int nbPions;
+	    		try{
+	    			nbPions = Integer.parseInt(s);
+	    		}catch( NumberFormatException e ){
+	    			information.setText("Nombre de pion invalide");
+	    			return;
+	    		}
+	    		
+	    		int nbCouleurPoss = 0;
+	    		if( checkBlanc.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkBleu.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkCyan.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkJaune.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkNoir.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkOrange.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkRose.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkRouge.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkVert.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if( checkViolet.isSelected() ){
+	    			nbCouleurPoss++;
+	    		}
+	    		if(nbCouleurPoss == 0){
+	    			information.setText("Nombre de couleur invalide");
+	    			return;
+	    		}
+	    		Couleur[] couleurPossib = new Couleur[nbCouleurPoss];
+	    		if( checkBlanc.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Blanc;
+	    		}
+	    		if( checkBleu.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Bleu;
+	    		}
+	    		if( checkCyan.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Cyan;
+	    		}
+	    		if( checkJaune.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Jaune;
+	    		}
+	    		if( checkNoir.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Noir;
+	    		}
+	    		if( checkOrange.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Orange;
+	    		}
+	    		if( checkRose.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Rose;
+	    		}
+	    		if( checkRouge.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Rouge;
+	    		}
+	    		if( checkVert.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Vert;
+	    		}
+	    		if( checkViolet.isSelected() ){
+	    			nbCouleurPoss--;
+	    			couleurPossib[nbCouleurPoss] = Couleur.Violet;
+	    		}
+	    		
+	    		boolean doubl = false;
+	    		if( !rdbtnActiver.isSelected() && !rdbtnDsactiver.isSelected() ){
+	    			information.setText("Choisisser le choix multiple");
+	    			return;
+	    		}
+	    		if( rdbtnActiver.isSelected() ){
+	    			doubl = true;
+	    		}
+	    		if( !doubl && couleurPossib.length < nbPions ){
+	    			information.setText("Il y a trop de pion par rapport aux couleurs");
+    				return;
+    			}
+	    		
+	    		String ch = txtNbCoupsMax.getText();
+	    		int coupMax;
+	    		try{
+	    			coupMax = Integer.parseInt(ch);
+	    		}catch( NumberFormatException e ){
+	    			information.setText("Coups max invalide");
+	    			return;
+	    		}
+	    		quitter();
+	    		Niveau n = new NiveauPerso(nbPions, couleurPossib.length, doubl, coupMax, couleurPossib);
+	    		fenetre.setNiveauSolo( n );
+	    		fenetre.showMenu(Fenetre.SOLO);
 	    	}
 	    });
 	    this.add(btnValider);
@@ -254,11 +396,16 @@ public class Personnaliser extends Menu{
 		JButton btn = new JButton( "Retour" );
 		btn.setBounds(405, 500, 150, 50);
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){
+		    	  quitter();
 		    	  fenetre.showMenu( Fenetre.UNJOUEUR );
 		      }
 		    });
 		this.add( btn );
+	}
+	
+	public void quitter(){
+		information.setText("");
 	}
 
 }
