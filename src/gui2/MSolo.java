@@ -45,7 +45,7 @@ public class MSolo extends Menu{
 	
 	public MSolo( Fenetre fenetre ){
 		this.fenetre = fenetre;
-		this.solo = new Solo("",Niveau.niveauString(""),null);
+		this.solo = new Solo("",Niveau.niveauString("TresFacile"),null);
 		this.maquette = null;
 		this.valider = null;
 		this.init();
@@ -142,6 +142,16 @@ public class MSolo extends Menu{
 	    	}
 		});
 		this.add(quit);
+		
+		JButton recomm = new JButton("Recommencer");
+		recomm.setBounds(800,400,150,30);
+		recomm.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		solo.reset();
+	    		nouveauTour();
+	    	}
+		});
+		this.add(recomm);
 	}
 	
 	public void quitter(){
@@ -168,9 +178,13 @@ public class MSolo extends Menu{
 	}
 	
 	public void nouveauTour(){
-		solo.nouveauTour( this.couleursAutorise );
-		maquette.reset();
-		information.setText("");
+		this.solo.nouveauTour( this.couleursAutorise );
+		this.maquette.reset();
+		this.information.setText("");
+		this.valider.setEnabled(false);
+		this.suivant.setEnabled(false);
+		this.essai = new Pions(solo.getNiveau().getPions());
+		this.effEssai.setEnabled(true);
 		
 		this.maquette.dessineSolution( solo.getTour().getComb() );
 	}
