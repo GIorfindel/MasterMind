@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
@@ -124,8 +125,20 @@ public class DeuxJoueurs extends Menu{
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setBounds(100, 180, 770, 210);
 	    this.add(scrollPane);
-	    JTable table = new JTable(data, nomsColonnes);
+	    
+	    // Création d'un tableau que l'utilisateur ne peut pas modifier
+	    JTable table = new JTable(data, nomsColonnes){
+	    	public boolean isCellEditable(int row, int column) {
+	    		return false;
+	    	}
+	    };
+	    
+	    // Permet de ne sélection qu'une seule ligne
+	    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    
 	    table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	    table.setCellSelectionEnabled(false);
+	    table.setRowSelectionAllowed(true);
 	    scrollPane.setViewportView(table);
 	    table.setBackground(Color.WHITE);
 	}
