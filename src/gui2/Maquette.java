@@ -61,6 +61,7 @@ public class Maquette extends JPanel{
 		this.aideVide = new ImageIcon( "images/maquette/aideVide.png" );
 		this.solucePion = new ImageIcon( "images/maquette/pionSoluce.png" );
 		
+		int x_aide = this.niveau.getPions() * 35 + 10;
 		
      	for(int i=0;i< this.niveau.getCoupMax();i++){
     		for(int j=0;j< this.niveau.getPions();j++){
@@ -70,9 +71,9 @@ public class Maquette extends JPanel{
     			
     			this.plateauAides[i][j]= new JLabel( this.aideVide );
     			if( j%2 == 0 ){
-    				this.plateauAides[i][j].setBounds(j*7+155, i*35+16, WIDTH_AIDE_VIDE, HEIGHT_AIDE_VIDE);
+    				this.plateauAides[i][j].setBounds(j*7+x_aide, i*35+16, WIDTH_AIDE_VIDE, HEIGHT_AIDE_VIDE);
     			}else{
-    				this.plateauAides[i][j].setBounds(j*7+155-7, i*35+30, WIDTH_AIDE_VIDE, HEIGHT_AIDE_VIDE);
+    				this.plateauAides[i][j].setBounds(j*7+x_aide-7, i*35+30, WIDTH_AIDE_VIDE, HEIGHT_AIDE_VIDE);
     			}
     			this.add(this.plateauAides[i][j]);
     		}
