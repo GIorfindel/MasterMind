@@ -198,23 +198,10 @@ public class DB {
 	}
 			
 	//Permet de sauvegarder une partie 
-	public boolean sauvegarderSolo( Solo solo ) throws SQLException, Exception{
-		String query = "select nom from Partie where nom = ? AND id_joueur = ?";
-		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
-		preparedStmt.setString ( 1, solo.getNom() );
-		preparedStmt.setInt ( 2, this.getIdJoueur( solo.getJoueur() ) );
-		ResultSet resultSet = preparedStmt.executeQuery();
-		if( resultSet.next() ){
-			resultSet.close();
-			preparedStmt.close();
-			return false;
-		}
-		resultSet.close();
-		preparedStmt.close();
-		
-		query = " insert into Partie(id_Joueur, nom, niveau)"
+	public void sauvegarderSolo( Solo solo ) throws SQLException, Exception{
+		String query = " insert into Partie(id_Joueur, nom, niveau)"
 					+ " values (?, ?, ?)";
-		preparedStmt = this.connexion.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
+		PreparedStatement  preparedStmt = this.connexion.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
 		preparedStmt.setInt ( 1, this.getIdJoueur( solo.getJoueur() ) );
 		preparedStmt.setString ( 2, solo.getNom() );
 		preparedStmt.setString ( 3, solo.getNiveau().toString() );
@@ -230,7 +217,6 @@ public class DB {
 		preparedStmt.setInt ( 4, this.saveTour( solo.getTour() ) );
 		preparedStmt.executeUpdate();
 		preparedStmt.close();
-		return true;
 	}
 			
 	private Pions chargeCombinaison( int id_combinaison, int nb_pions ) throws SQLException{

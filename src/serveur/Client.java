@@ -234,10 +234,8 @@ public class Client extends Thread {
 	
 	public void demandeSaveSolo( Paquet paquet ){
 		Solo s = (Solo) paquet.getObjet( 0 );
-		boolean reussi = false;
 		try {
-			reussi = this.serveur.getBD().sauvegarderSolo( s );
-			this.envoyerPaquet( Paquet.creeREPONSE_SAVE_SOLO( reussi, paquet.getId() ) );
+			this.serveur.getBD().sauvegarderSolo( s );
 		} catch (SQLException e) {
 			this.serveur.afficher("Le client demande de sauver une partie solo, mais une erreur");
 			e.printStackTrace();

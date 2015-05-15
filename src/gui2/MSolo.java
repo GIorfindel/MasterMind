@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import mastermind.Couleur;
 import mastermind.Niveau;
+import mastermind.Paquet;
 import mastermind.Pions;
 import mastermind.Solo;
 
@@ -42,6 +43,8 @@ public class MSolo extends Menu{
 	private JButton effEssai;
 	
 	private JLabel information;
+	
+	private JButton save;
 	
 	
 	public MSolo( Fenetre fenetre ){
@@ -86,6 +89,7 @@ public class MSolo extends Menu{
 	    				effEssai.setEnabled(false);
 	    				valider.setEnabled(false);
 	    				desactiveBoutonColor();
+	    				save.setEnabled(false);
 	    			}else{
 	    				if(solo.getTour().getCoups() == solo.getNiveau().getCoupMax()){
 		    				//Vous avez perdu A faire*************************************************************
@@ -94,6 +98,7 @@ public class MSolo extends Menu{
 		    				effEssai.setEnabled(false);
 		    				valider.setEnabled(false);
 		    				desactiveBoutonColor();
+		    				save.setEnabled(false);
 		    			}
 	    			}
 	    			maquette.addAide( coups, solo.getTour().getNombreBonnePosition(coups), solo.getTour().getNombreBonneCouleur(coups));
@@ -126,6 +131,7 @@ public class MSolo extends Menu{
     				effEssai.setEnabled(false);
     				valider.setEnabled(false);
     				desactiveBoutonColor();
+    				save.setEnabled(false);
     				return;
 	    			//Vous avez gagné***************************************************************************
 	    		}else{
@@ -159,10 +165,26 @@ public class MSolo extends Menu{
 	    	}
 		});
 		this.add(recomm);
+		
+		this.save = new JButton("Sauvegarder");
+		this.save.setBounds(800,450,150,30);
+		this.save.setEnabled(false);
+		this.save.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		if( fenetre.getClient().connecterAuCompte() ){
+	    			solo.setJoueur(fenetre.getClient().getJoueur());
+	    			solo.setNom( solo.getJoueur().getIdentifiant() );
+		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
+		    		information.setText("Partie sauvegardé");
+	    		}
+	    	}
+		});
+		this.add(this.save);
 	}
 	
 	public void quitter(){
 		this.remove( this.maquette );
+		this.save.setEnabled(false);
 		this.maquette = null;
 		this.bouton.removeAll();
 		this.valider.setEnabled(false);
@@ -182,11 +204,16 @@ public class MSolo extends Menu{
 		this.couleursAutorise = this.solo.getNiveau().getCouleurAutorise();
 		this.initBoutonCouleur();
 		this.essai = new Pions(this.solo.getNiveau().getPions());
-		
+		if( this.fenetre.getClient().connecterAuCompte() ){
+			this.save.setEnabled(true);
+		}
 		this.nouveauTour();
 	}
 	
 	public void nouveauTour(){
+		if( this.fenetre.getClient().connecterAuCompte() ){
+			this.save.setEnabled(true);
+		}
 		this.solo.nouveauTour( this.couleursAutorise );
 		this.maquette.reset();
 		this.information.setText("");

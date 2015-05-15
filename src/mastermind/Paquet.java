@@ -36,9 +36,9 @@ public class Paquet implements Serializable{
 			MODIFI_AVATAR = 4, DEMANDE_MAJ_JOUEUR = 5, REPONSE_MAJ_JOUEUR = 6,
 			DECONNEXION_COMPTE = 7,
 			DEMANDE_INSCRIPTION = 8, REPONSE_INSCRIPTION = 9,
-			DEMANDE_SAVE_SOLO = 10, REPONSE_SAVE_SOLO = 11,
-			DEMANDE_CHARGER_SOLO = 12, REPONSE_CHARGER_SOLO = 13, DEMANDE_NOMS_CHARGER_SOLO = 14, REPONSE_NOMS_CHARGER_SOLO = 15,
-			DEMANDE_SUPP_SOLO = 16;
+			DEMANDE_SAVE_SOLO = 10,
+			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12, DEMANDE_NOMS_CHARGER_SOLO = 13, REPONSE_NOMS_CHARGER_SOLO = 14,
+			DEMANDE_SUPP_SOLO = 15;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -151,15 +151,6 @@ public class Paquet implements Serializable{
 	public static Paquet creeDEMANDE_SAVE_SOLO( Solo solo ){
 		Paquet p = new Paquet( 1, DEMANDE_SAVE_SOLO, creerId() );
 		p.addObjet( solo );
-		return p;
-	}
-	
-	public static Paquet creeREPONSE_SAVE_SOLO( boolean reussi, int id ){
-		if( reussi ){
-			return new Paquet( 0, REPONSE_SAVE_SOLO, id);
-		}
-		Paquet p =new Paquet( 1, REPONSE_SAVE_SOLO, id);// on met rien dans les objets,c'est juste un code pour dire qu'il y a déjà le meme nom de partie dans la BDD
-		p.addObjet("");
 		return p;
 	}
 	
