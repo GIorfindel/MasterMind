@@ -1,5 +1,6 @@
 package gui2;
 
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -83,18 +84,21 @@ public class MSolo extends Menu{
 	    				information.setText("Bravo! encore " + ( 10 - solo.getNbTour()) + " tours" );
 	    				suivant.setEnabled(true);
 	    				effEssai.setEnabled(false);
+	    				valider.setEnabled(false);
+	    				desactiveBoutonColor();
 	    			}else{
-	    				maquette.addAide( coups, solo.getTour().getNombreBonnePosition(coups), solo.getTour().getNombreBonneCouleur(coups));
+	    				if(solo.getTour().getCoups() == solo.getNiveau().getCoupMax()){
+		    				//Vous avez perdu A faire*************************************************************
+		    				information.setText("Vous avez perdu!" );
+		    				suivant.setEnabled(false);
+		    				effEssai.setEnabled(false);
+		    				valider.setEnabled(false);
+		    				desactiveBoutonColor();
+		    			}
 	    			}
+	    			maquette.addAide( coups, solo.getTour().getNombreBonnePosition(coups), solo.getTour().getNombreBonneCouleur(coups));
 	    			essai = new Pions(solo.getNiveau().getPions());
 	    			valider.setEnabled(false);
-	    			if(solo.getTour().getCoups() == solo.getNiveau().getCoupMax()){
-	    				//Vous avez perdu A faire*************************************************************
-	    				information.setText("Vous avez perdu!" );
-	    				suivant.setEnabled(false);
-	    				valider.setEnabled(false);
-	    				effEssai.setEnabled(false);
-	    			}
 	    		}
 	    	}
 		});
@@ -118,13 +122,16 @@ public class MSolo extends Menu{
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( solo.getNbTour() == 10 ){
 	    			information.setText("Vous avez gagné!" );
+	    			suivant.setEnabled(false);
+    				effEssai.setEnabled(false);
+    				valider.setEnabled(false);
+    				desactiveBoutonColor();
+    				return;
 	    			//Vous avez gagné***************************************************************************
 	    		}else{
 	    			information.setText("" );
 	    		}
 	    		nouveauTour();
-				suivant.setEnabled(false);
-				effEssai.setEnabled(true);
 	    	}
 		});
 		this.add(this.suivant);
@@ -159,10 +166,12 @@ public class MSolo extends Menu{
 		this.maquette = null;
 		this.bouton.removeAll();
 		this.valider.setEnabled(false);
+		this.suivant.setEnabled(false);
+		this.effEssai.setEnabled(true);
 		this.couleursAutorise = null;
 		this.solo.reset();
-		this.suivant.setEnabled(false);
 		this.information.setText("");
+		this.desactiveBoutonColor();
 	}
 	
 	public void clic(){
@@ -183,8 +192,9 @@ public class MSolo extends Menu{
 		this.information.setText("");
 		this.valider.setEnabled(false);
 		this.suivant.setEnabled(false);
-		this.essai = new Pions(solo.getNiveau().getPions());
 		this.effEssai.setEnabled(true);
+		this.essai = new Pions(solo.getNiveau().getPions());
+		this.activeBoutonColor();
 		
 		this.maquette.dessineSolution( solo.getTour().getComb() );
 	}
@@ -211,12 +221,26 @@ public class MSolo extends Menu{
 	}
 	
 	private void clicBoutonCouleur( Couleur c ){
-		if( this.essai.getNbPion() < this.solo.getNiveau().getPions() && this.solo.getNiveau().getCoupMax() > this.solo.getTour().getCoups() ){
+		if( this.essai.getNbPion() < this.solo.getNiveau().getPions()){
 			this.maquette.addPion(this.solo.getTour().getCoups(), this.essai.getNbPion(), c);
 			this.essai.addPion( c );
 		}
 		if( this.essai.getNbPion() == this.solo.getNiveau().getPions() ){
 			this.valider.setEnabled(true);
+		}
+	}
+	
+	private void desactiveBoutonColor(){
+		Component[] tab = this.bouton.getComponents();
+		for(int i = 0; i < tab.length; i++ ){
+			tab[i].setEnabled(false);
+		}
+	}
+	
+	private void activeBoutonColor(){
+		Component[] tab = this.bouton.getComponents();
+		for(int i = 0; i < tab.length; i++ ){
+			tab[i].setEnabled(true);
 		}
 	}
 	
