@@ -86,7 +86,7 @@ public abstract class Niveau implements Serializable {
 		Couleur[] coul = comb.getCombinaison();
 		Set<Couleur> unicColors = new HashSet<Couleur>();
 		for (Couleur c : coul) unicColors.add(c);
-		int unicNB = unicColors.size();
+		int unicNB = unicColors.size() - 1;
 		if (unicNB<coul.length && this.doubl==false)
 		{
 			return false;
