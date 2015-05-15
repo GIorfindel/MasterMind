@@ -137,14 +137,8 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_SAVE_SOLO:
 			this.demandeSaveSolo( paquet );
 			break;
-		case Paquet.DEMANDE_NOMS_CHARGER_SOLO:
-			this.demandeNomsChargerSolo( paquet );
-			break;
 		case Paquet.DEMANDE_CHARGER_SOLO:
 			this.demandeChargerSolo( paquet );
-			break;
-		case Paquet.DEMANDE_SUPP_SOLO:
-			this.demandeSuppSolo( paquet );
 			break;
 		 }
 	}
@@ -244,39 +238,12 @@ public class Client extends Thread {
 		}
 	}
 	
-	public void demandeNomsChargerSolo( Paquet paquet ){
-		String[] noms_parties = null;
-		try {
-			noms_parties = this.serveur.getBD().getNomsPartieSolo( this.joueur );
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return;
-		} catch( Exception e ){
-			e.printStackTrace();
-			return;
-		}
-		this.envoyerPaquet( Paquet.creeREPONSE_NOMS_CHARGER_SOLO( paquet.getId(), noms_parties) );
-	}
-	
 	public void demandeChargerSolo( Paquet p ){
 		String nom = (String) p.getObjet( 0 );
 		try {
 			Solo s = this.serveur.getBD().chargerSolo( nom, this.joueur );
 			this.envoyerPaquet( Paquet.creeREPONSE_CHARGER_SOLO( s, p.getId() ) );
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void demandeSuppSolo( Paquet paquet ){
-		String nom_partie = (String) paquet.getObjet( 0 );
-		Joueur j = (Joueur) paquet.getObjet( 1 );
-		try {
-			this.serveur.getBD().supprimerSolo( nom_partie, j );
-		} catch (SQLException e) {
-			this.serveur.afficher( "Impossible de supprimer la partie solo: " + nom_partie + ", du joueur(" + this.id + ") " + j.getIdentifiant() );
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();

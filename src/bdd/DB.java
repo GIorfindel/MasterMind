@@ -199,6 +199,7 @@ public class DB {
 			
 	//Permet de sauvegarder une partie 
 	public void sauvegarderSolo( Solo solo ) throws SQLException, Exception{
+		this.supprimerSolo(solo.getNom(), solo.getJoueur());
 		String query = " insert into Partie(id_Joueur, nom, niveau)"
 					+ " values (?, ?, ?)";
 		PreparedStatement  preparedStmt = this.connexion.prepareStatement( query, Statement.RETURN_GENERATED_KEYS );
@@ -330,65 +331,24 @@ public class DB {
 		return solo;
 	}
 	
-	public String[] getNomsPartieSolo( Joueur j ) throws SQLException, Exception{
-		String query = "select count(Partie.nom) as nb from Solo, Partie" +
-				" where Solo.id_Partie = Partie.id_Partie AND Partie.id_Joueur = ? AND Partie.nom IS NOT NULL";
-		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
-		preparedStmt.setInt( 1, this.getIdJoueur( j ) );
-		ResultSet resultSet = preparedStmt.executeQuery();
-		int nbPartie = -1;
-		if( resultSet.next() ){
-			nbPartie = resultSet.getInt( "nb" );
-			resultSet.close();
-			preparedStmt.close();
-		}else{
-			resultSet.close();
-			preparedStmt.close();
-			throw new Exception( "Nombre de partie solo de " + j.getIdentifiant() + " pas trouvé" );
-		}
-		if( nbPartie == 0 ){
-			return null;
-		}
-		String[] noms = new String[nbPartie];
-		query = "select Partie.nom as nom from Solo, Partie" +
-				" where Solo.id_Partie = Partie.id_Partie AND Partie.id_Joueur = ? AND Partie.nom IS NOT NULL";
-		preparedStmt = this.connexion.prepareStatement( query );
-		preparedStmt.setInt( 1, this.getIdJoueur( j ) );
-		resultSet = preparedStmt.executeQuery();
-		int i = 0;
-		while( resultSet.next() ){
-			if( i >= nbPartie ){
-				resultSet.close();
-				preparedStmt.close();
-				throw new Exception( "i trop grand de " + j.getIdentifiant() );
-			}
-			noms[i] = resultSet.getString( "nom" );
-			i++;
-		}
-		resultSet.close();
-		preparedStmt.close();
-		if( i != nbPartie){
-			throw new Exception( "i différent de " + j.getIdentifiant() );
-		}
-		return noms;
-	}
-	
-	public void supprimerSolo( String nom_partie, Joueur j ) throws SQLException, Exception{
-		String query = "select Solo.id_Partie as id from Solo, Partie" +
+	private void supprimerSolo( String nom_partie, Joueur j ) throws SQLException, Exception{
+		String query = "select Solo.id_Partie as id, Solo.tour as tour from Solo, Partie" +
 				" where Solo.id_Partie = Partie.id_Partie AND Partie.nom = ? AND Partie.id_Joueur = ?";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
 		preparedStmt.setString( 1, nom_partie );
 		preparedStmt.setInt( 2, this.getIdJoueur( j ) );
 		ResultSet resultSet = preparedStmt.executeQuery();
 		int id_partie = -1;
+		int idTour;
 		if( resultSet.next() ){
 			id_partie = resultSet.getInt( "id" );
+			idTour = resultSet.getInt( "tour" );
 			resultSet.close();
 			preparedStmt.close();
 		}else{
 			resultSet.close();
 			preparedStmt.close();
-			throw new Exception("Impossible d'avoir l'id de la partie à supprimer, nom_partie: " + nom_partie + ", joueur: " + j.getIdentifiant() );
+			return;
 		}
 		query = "delete from Solo where id_Partie = ?";
 		preparedStmt = this.connexion.prepareStatement( query );
@@ -398,6 +358,77 @@ public class DB {
 		query = "delete from Partie where id_Partie = ?";
 		preparedStmt = this.connexion.prepareStatement( query );
 		preparedStmt.setInt( 1, id_partie );
+		preparedStmt.executeUpdate();
+		preparedStmt.close();
+		
+		this.supprimeTour( idTour );
+	}
+	
+	private void supprimeTour( int idTour ) throws SQLException {
+		String query = "select combinaison, essais from Tour where id = ?";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, idTour );
+		ResultSet resultSet = preparedStmt.executeQuery();
+		int id_comb;
+		int id_essais;
+		if( resultSet.next() ){
+			id_comb = resultSet.getInt( "combinaison" );
+			id_essais = resultSet.getInt( "essais" );
+			resultSet.close();
+			preparedStmt.close();
+		}else{
+			resultSet.close();
+			preparedStmt.close();
+			return;
+		}
+		query = "delete from Tour where id = ?";
+		preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, idTour );
+		preparedStmt.executeUpdate();
+		preparedStmt.close();
+		
+		this.supprimerCombinaison( id_comb );
+		this.supprimerEssais(id_essais);
+	}
+	
+	private void supprimerCombinaison( int idComb ) throws SQLException{
+		String query = "delete from Pions where id_combinaison = ?";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, idComb );
+		preparedStmt.executeUpdate();
+		preparedStmt.close();
+		
+		query = "delete from Combinaison where id = ?";
+		preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, idComb );
+		preparedStmt.executeUpdate();
+		preparedStmt.close();
+	}
+	
+	private void supprimerEssais( int idEssais ) throws SQLException{
+		this.supprimerEssai( idEssais );
+		
+		String query = "delete from Essais where id = ?";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, idEssais );
+		preparedStmt.executeUpdate();
+		preparedStmt.close();
+	}
+	
+	private void supprimerEssai( int idEssais ) throws SQLException{
+		String query = "select id_combinaison from Essai where id_essais = ?";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, idEssais );
+		ResultSet resultSet = preparedStmt.executeQuery();
+		int idCombin;
+		while( resultSet.next() ){
+			idCombin = resultSet.getInt("id_combinaison");
+			this.supprimerCombinaison(idCombin);
+		}
+		
+		query = "delete from Essai where id_essais = ?";
+		preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, idEssais );
 		preparedStmt.executeUpdate();
 		preparedStmt.close();
 	}

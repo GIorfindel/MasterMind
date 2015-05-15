@@ -171,7 +171,7 @@ public class MSolo extends Menu{
 		this.save.setEnabled(false);
 		this.save.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		if( fenetre.getClient().connecterAuCompte() ){
+	    		if( fenetre.getClient().connecterAuCompte() && solo.getTour().getCoups() > 0){
 	    			solo.setJoueur(fenetre.getClient().getJoueur());
 	    			solo.setNom( solo.getJoueur().getIdentifiant() );
 		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
@@ -294,5 +294,10 @@ public class MSolo extends Menu{
 			return this.violet;
 		}
 		return null;
+	}
+	
+	public void decoServeur(){
+		this.save.setEnabled(false);
+		this.information.setText("Vous n'êtes plus connecté au serveur");
 	}
 }
