@@ -423,13 +423,17 @@ public class DB {
 		int idCombin;
 		while( resultSet.next() ){
 			idCombin = resultSet.getInt("id_combinaison");
+			
+			String query2 = "delete from Essai where id_essais = ? and id_combinaison = ?";
+			PreparedStatement preparedStmt2 = this.connexion.prepareStatement( query2 );
+			preparedStmt2.setInt( 1, idEssais );
+			preparedStmt2.setInt( 2, idCombin );
+			preparedStmt2.executeUpdate();
+			preparedStmt2.close();
+			
 			this.supprimerCombinaison(idCombin);
 		}
-		
-		query = "delete from Essai where id_essais = ?";
-		preparedStmt = this.connexion.prepareStatement( query );
-		preparedStmt.setInt( 1, idEssais );
-		preparedStmt.executeUpdate();
+		resultSet.close();
 		preparedStmt.close();
 	}
 

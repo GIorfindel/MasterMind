@@ -171,7 +171,7 @@ public class MSolo extends Menu{
 		this.save.setEnabled(false);
 		this.save.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		if( fenetre.getClient().connecterAuCompte() && solo.getTour().getCoups() > 0){
+	    		if( fenetre.getClient().connecterAuCompte()){
 	    			solo.setJoueur(fenetre.getClient().getJoueur());
 	    			solo.setNom( solo.getJoueur().getIdentifiant() );
 		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
