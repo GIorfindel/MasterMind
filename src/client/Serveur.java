@@ -3,6 +3,7 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import mastermind.Paquet;
@@ -20,7 +21,7 @@ public class Serveur {
 	private Client client;
 	//Si on est connecté au serveur ou pas
 	private boolean connecte;
-	
+
 	public Serveur( String addr_serveur, int port_serveur, Client client ){
 		this.addr_serveur = addr_serveur;
 		this.port_serveur = port_serveur;
@@ -30,11 +31,11 @@ public class Serveur {
 		this.ecouteServeur = null;
 		this.client = client;
 	}
-	
+
 	public boolean getConnecte(){
 		return this.connecte;
 	}
-	
+
 	public synchronized boolean connectionAuServeur(){
 		if( this.connecte ){
 			return true;
@@ -42,9 +43,19 @@ public class Serveur {
 		//Ce que le serveur nous envoi
 		ObjectInputStream recoi = null;
 		try {
+
+
+			InetAddress inet = InetAddress.getByName(this.addr_serveur);
+			if ( !inet.isReachable(5000)){
+				return false;
+			}
+
+
+
+
 			this.socket = new Socket( this.addr_serveur, this.port_serveur );
 			this.connecte = true;
-		} 
+		}
 		catch(Exception e) {//Impossible de se connecter au serveur
 			this.connecte = false;
 			//e.printStackTrace(); Car si le joueur n'a pas de connection internet, c'est normal qui ne peut pas se connecter
@@ -65,7 +76,7 @@ public class Serveur {
 		this.ecouteServeur.start();
 		return true;
 	}
-	
+
 	public boolean close(){
 		this.connecte = false;
 		if( this.ecouteServeur != null ){
@@ -87,7 +98,7 @@ public class Serveur {
 		}
 		return false;
 	}
-	
+
 	public boolean envoyerPaquet( Paquet p ){
 		try {
 			if( this.envoi != null ){
@@ -100,11 +111,11 @@ public class Serveur {
 		}
 		return false;
 	}
-	
+
 	private double getTempsSeconde(){
 		return System.currentTimeMillis()/1000.0;
 	}
-	
+
 	//il y a une limite de temps(en seconde), si il y a pas de paquet
 	//au bout de cette limite il retourne null
 	public Paquet getAttentPaquet( double limite_temp_max, int id ){
@@ -128,5 +139,5 @@ public class Serveur {
 			}
 		}
 	}
-	
+
 }
