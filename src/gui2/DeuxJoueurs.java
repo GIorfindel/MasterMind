@@ -16,7 +16,8 @@ import javax.swing.SwingConstants;
 public class DeuxJoueurs extends Menu{
 
 	private Fenetre fenetre;
-		
+	private static int X = 405, W = 200, H = 40;
+
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.init();
@@ -37,8 +38,8 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addLabelChoixMode(){
 		JLabel lblMastermind = new JLabel( "Mode deux joueurs" );
-		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
-		lblMastermind.setBounds(150, 30, 660, 100);
+		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 40)); // Modification de la police
+		lblMastermind.setBounds(170, 50, 660, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );
@@ -145,7 +146,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonRejoindre(){
 	    JButton btnRejoindre = new JButton("Rejoindre la partie");
-	    btnRejoindre.setBounds(405, 410, 150, 50);
+	    btnRejoindre.setBounds(X, 410, W, H);
 	    btnRejoindre.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		      }
@@ -155,7 +156,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonCreer(){
 	    JButton btnCrerUnePartie = new JButton("Créer une partie");
-	    btnCrerUnePartie.setBounds(405, 470, 150, 50);
+	    btnCrerUnePartie.setBounds(X, 470, W, H);
 	    btnCrerUnePartie.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		    	  fenetre.showMenu( Fenetre.CREER );
@@ -166,7 +167,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonRafraichir(){
 		JButton btn = new JButton( "Rafraîchir" );
-		btn.setBounds(405, 530, 150, 50);
+		btn.setBounds(X, 530, W, H);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		      }
@@ -176,7 +177,7 @@ public class DeuxJoueurs extends Menu{
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds(405, 590, 150, 50);
+		btn.setBounds(X, 590, W, H);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		    	  fenetre.showMenu( Fenetre.JOUER );

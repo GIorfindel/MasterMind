@@ -16,7 +16,7 @@ public class UnJoueur extends Menu{
 
 	private Fenetre fenetre;
 	
-	private static int X = 405, Y = 160, W = 150, H = 50;
+	private static int X = 405, Y = 160, W = 200, H = 50;
 	
 	public UnJoueur( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -38,9 +38,9 @@ public class UnJoueur extends Menu{
 	}
 	
 	private void addLabelChoixNiveau(){
-		JLabel lblMastermind = new JLabel( "Choix du niveau de difficulté" );
-		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
-		lblMastermind.setBounds(150, 30, 660, 100);
+		JLabel lblMastermind = new JLabel( "Choix de la difficulté" );
+		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 40)); // Modification de la police
+		lblMastermind.setBounds(170, 50, 660, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );

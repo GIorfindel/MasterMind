@@ -15,7 +15,7 @@ public class Regles extends Menu{
 
 	private Fenetre fenetre;
 	
-	private static int X = 405, Y = 570, W = 150, H = 50;
+	private static int X = 405, Y = 570, W = 200, H = 40;
 	
 	public Regles( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -32,8 +32,8 @@ public class Regles extends Menu{
 	
 	private void addLabelChoixMode(){
 		JLabel lblMastermind = new JLabel( "Règles du jeu" );
-		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 50)); // Modification de la police
-		lblMastermind.setBounds(150, 30, 660, 100);
+		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 40)); // Modification de la police
+		lblMastermind.setBounds(170, 50, 660, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );

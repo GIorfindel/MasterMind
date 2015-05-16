@@ -17,7 +17,7 @@ public class Accueil extends Menu{
 	private JLabel connectServeur;
 	private JLabel connectCompte;
 	
-	private static int X = 405, Y = 160, W = 150, H = 50;
+	private static int X = 405, Y = 160, W = 200, H = 50;
 	
 	public Accueil( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -39,8 +39,8 @@ public class Accueil extends Menu{
 	
 	private void addLabelMastermind(){
 		JLabel lblMastermind = new JLabel("Mastermind");
-		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 66)); // Modification de la police
-		lblMastermind.setBounds(150, 30, 660, 100);
+		lblMastermind.setFont(new Font("Agency FB", Font.PLAIN, 60)); // Modification de la police
+		lblMastermind.setBounds(170, 50, 660, 100);
 		lblMastermind.setVerticalAlignment( SwingConstants.TOP );
 		lblMastermind.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add( lblMastermind );
@@ -113,7 +113,7 @@ public class Accueil extends Menu{
 		this.connectServeur.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(this.connectServeur);
 		
-		this.connectCompte = new JLabel("Joueur: invité");
+		this.connectCompte = new JLabel("Joueur: Invité");
 		this.connectCompte.setBounds(0,30,300,30);
 		this.connectCompte.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(this.connectCompte);
@@ -125,7 +125,7 @@ public class Accueil extends Menu{
 			this.connectCompte.setText("Joueur: " + this.fenetre.getClient().getJoueur().getIdentifiant());
 		}else{
 			this.profil.setEnabled(false);
-			this.connectCompte.setText("Joueur: invité");
+			this.connectCompte.setText("Joueur: Invité");
 		}
 		if(this.fenetre.getClient().getConnecteAuServeur()){
 			this.connectServeur.setText("Connecté au serveur: oui");

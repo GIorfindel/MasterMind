@@ -30,6 +30,9 @@ public class Profil extends Menu{
 	private File imageChoisit;
 	private JButton valideAvatar;
 	
+	private static int X = 405, W = 200, H = 40;
+
+	
 	public Profil( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.init();
@@ -48,8 +51,8 @@ public class Profil extends Menu{
 	
 	private void addLabelTitre(){
 		JLabel titre = new JLabel("Profil");
-		titre.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		titre.setBounds(405, 43, 141, 70);
+		titre.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		titre.setBounds(170, 50, 660, 100);
 	    this.add(titre);
 	}
 	
@@ -67,7 +70,7 @@ public class Profil extends Menu{
 	
 	public void addChoisitAvatar(){
 		JButton btn = new JButton( "Choisir un avatar" );
-		btn.setBounds( 405, 150, 150, 20 );
+		btn.setBounds( X, 150, W, H );
 		btn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
@@ -94,7 +97,7 @@ public class Profil extends Menu{
 		this.add( this.nomAvatar );
 		
 		this.valideAvatar = new JButton( "Valider" );
-		this.valideAvatar.setBounds( 405, 180, 100, 20 );
+		this.valideAvatar.setBounds( X, 180, W, H );
 		this.valideAvatar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.valideAvatar.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
@@ -131,7 +134,7 @@ public class Profil extends Menu{
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds( 405, 350, 150, 50 );
+		btn.setBounds( X, 350, W, H );
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.ACCUEIL );

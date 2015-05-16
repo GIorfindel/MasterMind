@@ -23,6 +23,9 @@ public class Connexion extends Menu{
 	private JTextField mdp;
 	private JButton valider;
 	
+	private static int X = 405, W = 200, H = 40;
+
+	
 	public Connexion( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.init();
@@ -51,7 +54,7 @@ public class Connexion extends Menu{
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds( 405, 340, 150, 50 );
+		btn.setBounds( X, 340, W, H );
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.ACCUEIL );
@@ -62,8 +65,8 @@ public class Connexion extends Menu{
 	
 	private void addLabelTitre() {
 		this.titre = new JLabel("Se connecter");
-		this.titre.setFont(new Font("Agency FB", Font.PLAIN, 50));
-		this.titre.setBounds(150, 30, 660, 100);
+		this.titre.setFont(new Font("Agency FB", Font.PLAIN, 40));
+		this.titre.setBounds(170, 50, 660, 100);
 		this.titre.setVerticalAlignment( SwingConstants.TOP );
 		this.titre.setHorizontalAlignment( SwingConstants.CENTER );
 	    this.add(this.titre);
@@ -71,15 +74,15 @@ public class Connexion extends Menu{
 	
 	private void addLabelInformation(){
 		this.information = new JLabel("Informations");
-		this.information.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		this.information.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.information.setForeground( Color.red );
-		this.information.setBounds( 345, 400, 400, 27 );
+		this.information.setBounds( 380, 400, 400, 27 );
 		this.add( this.information );
 	}
 	
 	private void addIdentifiant(){
 		JLabel lblIdentifiant = new JLabel("Identifiant");
-	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 17));
+	    lblIdentifiant.setFont(new Font("Tahoma", Font.PLAIN, 16));
 	    lblIdentifiant.setBounds(300, 160, 100, 27);
 	    this.add(lblIdentifiant);
 	    
@@ -92,8 +95,8 @@ public class Connexion extends Menu{
 	
 	private void addMDP(){
 		JLabel lblMotDePasse = new JLabel("Mot de passe");
-	    lblMotDePasse.setFont(new Font("Tahoma", Font.PLAIN, 17));
-	    lblMotDePasse.setBounds(300, 218, 100, 27);
+	    lblMotDePasse.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	    lblMotDePasse.setBounds(300, 218, 200, 27);
 	    this.add(lblMotDePasse);
 	    
 	    this.mdp = new JTextField();
@@ -105,7 +108,7 @@ public class Connexion extends Menu{
 	
 	private void addValider(){
 		this.valider = new JButton("Valider");
-		this.valider.setBounds(405, 280, 150, 50);
+		this.valider.setBounds(X, 280, W, H);
 		this.valider.setForeground(Color.BLACK);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
