@@ -37,8 +37,7 @@ public class Paquet implements Serializable{
 			DECONNEXION_COMPTE = 7,
 			DEMANDE_INSCRIPTION = 8, REPONSE_INSCRIPTION = 9,
 			DEMANDE_SAVE_SOLO = 10,
-			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12, DEMANDE_NOMS_CHARGER_SOLO = 13, REPONSE_NOMS_CHARGER_SOLO = 14,
-			DEMANDE_SUPP_SOLO = 15;
+			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -154,23 +153,9 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
-	public static Paquet creeDEMANDE_NOMS_CHARGER_SOLO(){
-		return new Paquet( 0, DEMANDE_NOMS_CHARGER_SOLO, creerId() );
-	}
-	
-	public static Paquet creeREPONSE_NOMS_CHARGER_SOLO( int id, String[] noms ){
-		if( noms == null ){
-			return new Paquet( 0, REPONSE_NOMS_CHARGER_SOLO, id );
-		}else{
-			Paquet p = new Paquet( 1, REPONSE_NOMS_CHARGER_SOLO, id );
-			p.addObjet( noms );
-			return p;
-		}
-	}
-	
-	public static Paquet creeDEMANDE_CHARGER_SOLO( String nom_parite ){
+	public static Paquet creeDEMANDE_CHARGER_SOLO( String nom_partie ){
 		Paquet p = new Paquet( 1, DEMANDE_CHARGER_SOLO, creerId() );
-		p.addObjet(nom_parite);
+		p.addObjet(nom_partie);
 		return p;
 	}
 	
@@ -180,13 +165,6 @@ public class Paquet implements Serializable{
 		}
 		Paquet p = new Paquet( 1, REPONSE_CHARGER_SOLO, id );
 		p.addObjet( solo );
-		return p;
-	}
-	
-	public static Paquet creeDEMANDE_SUPP_SOLO( String nom, Joueur j ){
-		Paquet p = new Paquet( 2, DEMANDE_SUPP_SOLO, -1 );
-		p.addObjet( nom );
-		p.addObjet( j );
 		return p;
 	}
 }

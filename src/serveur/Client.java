@@ -56,10 +56,6 @@ public class Client extends Thread {
 				try{
 					if( this.recoi != null ){
 						p = (Paquet) this.recoi.readObject();
-						
-						System.out.println("id_Paquet: "+p.getId() + "  type: "+p.getType());
-						
-						
 						this.gererPaquet( p );
 					}
 				}catch( EOFException e ){//Le client s'arrete brutalement
@@ -232,6 +228,9 @@ public class Client extends Thread {
 	
 	public void demandeSaveSolo( Paquet paquet ){
 		Solo s = (Solo) paquet.getObjet( 0 );
+		
+		System.out.println("coups: "+s.getCoups());
+		
 		try {
 			this.serveur.getBD().sauvegarderSolo( s );
 		} catch (SQLException e) {
