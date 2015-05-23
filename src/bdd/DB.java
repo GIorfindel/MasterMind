@@ -332,6 +332,11 @@ public class DB {
 	}
 	
 	private void supprimerSolo( String nom_partie, Joueur j ) throws SQLException, Exception{
+		
+		
+		System.out.println("a");
+		
+		
 		String query = "select Solo.id_Partie as id, Solo.tour as tour from Solo, Partie" +
 				" where Solo.id_Partie = Partie.id_Partie AND Partie.nom = ? AND Partie.id_Joueur = ?";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
@@ -365,6 +370,11 @@ public class DB {
 	}
 	
 	private void supprimeTour( int idTour ) throws SQLException {
+
+		
+		System.out.println("b");
+		
+		
 		String query = "select combinaison, essais from Tour where id = ?";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
 		preparedStmt.setInt( 1, idTour );
@@ -392,6 +402,11 @@ public class DB {
 	}
 	
 	private void supprimerCombinaison( int idComb ) throws SQLException{
+
+		
+		System.out.println("c");
+		
+		
 		String query = "delete from Pions where id_combinaison = ?";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
 		preparedStmt.setInt( 1, idComb );
@@ -406,6 +421,11 @@ public class DB {
 	}
 	
 	private void supprimerEssais( int idEssais ) throws SQLException{
+
+		
+		System.out.println("d");
+		
+		
 		this.supprimerEssai( idEssais );
 		
 		String query = "delete from Essais where id = ?";
@@ -416,6 +436,11 @@ public class DB {
 	}
 	
 	private void supprimerEssai( int idEssais ) throws SQLException{
+
+		
+		System.out.println("e");
+		
+		
 		String query = "select id_combinaison from Essai where id_essais = ?";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
 		preparedStmt.setInt( 1, idEssais );

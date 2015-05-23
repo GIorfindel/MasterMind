@@ -76,7 +76,7 @@ public class MSolo extends Menu{
 		this.add( bouton );
 		
 		this.valider = new JButton("Valider");
-		this.valider.setBounds(350,415,100,30);
+		this.valider.setBounds(380,415,100,30);
 		this.valider.setEnabled(false);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -110,7 +110,7 @@ public class MSolo extends Menu{
 		this.add(this.valider);
 		
 		this.effEssai = new JButton("Effacer l'essai");
-		this.effEssai.setBounds(470,415,200,30);
+		this.effEssai.setBounds(500,415,200,30);
 		this.effEssai.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		essai = new Pions(solo.getNiveau().getPions());;
@@ -121,7 +121,7 @@ public class MSolo extends Menu{
 		this.add(this.effEssai);
 		
 		this.suivant = new JButton("Suivant");
-		this.suivant.setBounds(350,450,100,30);
+		this.suivant.setBounds(380,450,100,30);
 		this.suivant.setEnabled(false);
 		this.suivant.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
