@@ -51,6 +51,7 @@ public void addCoups(){
 
 
 public void nouveauTour( Couleur[] couleurPossible ){
+	this.coups += this.tour.getCoups();
 	this.nbTour ++;
 	this.tour.nouveauTour( this.niveau.genererCombinaisonAle( couleurPossible ) );
 }
