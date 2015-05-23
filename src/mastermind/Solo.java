@@ -51,7 +51,6 @@ public void addCoups(){
 
 
 public void nouveauTour( Couleur[] couleurPossible ){
-	this.coups += this.tour.getCoups();
 	this.nbTour ++;
 	this.tour.nouveauTour( this.niveau.genererCombinaisonAle( couleurPossible ) );
 }
@@ -59,5 +58,10 @@ public void nouveauTour( Couleur[] couleurPossible ){
 public void reset(){
 	this.coups = 0;
 	this.nbTour = 0;
+}
+
+public boolean testCombinaison(Pions comb){
+	this.coups++;
+	return this.tour.testCombinaison(comb);
 }
 }

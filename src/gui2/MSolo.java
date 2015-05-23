@@ -82,7 +82,7 @@ public class MSolo extends Menu{
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( essai.getNbPion() == solo.getNiveau().getPions() ){
 	    			int coups = solo.getTour().getCoups();
-	    			if (solo.getTour().testCombinaison( essai )){
+	    			if (solo.testCombinaison( essai )){
 	    				maquette.dessineSolution( solo.getTour().getComb() );
 	    				information.setText("Bravo! encore " + ( 10 - solo.getNbTour()) + " tours" );
 	    				suivant.setEnabled(true);
