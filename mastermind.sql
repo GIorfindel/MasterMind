@@ -13,16 +13,11 @@ CREATE TABLE Score(
 	coups INT not null,
 	victoire INT(1),
 	tours INT,
+	id_joueur INT,
 	niveau VARCHAR(20),
+	FOREIGN KEY (id_joueur) REFERENCES Joueur(id),
 	CHECK ( mode_solo_multi = 'solo' OR mode_solo_multi = 'multi' ),
 	CHECK ( niveau = 'TresFacile' OR niveau = 'Facile' OR niveau = 'Normal' OR niveau = 'Difficile' OR niveau = 'TresDifficile' )
-);
-
-CREATE TABLE Joueur_Score(
-	id_joueur INT,
-	id_score INT,
-	FOREIGN KEY (id_joueur) REFERENCES Joueur(id),
-	FOREIGN KEY (id_score) REFERENCES Score(id)
 );
 
 CREATE TABLE Partie(
