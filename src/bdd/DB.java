@@ -282,7 +282,6 @@ public class DB {
 		t.setCoups( coups );
 		t.setComb( this.chargeCombinaison( id_combinaison, nb_pions ) );
 		t.setEssais( this.chargeEssais( id_essai, nb_pions ) );
-		t.ajouteAides();
 		return t;
 	}
 			

@@ -225,8 +225,10 @@ public class MSolo extends Menu{
 			this.effEssai.setEnabled(true);
 			this.essai = new Pions(solo.getNiveau().getPions());
 			this.activeBoutonColor();
-			
 			this.soloCharger = false;
+			this.maquette.setMaquette(solo.getTour());
+			
+			this.maquette.dessineSolution( solo.getTour().getComb() );
 		}else{
 			this.nouveauTour();
 		}

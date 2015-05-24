@@ -198,9 +198,7 @@ public class Paquet implements Serializable{
 		if( solo == null ){
 			return new Paquet( 0, REPONSE_CHARGER_SOLO, id );
 		}
-		
-		
-		Paquet p = new Paquet( 8, REPONSE_CHARGER_SOLO, creerId() );
+		Paquet p = new Paquet( 8, REPONSE_CHARGER_SOLO, id );
 		p.addObjet( solo.getJoueur() );
 		p.addObjet( solo.getNom() );
 		p.addObjet( solo.getNiveau() );

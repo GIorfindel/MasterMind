@@ -93,6 +93,7 @@ public class Jouer extends Menu{
 						
 						else {
 							Solo s = Paquet.getSolo(ps);
+							s.getTour().ajouteAides();
 							fenetre.setSoloCharger(s);
 							fenetre.showMenu( Fenetre.SOLO );
 						}
