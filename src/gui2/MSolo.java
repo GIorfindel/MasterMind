@@ -45,6 +45,8 @@ public class MSolo extends Menu{
 	
 	private JLabel information;
 	
+	private JLabel infoPartie;
+	
 	private JButton save;
 	
 	
@@ -79,6 +81,11 @@ public class MSolo extends Menu{
 	private void init(){
 		this.setLayout( null );
 		
+		
+		this.infoPartie = new JLabel();
+		this.infoPartie.setBounds(380,100,500,30);
+		this.add(this.infoPartie);
+		
 		this.bouton = new JPanel();
 		this.add( bouton );
 		
@@ -111,6 +118,7 @@ public class MSolo extends Menu{
 	    			maquette.addAide( coups, solo.getTour().getNombreBonnePosition(coups), solo.getTour().getNombreBonneCouleur(coups));
 	    			essai = new Pions(solo.getNiveau().getPions());
 	    			valider.setEnabled(false);
+	    			refreshInfoPartie();
 	    		}
 	    	}
 		});
@@ -138,6 +146,7 @@ public class MSolo extends Menu{
     				effEssai.setEnabled(false);
     				valider.setEnabled(false);
     				desactiveBoutonColor();
+    				refreshInfoPartie();
     				save.setEnabled(false);
     				return;
 	    			//Vous avez gagné***************************************************************************
@@ -145,6 +154,7 @@ public class MSolo extends Menu{
 	    			information.setText("" );
 	    		}
 	    		nouveauTour();
+	    		refreshInfoPartie();
 	    	}
 		});
 		this.add(this.suivant);
@@ -201,6 +211,7 @@ public class MSolo extends Menu{
 		this.solo.reset();
 		this.information.setText("");
 		this.desactiveBoutonColor();
+		this.infoPartie.setText("");
 	}
 	
 	public void clic(){
@@ -246,8 +257,13 @@ public class MSolo extends Menu{
 		this.effEssai.setEnabled(true);
 		this.essai = new Pions(solo.getNiveau().getPions());
 		this.activeBoutonColor();
+		this.refreshInfoPartie();
 		
 		this.maquette.dessineSolution( solo.getTour().getComb() );
+	}
+	
+	private void refreshInfoPartie(){
+		this.infoPartie.setText("Coups totals: "+this.solo.getCoups()+", Tour: "+this.solo.getNbTour()+", Coups: "+this.solo.getTour().getCoups());
 	}
 	
 	private void initBoutonCouleur(){

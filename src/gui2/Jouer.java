@@ -167,5 +167,9 @@ public class Jouer extends Menu{
 			this.connectServeur.setText("Connecté au serveur: non");
 		}
 	}
+	
+	public void decoServeur(){
+		this.clic();
+	}
 
 }
