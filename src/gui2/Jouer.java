@@ -9,9 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import mastermind.Couleur;
-import mastermind.Niveau;
-import mastermind.NiveauPerso;
 import mastermind.Paquet;
 import mastermind.Solo;
 
@@ -21,7 +18,6 @@ public class Jouer extends Menu{
 	private Fenetre fenetre;
 	private JButton unjoueur, deuxjoueurs, charger, regles;
 	private JLabel connectServeur, connectCompte, information;
-	private Solo solo;
 	
 	private static int X = 405, Y = 160, W = 200, H = 50;
 	
@@ -40,6 +36,7 @@ public class Jouer extends Menu{
 		this.addBoutonRegles();
 		this.addBoutonRetour();
 		this.addInfoClient();
+		this.addInformation();
 
 	}
 	
@@ -91,7 +88,7 @@ public class Jouer extends Menu{
 					if(ps != null) {
 						
 						if(ps.getNbObjet() == 0) {
-							information = new JLabel("Partie introuvable");
+							information.setText("Partie introuvable");
 						}
 						
 						else {
@@ -100,7 +97,7 @@ public class Jouer extends Menu{
 							fenetre.showMenu( Fenetre.SOLO );
 						}
 					}else{
-						information = new JLabel("Impossible de charger votre partie");
+						information.setText("Impossible de charger votre partie");
 					}
 				}
 			}
@@ -132,6 +129,14 @@ public class Jouer extends Menu{
 		this.add( btn );
 	}
 	
+	private void addInformation(){
+		this.information = new JLabel();
+		this.information.setForeground(Color.RED);
+		this.information.setBounds(X, Y, W, H);
+		Y += H+10;
+		this.add( this.information );
+	}
+	
 	private void addInfoClient(){
 		this.connectServeur = new JLabel("Connecté au serveur: non");
 		this.connectServeur.setBounds(0,0,300,30);
@@ -145,6 +150,7 @@ public class Jouer extends Menu{
 	}
 	
 	public void clic(){
+		this.information.setText("");
 		if( this.fenetre.getClient().connecterAuCompte() ){
 			this.charger.setEnabled(true);
 			this.deuxjoueurs.setEnabled(true);
