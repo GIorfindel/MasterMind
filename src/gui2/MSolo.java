@@ -176,6 +176,8 @@ public class MSolo extends Menu{
 	    			solo.setNom( solo.getJoueur().getIdentifiant() );
 		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
 		    		information.setText("Partie sauvegardé");
+		    		
+		    		information.setText("nbTour: "+solo.getNbTour() + "  nbCoupsTotau: "+solo.getCoups()+"  Size Essais: " +solo.getTour().getEssais().size());
 	    		}
 	    	}
 		});

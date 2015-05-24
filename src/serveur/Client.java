@@ -227,9 +227,9 @@ public class Client extends Thread {
 	}
 	
 	public void demandeSaveSolo( Paquet paquet ){
-		Solo s = (Solo) paquet.getObjet( 0 );
+		Solo s = Paquet.getSolo(paquet);
 		
-		System.out.println("coups: "+s.getCoups());
+		System.out.println("nbTour: "+s.getNbTour() + "  nbCoupsTotau: "+s.getCoups()+"  Size Essais: " +s.getTour().getEssais().size());
 		
 		try {
 			this.serveur.getBD().sauvegarderSolo( s );

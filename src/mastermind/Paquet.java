@@ -1,6 +1,7 @@
 package mastermind;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 
@@ -148,9 +149,44 @@ public class Paquet implements Serializable{
 	}
 	
 	public static Paquet creeDEMANDE_SAVE_SOLO( Solo solo ){
-		Paquet p = new Paquet( 1, DEMANDE_SAVE_SOLO, creerId() );
-		p.addObjet( solo );
+		Paquet p = new Paquet( 8, DEMANDE_SAVE_SOLO, creerId() );
+		p.addObjet( solo.getJoueur() );
+		p.addObjet( solo.getNom() );
+		p.addObjet( solo.getNiveau() );
+		p.addObjet( new Integer(solo.getCoups()) );
+		p.addObjet( new Integer(solo.getNbTour()) );
+		p.addObjet( new Integer(solo.getTour().getCoups()) );
+		p.addObjet( solo.getTour().getComb() );
+		Pions[] essais = new Pions[ solo.getTour().getEssais().size() ];
+		for( int i=0;i<solo.getTour().getEssais().size();i++ ){
+			essais[i] = solo.getTour().getEssai(i);
+		}
+		p.addObjet( essais );
 		return p;
+	}
+	
+	public static Solo getSolo( Paquet p ){
+		Joueur j = (Joueur) p.getObjet(0);
+		String nom_partie = (String) p.getObjet(1);
+		Niveau n = (Niveau) p.getObjet(2);
+		int coups_totau = ((Integer) p.getObjet(3)).intValue();
+		int nbTour = ((Integer) p.getObjet(4)).intValue();
+		int coups = ((Integer) p.getObjet(5)).intValue();
+		Pions comb = (Pions) p.getObjet(6);
+		Pions[] essais = (Pions[]) p.getObjet(7);
+		
+		Solo s = new Solo( nom_partie, n, j );
+		s.setCoups(coups_totau);
+		s.setNbTour(nbTour);
+		Tour t = new Tour(n.getPions());
+		t.setCoups(coups);
+		t.setComb(comb);
+		
+		for( int i=0;i<essais.length;i++ ){
+			t.addEssai(essais[i]);
+		}
+		s.setTour(t);
+		return s;
 	}
 	
 	public static Paquet creeDEMANDE_CHARGER_SOLO( String nom_partie ){
