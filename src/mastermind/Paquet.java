@@ -189,9 +189,8 @@ public class Paquet implements Serializable{
 		return s;
 	}
 	
-	public static Paquet creeDEMANDE_CHARGER_SOLO( String nom_partie ){
-		Paquet p = new Paquet( 1, DEMANDE_CHARGER_SOLO, creerId() );
-		p.addObjet(nom_partie);
+	public static Paquet creeDEMANDE_CHARGER_SOLO(){
+		Paquet p = new Paquet( 0, DEMANDE_CHARGER_SOLO, creerId() );
 		return p;
 	}
 	
@@ -199,8 +198,21 @@ public class Paquet implements Serializable{
 		if( solo == null ){
 			return new Paquet( 0, REPONSE_CHARGER_SOLO, id );
 		}
-		Paquet p = new Paquet( 1, REPONSE_CHARGER_SOLO, id );
-		p.addObjet( solo );
+		
+		
+		Paquet p = new Paquet( 8, REPONSE_CHARGER_SOLO, creerId() );
+		p.addObjet( solo.getJoueur() );
+		p.addObjet( solo.getNom() );
+		p.addObjet( solo.getNiveau() );
+		p.addObjet( new Integer(solo.getCoups()) );
+		p.addObjet( new Integer(solo.getNbTour()) );
+		p.addObjet( new Integer(solo.getTour().getCoups()) );
+		p.addObjet( solo.getTour().getComb() );
+		Pions[] essais = new Pions[ solo.getTour().getEssais().size() ];
+		for( int i=0;i<solo.getTour().getEssais().size();i++ ){
+			essais[i] = solo.getTour().getEssai(i);
+		}
+		p.addObjet( essais );
 		return p;
 	}
 }

@@ -83,7 +83,7 @@ public class Jouer extends Menu{
 		this.charger.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
 				if( fenetre.getClient().connecterAuCompte()){
-					Paquet p = Paquet.creeDEMANDE_CHARGER_SOLO("");
+					Paquet p = Paquet.creeDEMANDE_CHARGER_SOLO();
 					int id = p.getId();
 					fenetre.getClient().envoyerPaquet( p );
 					Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id );
@@ -95,18 +95,13 @@ public class Jouer extends Menu{
 						}
 						
 						else {
-							int nbPions = solo.getNiveau().getPions();
-							int coupMax = solo.getNiveau().getCoupMax();
-							boolean doubl = false;
-							Couleur[] couleurPossib = null;
-							couleurPossib = solo.getNiveau().getCouleurAutorise();
-							solo = (Solo) ps.getObjet(0);
-							Niveau n = new NiveauPerso(nbPions, couleurPossib.length, doubl, coupMax, couleurPossib);
-							fenetre.setNiveauSolo( n );
-							fenetre.showMenu(Fenetre.SOLO);
-							
+							Solo s = Paquet.getSolo(ps);
+							fenetre.setSoloCharger(s);
+							fenetre.showMenu( Fenetre.SOLO );
 						}
-					}	
+					}else{
+						information = new JLabel("Impossible de charger votre partie");
+					}
 				}
 			}
 		});

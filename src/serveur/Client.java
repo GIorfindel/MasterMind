@@ -228,9 +228,6 @@ public class Client extends Thread {
 	
 	public void demandeSaveSolo( Paquet paquet ){
 		Solo s = Paquet.getSolo(paquet);
-		
-		System.out.println("nbTour: "+s.getNbTour() + "  nbCoupsTotau: "+s.getCoups()+"  Size Essais: " +s.getTour().getEssais().size());
-		
 		try {
 			this.serveur.getBD().sauvegarderSolo( s );
 		} catch (SQLException e) {
@@ -242,9 +239,8 @@ public class Client extends Thread {
 	}
 	
 	public void demandeChargerSolo( Paquet p ){
-		String nom = (String) p.getObjet( 0 );
 		try {
-			Solo s = this.serveur.getBD().chargerSolo( nom, this.joueur );
+			Solo s = this.serveur.getBD().chargerSolo( this.joueur );
 			this.envoyerPaquet( Paquet.creeREPONSE_CHARGER_SOLO( s, p.getId() ) );
 		} catch (SQLException e) {
 			e.printStackTrace();

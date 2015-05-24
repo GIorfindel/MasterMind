@@ -20,6 +20,7 @@ import mastermind.Solo;
 public class MSolo extends Menu{
 	
 	private Solo solo;
+	private boolean soloCharger;
 	private Fenetre fenetre;
 	private Maquette maquette;
 	private Couleur[] couleursAutorise;
@@ -50,6 +51,7 @@ public class MSolo extends Menu{
 	public MSolo( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.solo = new Solo("",Niveau.niveauString("TresFacile"),null);
+		this.soloCharger = false;
 		this.maquette = null;
 		this.valider = null;
 		this.init();
@@ -67,6 +69,11 @@ public class MSolo extends Menu{
 	
 	public void setNiveau( Niveau niveau ){
 		this.solo.setNiveau(niveau);
+	}
+	
+	public void setSolo( Solo s){
+		this.solo = s;
+		this.soloCharger = true;
 	}
 	
 	private void init(){
@@ -176,8 +183,6 @@ public class MSolo extends Menu{
 	    			solo.setNom( solo.getJoueur().getIdentifiant() );
 		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
 		    		information.setText("Partie sauvegardé");
-		    		
-		    		information.setText("nbTour: "+solo.getNbTour() + "  nbCoupsTotau: "+solo.getCoups()+"  Size Essais: " +solo.getTour().getEssais().size());
 	    		}
 	    	}
 		});
@@ -209,7 +214,22 @@ public class MSolo extends Menu{
 		if( this.fenetre.getClient().connecterAuCompte() ){
 			this.save.setEnabled(true);
 		}
-		this.nouveauTour();
+		if( this.soloCharger ){
+			if( this.fenetre.getClient().connecterAuCompte() ){
+				this.save.setEnabled(true);
+			}
+			this.maquette.reset();
+			this.information.setText("");
+			this.valider.setEnabled(false);
+			this.suivant.setEnabled(false);
+			this.effEssai.setEnabled(true);
+			this.essai = new Pions(solo.getNiveau().getPions());
+			this.activeBoutonColor();
+			
+			this.soloCharger = false;
+		}else{
+			this.nouveauTour();
+		}
 	}
 	
 	public void nouveauTour(){

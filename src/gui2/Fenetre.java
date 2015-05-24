@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import mastermind.Niveau;
+import mastermind.Solo;
 
 import client.Client;
 
@@ -129,5 +130,9 @@ public class Fenetre extends JFrame {
 	
 	public void setNiveauSolo( Niveau niveau ){
 		((MSolo) this.solo).setNiveau(niveau);
+	}
+	
+	public void setSoloCharger(Solo s){
+		((MSolo) this.solo).setSolo(s);
 	}
 }

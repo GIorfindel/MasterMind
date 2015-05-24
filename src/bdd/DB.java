@@ -286,11 +286,11 @@ public class DB {
 		return t;
 	}
 			
-	public Solo chargerSolo( String nom_partie, Joueur joueur ) throws SQLException, Exception{
+	public Solo chargerSolo( Joueur joueur ) throws SQLException, Exception{
 		String query = "select Partie.id_Partie as id_Partie, Partie.id_Joueur as id_Joueur, Partie.nom as nom, Partie.niveau as niveau from Solo, Partie" +
 				" where Solo.id_Partie = Partie.id_Partie AND Partie.nom = ? AND Partie.id_Joueur = ? AND Partie.nom IS NOT NULL";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
-		preparedStmt.setString( 1, nom_partie );
+		preparedStmt.setString( 1, joueur.getIdentifiant() );
 		preparedStmt.setInt(2, this.getIdJoueur( joueur ) );
 		ResultSet resultSet = preparedStmt.executeQuery();
 		int id_partie;
@@ -305,7 +305,7 @@ public class DB {
 			preparedStmt.close();
 			return null;
 		}
-		Solo solo = new Solo( nom_partie, Niveau.niveauString( niveau ), joueur );
+		Solo solo = new Solo( "", Niveau.niveauString( niveau ), joueur );
 		query = " select coups, nbTours, tour from Solo" +
 				" where id_Partie = ?";
 		preparedStmt = this.connexion.prepareStatement( query );
