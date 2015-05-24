@@ -148,8 +148,10 @@ public class MSolo extends Menu{
     				desactiveBoutonColor();
     				refreshInfoPartie();
     				save.setEnabled(false);
+    				if( fenetre.getClient().connecterAuCompte() ){
+    					// Ajout du score er redirection vers la page score A Faire***************************************************************************
+    				}
     				return;
-	    			//Vous avez gagné***************************************************************************
 	    		}else{
 	    			information.setText("" );
 	    		}

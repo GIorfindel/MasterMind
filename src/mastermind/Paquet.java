@@ -38,7 +38,8 @@ public class Paquet implements Serializable{
 			DECONNEXION_COMPTE = 7,
 			DEMANDE_INSCRIPTION = 8, REPONSE_INSCRIPTION = 9,
 			DEMANDE_SAVE_SOLO = 10,
-			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12;
+			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12,
+			DEMANDE_NOUV_SCORE = 13;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -211,6 +212,12 @@ public class Paquet implements Serializable{
 			essais[i] = solo.getTour().getEssai(i);
 		}
 		p.addObjet( essais );
+		return p;
+	}
+	
+	public static Paquet creeDEMANDE_NOUV_SCORE( Score score ){
+		Paquet p = new Paquet( 1,DEMANDE_NOUV_SCORE, -1);
+		p.addObjet(score);
 		return p;
 	}
 }
