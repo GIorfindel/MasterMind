@@ -1,7 +1,10 @@
 package mastermind;
 
-public class Score {
-	
+import java.io.Serializable;
+
+public class Score implements Serializable{
+	private static final long serialVersionUID = -3270491984915029590L;
+
 	/* Le mode représente le mode multijoueur ou solo */
 	private String mode;
 	
