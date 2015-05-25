@@ -16,6 +16,8 @@ public abstract class Niveau implements Serializable {
 	protected int coupMax=10;
 	/*definie le nombre de combinaisons maximal que peut soumettre l'utilisateur pour un tour*/
 	
+	public static String PERSO = "perso";
+	
 	
 	
 	public int getPions()

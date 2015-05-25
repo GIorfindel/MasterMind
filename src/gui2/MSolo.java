@@ -107,7 +107,8 @@ public class MSolo extends Menu{
 	    				save.setEnabled(false);
 	    			}else{
 	    				if(solo.getTour().getCoups() == solo.getNiveau().getCoupMax()){//Perdu
-	    					if( fenetre.getClient().connecterAuCompte() ){
+	    					//On peut pas sauvegarder le score si le niveau est perso
+	    					if( fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
 	        					Score s = new Score(Score.MODE_SOLO, solo.getCoups(),false,solo.getNbTour(),solo.getNiveau());
 	        					fenetre.getClient().envoyerPaquet(Paquet.creeDEMANDE_NOUV_SCORE(s));
 	        					quitter();
@@ -150,7 +151,7 @@ public class MSolo extends Menu{
 		this.suivant.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( solo.getNbTour() == 10 ){//Gagné
-    				if( fenetre.getClient().connecterAuCompte() ){
+    				if( fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
     					Score s = new Score(Score.MODE_SOLO, solo.getCoups(),true,solo.getNbTour(),solo.getNiveau());
     					fenetre.getClient().envoyerPaquet(Paquet.creeDEMANDE_NOUV_SCORE(s));
     					quitter();
@@ -201,7 +202,7 @@ public class MSolo extends Menu{
 		this.save.setEnabled(false);
 		this.save.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		if( fenetre.getClient().connecterAuCompte()){
+	    		if( fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
 	    			solo.setJoueur(fenetre.getClient().getJoueur());
 	    			solo.setNom( solo.getJoueur().getIdentifiant() );
 		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
@@ -235,13 +236,10 @@ public class MSolo extends Menu{
 		this.couleursAutorise = this.solo.getNiveau().getCouleurAutorise();
 		this.initBoutonCouleur();
 		this.essai = new Pions(this.solo.getNiveau().getPions());
-		if( this.fenetre.getClient().connecterAuCompte() ){
+		if( this.fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO ) ){
 			this.save.setEnabled(true);
 		}
 		if( this.soloCharger ){
-			if( this.fenetre.getClient().connecterAuCompte() ){
-				this.save.setEnabled(true);
-			}
 			this.maquette.reset();
 			this.information.setText("");
 			this.valider.setEnabled(false);
@@ -260,7 +258,7 @@ public class MSolo extends Menu{
 	}
 	
 	public void nouveauTour(){
-		if( this.fenetre.getClient().connecterAuCompte() ){
+		if( this.fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
 			this.save.setEnabled(true);
 		}
 		this.solo.nouveauTour( this.couleursAutorise );

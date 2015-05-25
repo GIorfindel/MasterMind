@@ -15,4 +15,8 @@ public class NiveauPerso extends Niveau {
 		return this.couleurPoss;
 	}
 	
+	public String toString(){
+		return Niveau.PERSO;
+	}
+	
 }
