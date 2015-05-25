@@ -12,6 +12,7 @@ import mastermind.Couleur;
 import mastermind.Joueur;
 import mastermind.Niveau;
 import mastermind.Pions;
+import mastermind.Score;
 import mastermind.Solo;
 import mastermind.Tour;
 
@@ -434,6 +435,22 @@ public class DB {
 		}
 		resultSet.close();
 		preparedStmt.close();
+	}
+	
+	public void nouvScore( Joueur j, Score s ) throws Exception, SQLException{
+		String query = "inset into Score(mode_solo_multi,coups,victoire,tours,id_joueur,niveau)" +
+				" values()";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setString( 1, s.getMode() );
+		preparedStmt.setInt( 2, s.getCoups() );
+		int vict = 0;
+		if(s.getVictoire()){
+			vict = 1;
+		}
+		preparedStmt.setInt( 3, vict );
+		preparedStmt.setInt( 4, s.getTours());
+		preparedStmt.setInt( 5, this.getIdJoueur(j) );
+		preparedStmt.setString( 6, s.getNiveau().toString() );
 	}
 
 }

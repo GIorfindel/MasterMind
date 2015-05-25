@@ -5,6 +5,9 @@ public class Score {
 	/* Le mode représente le mode multijoueur ou solo */
 	private String mode;
 	
+	public static String MODE_SOLO = "solo";
+	public static String MODE_MULTI = "multi";
+	
 	/* Le coups est le nombre de combinaisons que le joueur a fait pour trouver la bonne combinaisons */
 	private int coups;
 	
@@ -27,11 +30,12 @@ public class Score {
 	
 	
 	/* Constructeur par paramètre */
-	public Score( String mode, int coups, boolean victoire, int tour ){
+	public Score( String mode, int coups, boolean victoire, int tour,Niveau n ){
 		this.mode = mode;
 		this.coups = coups;
 		this.victoire = victoire;
 		this.tours = tour;
+		this.niveau = n;
 	}
 	
 	/* Methodes set et get des varaibles */

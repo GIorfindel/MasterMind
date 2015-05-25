@@ -14,6 +14,7 @@ import mastermind.Couleur;
 import mastermind.Niveau;
 import mastermind.Paquet;
 import mastermind.Pions;
+import mastermind.Score;
 import mastermind.Solo;
 
 @SuppressWarnings("serial")
@@ -140,20 +141,22 @@ public class MSolo extends Menu{
 		this.suivant.setEnabled(false);
 		this.suivant.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		if( solo.getNbTour() == 10 ){
-	    			information.setText("Vous avez gagné!" );
-	    			suivant.setEnabled(false);
-    				effEssai.setEnabled(false);
-    				valider.setEnabled(false);
-    				desactiveBoutonColor();
-    				refreshInfoPartie();
-    				save.setEnabled(false);
+	    		if( solo.getNbTour() == 10 ){//Gagné
     				if( fenetre.getClient().connecterAuCompte() ){
-    					// Ajout du score er redirection vers la page score A Faire***************************************************************************
+    					Score s = new Score(Score.MODE_SOLO, solo.getCoups(),true,solo.getNbTour(),solo.getNiveau());
+    					fenetre.getClient().envoyerPaquet(Paquet.creeDEMANDE_NOUV_SCORE(s));
+    					quitter();
+    					fenetre.showMenu(Fenetre.SCORE);
+    				}else{
+    					save.setEnabled(false);
+    					valider.setEnabled(false);
+    					suivant.setEnabled(false);
+    					effEssai.setEnabled(true);
+    					solo.reset();
+    					desactiveBoutonColor();
+    					information.setText("Vous avez Gagné");
     				}
     				return;
-	    		}else{
-	    			information.setText("" );
 	    		}
 	    		nouveauTour();
 	    		refreshInfoPartie();

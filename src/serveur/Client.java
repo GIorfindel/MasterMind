@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 
 import mastermind.Joueur;
 import mastermind.Paquet;
+import mastermind.Score;
 import mastermind.Solo;
 
 
@@ -140,6 +141,9 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_CHARGER_SOLO:
 			this.demandeChargerSolo( paquet );
 			break;
+		case Paquet.DEMANDE_NOUV_SCORE:
+			this.demandeNouvScore( paquet );
+			break;
 		 }
 	}
 	
@@ -242,6 +246,17 @@ public class Client extends Thread {
 		try {
 			Solo s = this.serveur.getBD().chargerSolo( this.joueur );
 			this.envoyerPaquet( Paquet.creeREPONSE_CHARGER_SOLO( s, p.getId() ) );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void demandeNouvScore( Paquet p ){
+		try {
+			Score score = (Score) p.getObjet(0);
+			this.serveur.getBD().nouvScore( this.joueur, score );
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
