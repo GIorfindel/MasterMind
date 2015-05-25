@@ -117,7 +117,7 @@ public class MSolo extends Menu{
 	        					save.setEnabled(false);
 	        					valider.setEnabled(false);
 	        					suivant.setEnabled(false);
-	        					effEssai.setEnabled(true);
+	        					effEssai.setEnabled(false);
 	        					solo.reset();
 	        					desactiveBoutonColor();
 	        					information.setText("Vous avez Perdu");
@@ -160,7 +160,7 @@ public class MSolo extends Menu{
     					save.setEnabled(false);
     					valider.setEnabled(false);
     					suivant.setEnabled(false);
-    					effEssai.setEnabled(true);
+    					effEssai.setEnabled(false);
     					solo.reset();
     					desactiveBoutonColor();
     					information.setText("Vous avez Gagné");
