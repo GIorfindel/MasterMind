@@ -438,8 +438,8 @@ public class DB {
 	}
 	
 	public void nouvScore( Joueur j, Score s ) throws Exception, SQLException{
-		String query = "inset into Score(mode_solo_multi,coups,victoire,tours,id_joueur,niveau)" +
-				" values()";
+		String query = "insert into Score(mode_solo_multi,coups,victoire,tours,id_joueur,niveau)" +
+				" values(?,?,?,?,?,?)";
 		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
 		preparedStmt.setString( 1, s.getMode() );
 		preparedStmt.setInt( 2, s.getCoups() );
@@ -451,6 +451,8 @@ public class DB {
 		preparedStmt.setInt( 4, s.getTours());
 		preparedStmt.setInt( 5, this.getIdJoueur(j) );
 		preparedStmt.setString( 6, s.getNiveau().toString() );
+		preparedStmt.executeUpdate();
+		preparedStmt.close();
 	}
 
 }

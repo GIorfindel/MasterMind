@@ -106,14 +106,22 @@ public class MSolo extends Menu{
 	    				desactiveBoutonColor();
 	    				save.setEnabled(false);
 	    			}else{
-	    				if(solo.getTour().getCoups() == solo.getNiveau().getCoupMax()){
-		    				//Vous avez perdu A faire*************************************************************
-		    				information.setText("Vous avez perdu!" );
-		    				suivant.setEnabled(false);
-		    				effEssai.setEnabled(false);
-		    				valider.setEnabled(false);
-		    				desactiveBoutonColor();
-		    				save.setEnabled(false);
+	    				if(solo.getTour().getCoups() == solo.getNiveau().getCoupMax()){//Perdu
+	    					if( fenetre.getClient().connecterAuCompte() ){
+	        					Score s = new Score(Score.MODE_SOLO, solo.getCoups(),false,solo.getNbTour(),solo.getNiveau());
+	        					fenetre.getClient().envoyerPaquet(Paquet.creeDEMANDE_NOUV_SCORE(s));
+	        					quitter();
+	        					fenetre.showMenu(Fenetre.SCORE);
+	        				}else{
+	        					save.setEnabled(false);
+	        					valider.setEnabled(false);
+	        					suivant.setEnabled(false);
+	        					effEssai.setEnabled(true);
+	        					solo.reset();
+	        					desactiveBoutonColor();
+	        					information.setText("Vous avez Perdu");
+	        				}
+	        				return;
 		    			}
 	    			}
 	    			maquette.addAide( coups, solo.getTour().getNombreBonnePosition(coups), solo.getTour().getNombreBonneCouleur(coups));
@@ -243,6 +251,7 @@ public class MSolo extends Menu{
 			this.activeBoutonColor();
 			this.soloCharger = false;
 			this.maquette.setMaquette(solo.getTour());
+			this.refreshInfoPartie();
 			
 			this.maquette.dessineSolution( solo.getTour().getComb() );
 		}else{
