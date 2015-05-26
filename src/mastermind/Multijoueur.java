@@ -3,7 +3,7 @@ package mastermind;
 public class Multijoueur extends Partie {
 	private static final long serialVersionUID = 7934630933946038006L;
 	
-	private static int COUPS_MAX = 100;
+	private final static int COUPS_MAX = 100;
 	
 	private int coupsJ1;
 	private int coupsJ2;

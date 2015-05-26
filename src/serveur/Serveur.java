@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import mastermind.Multijoueur;
+import mastermind.Niveau;
 import mastermind.Paquet;
 
 import bdd.DB;
@@ -153,6 +154,16 @@ public class Serveur {
 			}
 		}
 		return null;
+	}
+	
+	public Paquet listeParties( int id_paquet ){
+		ArrayList<Multijoueur> parties = new ArrayList<Multijoueur>();
+		for( int i=0; i< this.partiesMulti.size(); i++ ){
+			if( this.partiesMulti.get(i).getMulti().getEtat() == Multijoueur.ETAT_ATTENTE_JOUER ){
+				parties.add( this.partiesMulti.get(i).getMulti() );
+			}
+		}
+		return Paquet.creeREPONSE_LISTE_PARTIES(parties, id_paquet);
 	}
 }
 

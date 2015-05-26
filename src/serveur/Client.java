@@ -158,6 +158,9 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_CREE_MULTI:
 			this.demandeCreeMulti( paquet );
 			break;
+		case Paquet.DEMANDE_LISTE_PARTIES:
+			this.demandeListeParties( paquet );
+			break;
 		case Paquet.DEMANDE_NOUV_JOUEUR2:
 			this.demandeNouvJoueur2Multi( paquet );
 			break;
@@ -170,6 +173,9 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_JOUEUR1_PARTI:
 			this.demandeJoueur1Parti( paquet );
 			break;
+			
+			
+			
 		case Paquet.DEMANDE_JOUER_MULTI:
 			this.demandeJouerMulti( paquet );
 			break;
@@ -297,6 +303,10 @@ public class Client extends Thread {
 		Niveau n = (Niveau) p.getObjet(0);
 		this.multi = new Multijoueur(this.joueur.getIdentifiant(), n, this.joueur);
 		this.serveur.addPartieMulti( this );
+	}
+	
+	public void demandeListeParties( Paquet p ){
+		this.envoyerPaquet( this.serveur.listeParties(p.getId()) );
 	}
 	
 	public Multijoueur getMulti(){

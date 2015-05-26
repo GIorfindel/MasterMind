@@ -41,7 +41,8 @@ public class Paquet implements Serializable{
 			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12,
 			DEMANDE_NOUV_SCORE = 13,
 			DEMANDE_CREE_MULTI = 14, DEMANDE_NOUV_JOUEUR2 = 15, REPONSE_NOUV_JOUEUR2 = 16, DEMANDE_JOUER_MULTI = 17, DEMANDE_KICKER_JOUEUR2 = 18,
-			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24;
+			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24,
+			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -223,18 +224,77 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
+	
+	/*
+	 * Paquet pour le multijoueur:
+	 * 
+	 * 
+	 * 
+	 * Quand le client est créateur de la partie:
+	 * Tout d'abord quand le joueur créais une partie faire
+	 * 		-this.fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( niveau_partie ) )
+	 * 		-Puis tu le redirige vers la page d'attente
+	 * 		-Sur cette page(la classe AttenteJoueur.java) tu créais une méthode joueur2Arrive( Joueur joueur ), tu peux la nommer autrement
+	 * 				Donc quand il arrive le joueur2 tu active le bouton jouer et le bouton kicker
+	 * 		-Sur la même page tu créais la fonction joueur2AQuitter(), c'est quand le joueur 2 et partis tout seul
+	 * 		-Sur l'event kicker joueur2 tu appelle le code:
+	 * 						this.fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_KICKER_JOUEUR2() )
+	 * 						et tu actualise la page
+	 * 		-Sur le bouton quitter tu fais: this.fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR1_PARTI() )
+	 * 
+	 * Maintenant quand le client rejoins une partie:
+	 * Sur la page liste des parties:
+	 * 		-Pour lister les parties disponible:
+	 * 				Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
+	 * 				int id = p.getId();
+	 * 				this.fenetre.getClient().envoyerPaquet( p );
+	 * 				PAquet pServeur = this.fenetre.getClient().recevoirPaquet( x secondes, id )
+	 * 				if( pServeur == null ){
+	 * 					Limite de temps dépassé
+	 * 				}else{
+	 * 					La tu as la liste des parties:
+	 * 					nbPartie = pServeur.getNbObjet();
+	 * 					Multijoueur0 = (Multijoueur) pServeur.getObjet(0);
+	 * 				}
+	 * 		-Quand le joueur a choisit une partie, tu fait:
+	 * 				envoie la paquet au serveur : creeDEMANDE_NOUV_JOUEUR2( nom_partie )
+	 * 				la reponse c'est : 	pServeur.getNbObjet() == 0, partie pas trouvé ou partie pleine
+	 * 									pServeur.getNbObjet() == 1, Joueur j = (Joueur) pServeur.getOBjet(0)
+	 * 										Et la tu le redirige vers la page attente et donne à cette page le joueur j (c'est le créateur de la partie)
+	 * 		-Sur la page Attente:
+	 * 			-Qaund il clic sur le bouton quitte tu envoie au serveur 
+	 * 
+	 * 
+	 */
+	
 	public static Paquet creeDEMANDE_CREE_MULTI( Niveau niveau ){
 		Paquet p = new Paquet( 1, DEMANDE_CREE_MULTI, -1 );
 		p.addObjet(niveau);
 		return p;
 	}
 	
+	//Pour demander la liste des parties qui ne sont ni pleine et en attente de joueur
+	public static Paquet creeDEMANDE_LISTE_PARTIES(){
+		return new Paquet( 0, DEMANDE_LISTE_PARTIES, creerId());
+	}
+	
+	
+	public static Paquet creeREPONSE_LISTE_PARTIES( ArrayList<Multijoueur> parties, int id ){
+		Paquet p = new Paquet( parties.size(), REPONSE_LISTE_PARTIES, id);
+		for(int i =0; i<parties.size();i++){
+			p.addObjet( parties.get(i) );
+		}
+		return p;
+	}
+	
+	//C'est le joueur2 qui demande d'entrer dans un partie deja créais(Dans la page liste des parties)
 	public static Paquet creeDEMANDE_NOUV_JOUEUR2( String nom_partie ){
 		Paquet p = new Paquet( 1, DEMANDE_NOUV_JOUEUR2, creerId());
 		p.addObjet(nom_partie);
 		return p;
 	}
 	
+	//retourne null s'il la partie et introuvé ou la partie est pleine (il faut rafraichir la liste des partie)
 	public static Paquet creeREPONSE_NOUV_JOUEUR2( Joueur j, int id ){
 		if( j == null ){
 			return new Paquet( 0, REPONSE_NOUV_JOUEUR2, id );
@@ -245,36 +305,44 @@ public class Paquet implements Serializable{
 		}
 	}
 	
+	//C'est le serveur qui envoi au joueur1 le joueur qui vveut entrer dans ca partie
 	public static Paquet creeNOUV_JOUEUR2( Joueur j ){
 		Paquet p = new Paquet( 1, NOUV_JOUEUR2, -1);
 		p.addObjet(j);
 		return p;
 	}
 	
+	//C'est le joueur1 qui demande de kick le joueur2. Ca n'a pas de réponse.
 	public static Paquet creeDEMANDE_KICKER_JOUEUR2(){
 		return new Paquet( 0, DEMANDE_KICKER_JOUEUR2, -1);
 	}
 	
+	//C'est le serveur qui dit au joueur2 que tu es kick
 	public static Paquet creeTU_ES_KICK(){
 		return new Paquet( 0, TU_ES_KICK, -1);
 	}
 	
+	//C'est le joueur2 qui quitte la partie(croix rouge, ou le bouton quitter)
 	public static Paquet creeDEMANDE_JOUEUR2_PARTI(){
 		return new Paquet(0, DEMANDE_JOUEUR2_PARTI, -1);
 	}
 	
+	//C'est le serveur qui envoi au joueur1 que le joueur2 est partie
 	public static Paquet creeJOUEUR2_PARTI(){
 		return new Paquet(0, JOUEUR2_PARTI, -1);
 	}
 	
+	//C'est le joueur1 qui quitte la partie(croix rouge, ou le bouton quitter)
 	public static Paquet creeDEMANDE_JOUEUR1_PARTI(){
 		return new Paquet( 0, DEMANDE_JOUEUR1_PARTI, -1 );
 	}
 	
+	//C'est le serveur qui envoi au joueur2 que le joueur1 est partie(Donc la partie n'existe plus)
 	public static Paquet creeJOUEUR1_PARTI(){
 		return new Paquet( 0, JOUEUR1_PARTI, creerId() );
 	}
 	
+	//C'est le joueur1 qui demande de commencer la partie(il clic sur le bouton jouer). Donc il faut que le joueur2 soit la aussi
 	public static Paquet creeDEMANDE_JOUER_MULTI(){
 		return new Paquet( 0, DEMANDE_JOUER_MULTI, creerId() );
 	}
