@@ -12,12 +12,31 @@ public class Multijoueur extends Partie {
 	private Joueur joueur2;
 	
 	private int etat;
-	private static int ETAT_CHERCHE_JOUEUR2 = 0, ETAT_CHOISIT_COMB = 1; 
+	public static int ETAT_CHERCHE_JOUEUR2 = 0, ETAT_ATTENTE_JOUER = 1;
 	
 	public Multijoueur(String nom, Niveau niveau, Joueur joueur) {
 		super(nom, niveau, joueur);
 		this.coupsJ1 = 0;
 		this.coupsJ2 = 0;
 		this.etat = ETAT_CHERCHE_JOUEUR2;
+		this.joueur2 = null;
+	}
+	
+	public Joueur getJoueur2(){
+		return this.joueur2;
+	}
+	
+	public void setJoueur2( Joueur joueur2 ){
+		this.joueur2 = joueur2;
+		this.etat = ETAT_ATTENTE_JOUER;
+	}
+	
+	public void kickJoueur2(){
+		this.joueur2 = null;
+		this.etat = ETAT_CHERCHE_JOUEUR2;
+	}
+	
+	public int getEtat(){
+		return this.etat;
 	}
 }

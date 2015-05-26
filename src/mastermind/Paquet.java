@@ -39,7 +39,9 @@ public class Paquet implements Serializable{
 			DEMANDE_INSCRIPTION = 8, REPONSE_INSCRIPTION = 9,
 			DEMANDE_SAVE_SOLO = 10,
 			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12,
-			DEMANDE_NOUV_SCORE = 13;
+			DEMANDE_NOUV_SCORE = 13,
+			DEMANDE_CREE_MULTI = 14, DEMANDE_NOUV_JOUEUR2 = 15, REPONSE_NOUV_JOUEUR2 = 16, DEMANDE_JOUER_MULTI = 17, DEMANDE_KICKER_JOUEUR2 = 18,
+			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -219,5 +221,61 @@ public class Paquet implements Serializable{
 		Paquet p = new Paquet( 1,DEMANDE_NOUV_SCORE, -1);
 		p.addObjet(score);
 		return p;
+	}
+	
+	public static Paquet creeDEMANDE_CREE_MULTI( Niveau niveau ){
+		Paquet p = new Paquet( 1, DEMANDE_CREE_MULTI, -1 );
+		p.addObjet(niveau);
+		return p;
+	}
+	
+	public static Paquet creeDEMANDE_NOUV_JOUEUR2( String nom_partie ){
+		Paquet p = new Paquet( 1, DEMANDE_NOUV_JOUEUR2, creerId());
+		p.addObjet(nom_partie);
+		return p;
+	}
+	
+	public static Paquet creeREPONSE_NOUV_JOUEUR2( Joueur j, int id ){
+		if( j == null ){
+			return new Paquet( 0, REPONSE_NOUV_JOUEUR2, id );
+		}else{
+			Paquet p = new Paquet( 1, REPONSE_NOUV_JOUEUR2, id );
+			p.addObjet(j);
+			return p;
+		}
+	}
+	
+	public static Paquet creeNOUV_JOUEUR2( Joueur j ){
+		Paquet p = new Paquet( 1, NOUV_JOUEUR2, -1);
+		p.addObjet(j);
+		return p;
+	}
+	
+	public static Paquet creeDEMANDE_KICKER_JOUEUR2(){
+		return new Paquet( 0, DEMANDE_KICKER_JOUEUR2, -1);
+	}
+	
+	public static Paquet creeTU_ES_KICK(){
+		return new Paquet( 0, TU_ES_KICK, -1);
+	}
+	
+	public static Paquet creeDEMANDE_JOUEUR2_PARTI(){
+		return new Paquet(0, DEMANDE_JOUEUR2_PARTI, -1);
+	}
+	
+	public static Paquet creeJOUEUR2_PARTI(){
+		return new Paquet(0, JOUEUR2_PARTI, -1);
+	}
+	
+	public static Paquet creeDEMANDE_JOUEUR1_PARTI(){
+		return new Paquet( 0, DEMANDE_JOUEUR1_PARTI, -1 );
+	}
+	
+	public static Paquet creeJOUEUR1_PARTI(){
+		return new Paquet( 0, JOUEUR1_PARTI, creerId() );
+	}
+	
+	public static Paquet creeDEMANDE_JOUER_MULTI(){
+		return new Paquet( 0, DEMANDE_JOUER_MULTI, creerId() );
 	}
 }

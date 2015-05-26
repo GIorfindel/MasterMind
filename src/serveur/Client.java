@@ -15,6 +15,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import mastermind.Joueur;
+import mastermind.Multijoueur;
+import mastermind.Niveau;
 import mastermind.Paquet;
 import mastermind.Score;
 import mastermind.Solo;
@@ -29,6 +31,10 @@ public class Client extends Thread {
 	private int id;
 	private boolean continuer;
 	
+	private Multijoueur multi;
+	private Client cJoueur2;
+	private Client cJoueur1;
+	
 	public Client( Socket socket, Serveur serveur ) {
 		this.socket = socket;
 		this.serveur = serveur;
@@ -38,8 +44,10 @@ public class Client extends Thread {
 		this.envoi = null;
 		this.recoi = null;
 		this.serveur.afficher( "Nouveau client: " + this.id );
+		this.multi = null;
+		this.cJoueur2 = null;
+		this.cJoueur1 = null;
 	}
-	
 	
 	public void run() {
 		try{
@@ -81,6 +89,9 @@ public class Client extends Thread {
 	
 	public void close(){
 		this.continuer = false;
+		this.multi = null;
+		this.cJoueur2 = null;
+		this.cJoueur1 = null;
 		try{
 			if( this.envoi != null ){
 				this.envoi.close();
@@ -143,6 +154,24 @@ public class Client extends Thread {
 			break;
 		case Paquet.DEMANDE_NOUV_SCORE:
 			this.demandeNouvScore( paquet );
+			break;
+		case Paquet.DEMANDE_CREE_MULTI:
+			this.demandeCreeMulti( paquet );
+			break;
+		case Paquet.DEMANDE_NOUV_JOUEUR2:
+			this.demandeNouvJoueur2Multi( paquet );
+			break;
+		case Paquet.DEMANDE_KICKER_JOUEUR2:
+			this.demandeKickerJoueur2( paquet );
+			break;
+		case Paquet.DEMANDE_JOUEUR2_PARTI:
+			this.demandeJoueur2Parti( paquet );
+			break;
+		case Paquet.DEMANDE_JOUEUR1_PARTI:
+			this.demandeJoueur1Parti( paquet );
+			break;
+		case Paquet.DEMANDE_JOUER_MULTI:
+			this.demandeJouerMulti( paquet );
 			break;
 		 }
 	}
@@ -263,4 +292,88 @@ public class Client extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	public void demandeCreeMulti( Paquet p ){
+		Niveau n = (Niveau) p.getObjet(0);
+		this.multi = new Multijoueur(this.joueur.getIdentifiant(), n, this.joueur);
+		this.serveur.addPartieMulti( this );
+	}
+	
+	public Multijoueur getMulti(){
+		return this.multi;
+	}
+	
+	public Joueur getJoueur(){
+		return this.joueur;
+	}
+	
+	public Client getCJoueur2(){
+		return this.cJoueur2;
+	}
+	
+	public void demandeNouvJoueur2Multi( Paquet p ){
+		String nom_partie = (String) p.getObjet(0);
+		this.cJoueur1 = this.serveur.addJoueur2( nom_partie, this );
+		if( this.cJoueur1 != null ){
+			this.envoyerPaquet( Paquet.creeREPONSE_NOUV_JOUEUR2( this.cJoueur1.getJoueur(), p.getId() ) );
+		}else{
+			//Il n'a pas trouvé la partie ou Partie pleine
+			this.envoyerPaquet( Paquet.creeREPONSE_NOUV_JOUEUR2( null, p.getId() ) );
+		}
+	}
+	
+	public void addJoueur2( Client cJoueur2 ){
+		this.cJoueur2 = cJoueur2;
+		this.multi.setJoueur2(cJoueur2.getJoueur());
+		this.envoyerPaquet( Paquet.creeNOUV_JOUEUR2( this.cJoueur2.getJoueur() ) );
+		//Activier le bouton Jouer, kicker
+	}
+	
+	public void demandeKickerJoueur2( Paquet p ){
+		if( this.cJoueur2 != null ){
+			this.cJoueur2.envoyerPaquet( Paquet.creeTU_ES_KICK() );
+			this.multi.kickJoueur2();
+			this.cJoueur2.kick();
+			this.cJoueur2 = null;
+		}
+	}
+	
+	public void kick(){
+		this.cJoueur1 = null;
+	}
+	
+	public void demandeJoueur2Parti( Paquet p ){
+		this.cJoueur1.joueur2Parti();
+		this.cJoueur1 = null;
+	}
+	
+	public void joueur2Parti(){
+		if( this.multi.getEtat() == Multijoueur.ETAT_ATTENTE_JOUER ){
+			this.multi.kickJoueur2();
+			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
+			this.cJoueur2 = null;
+		}
+	}
+	
+	public void demandeJoueur1Parti( Paquet p ){
+		if( this.multi.getEtat() == Multijoueur.ETAT_CHERCHE_JOUEUR2 ){
+			
+		}else if( this.multi.getEtat() == Multijoueur.ETAT_ATTENTE_JOUER ){
+			this.cJoueur2.joueur1Parti();
+			this.cJoueur2 = null;
+		}
+		this.serveur.popPartieMulti( this.multi.getNom() );
+		this.multi = null;
+	}
+	
+	public void joueur1Parti(){
+		this.cJoueur1 = null;
+		this.envoyerPaquet( Paquet.creeJOUEUR1_PARTI() );
+	}
+	
+	public void demandeJouerMulti( Paquet p ){
+		//Commencer la partie, choisir qui commence, ...
+	}
+	
+	
 }
