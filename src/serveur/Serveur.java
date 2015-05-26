@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import mastermind.Multijoueur;
 import mastermind.Paquet;
 
 import bdd.DB;
@@ -21,9 +22,12 @@ public class Serveur {
 	private ServerSocket socketServeur;
 	private static int MAX_CLIENT = 10;
 	
+	private ArrayList<Client> partiesMulti;
+	
 	public Serveur( int port ){
 		this.port = port;
 		this.listeClients = new ArrayList<Client>();
+		this.partiesMulti = new ArrayList<Client>();
 		this.enCours = false;
 		this.comm = null;
 		this.db = null;
@@ -31,8 +35,8 @@ public class Serveur {
 	}
 	
 	private void initDB(){
-		this.db = new DB( "localhost", "ben", "ben", "mastermind" );
-		this.db.connexion();
+		 this.db = new DB( "localhost", "ben", "ben", "mastermind" ); 
+		 this.db.connexion();
 	}
 	
 	public DB getBD(){
@@ -125,6 +129,30 @@ public class Serveur {
 				return;
 			}
 		}
+	}
+	
+	public void addPartieMulti( Client client ){
+		this.partiesMulti.add(client);
+	}
+	
+	public void popPartieMulti( String nomPartie ){
+		for( int i=0; i< this.partiesMulti.size(); i++ ){
+			if( this.partiesMulti.get(i).getMulti().getNom().equals(nomPartie) ){
+				this.partiesMulti.remove(i);
+			}
+		}
+	}
+	
+	public Client addJoueur2( String nom_partie, Client cJoueur2 ){
+		Client c;
+		for( int i=0; i<this.partiesMulti.size();i++ ){
+			c = this.partiesMulti.get(i);
+			if( c.getMulti() != null && c.getMulti().getNom().equals(nom_partie) && c.getMulti().getEtat() == Multijoueur.ETAT_CHERCHE_JOUEUR2 ){
+				c.addJoueur2( cJoueur2 );
+				return c;
+			}
+		}
+		return null;
 	}
 }
 
