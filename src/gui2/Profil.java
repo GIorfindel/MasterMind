@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import mastermind.Joueur;
 import mastermind.Paquet;
@@ -30,7 +31,7 @@ public class Profil extends Menu{
 	private File imageChoisit;
 	private JButton valideAvatar;
 	
-	private static int X = 405, W = 200, H = 40;
+	private static int X = 405, Y = 120, W = 200, H = 40;
 
 	
 	public Profil( Fenetre fenetre ){
@@ -51,26 +52,28 @@ public class Profil extends Menu{
 	
 	private void addLabelTitre(){
 		JLabel titre = new JLabel("Profil");
-		titre.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		titre.setFont(new Font("Agency FB", Font.PLAIN, 40));
 		titre.setBounds(170, 50, 660, 100);
+		titre.setVerticalAlignment( SwingConstants.TOP );
+		titre.setHorizontalAlignment( SwingConstants.CENTER );
 	    this.add(titre);
 	}
 	
 	private void addIdentifiant(){
-		JLabel laIDenti = new JLabel("Identifiant: ");
+		JLabel laIDenti = new JLabel("Identifiant : ");
 		laIDenti.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		laIDenti.setBounds(405, 100, 100, 30);
+		laIDenti.setBounds(X, Y, 100, 30);
 	    this.add(laIDenti);
-	    
 	    this.identifiant = new JLabel("Aucun");
 	    this.identifiant.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	    this.identifiant.setBounds(510, 100, 100, 30);
+	    this.identifiant.setBounds(X+110, Y, 100, 30);
 	    this.add(this.identifiant);
+	    Y+=50;
 	}
 	
 	public void addChoisitAvatar(){
 		JButton btn = new JButton( "Choisir un avatar" );
-		btn.setBounds( X, 150, W, H );
+		btn.setBounds( X, Y, W, H );
 		btn.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
@@ -85,19 +88,21 @@ public class Profil extends Menu{
 		    	  }else{
 		    		  valideAvatar.setEnabled(false);
 		    		  imageChoisit = null;
-		    		  nomAvatar.setText("Aucune image selectioné");
+		    		  nomAvatar.setText("Aucune image selectionée");
 		    	  }
 		      }
 		    });
 		this.add(btn);
 		
-		this.nomAvatar = new JLabel("Aucune image selectioné");
-		this.nomAvatar.setBounds( 600, 150, 200, 30 );
+		this.nomAvatar = new JLabel("Aucune image selectionée");
+		this.nomAvatar.setBounds( X+210, Y+5, 200, 30 );
 		this.nomAvatar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		this.add( this.nomAvatar );
-		
+		Y+=50;
 		this.valideAvatar = new JButton( "Valider" );
-		this.valideAvatar.setBounds( X, 180, W, H );
+		this.valideAvatar.setBounds( X, Y, W, H );
+		Y+=50;
+
 		this.valideAvatar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.valideAvatar.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
@@ -134,7 +139,7 @@ public class Profil extends Menu{
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds( X, 350, W, H );
+		btn.setBounds( X, Y, W, H );
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.ACCUEIL );
