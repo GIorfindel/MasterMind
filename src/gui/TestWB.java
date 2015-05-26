@@ -288,5 +288,69 @@ public class TestWB {
 
 
 	    frmMastermind.getContentPane().add(content, BorderLayout.CENTER);
+	    
+	    JPanel attenteJoueur = new JPanel();
+	    content.add(attenteJoueur, "name_52729462803944");
+	    attenteJoueur.setLayout(null);
+	    
+	    JLabel lblPartieEnCours = new JLabel("Partie en cours");
+	    lblPartieEnCours.setHorizontalAlignment(SwingConstants.CENTER);
+	    lblPartieEnCours.setFont(new Font("Agency FB", Font.PLAIN, 40));
+	    lblPartieEnCours.setBounds(170, 50, 660, 100);
+	    attenteJoueur.add(lblPartieEnCours);
+	    
+	    JLabel lblParamtresDeLa = new JLabel("Paramètres de la partie :");
+	    lblParamtresDeLa.setFont(new Font("Tahoma", Font.BOLD, 13));
+	    lblParamtresDeLa.setBounds(170, 190, 209, 30);
+	    attenteJoueur.add(lblParamtresDeLa);
+	    
+	    JLabel lblNbPions = new JLabel("Nombre de pions :");
+	    lblNbPions.setBounds(170, 260, 130, 50);
+	    attenteJoueur.add(lblNbPions);
+	    
+	    JLabel lblDifficulte = new JLabel("Difficulté :");
+	    lblDifficulte.setBounds(170, 220, 130, 50);
+	    attenteJoueur.add(lblDifficulte);
+	    
+	    JLabel lblNbCoups = new JLabel("Nombre de coups :");
+	    lblNbCoups.setBounds(170, 300, 130, 50);
+	    attenteJoueur.add(lblNbCoups);
+	    
+	    JLabel lblNbCouleurs = new JLabel("Nombre de couleurs :");
+	    lblNbCouleurs.setBounds(170, 340, 130, 50);
+	    attenteJoueur.add(lblNbCouleurs);
+	    
+	    JButton btnModifier = new JButton("Modifier");
+	    btnModifier.setBounds(170, 440, 200, 40);
+	    attenteJoueur.add(btnModifier);
+	    
+	    JLabel lblJoueurs = new JLabel("Joueurs :");
+	    lblJoueurs.setFont(new Font("Tahoma", Font.BOLD, 13));
+	    lblJoueurs.setBounds(607, 190, 125, 50);
+	    attenteJoueur.add(lblJoueurs);
+	    
+	    JLabel lblJoueur = new JLabel("Joueur 1");
+	    lblJoueur.setBounds(607, 220, 56, 50);
+	    attenteJoueur.add(lblJoueur);
+	    
+	    JLabel lblJoueur_1 = new JLabel("Joueur 2");
+	    lblJoueur_1.setBounds(607, 260, 56, 50);
+	    attenteJoueur.add(lblJoueur_1);
+	    
+	    JButton btnNewButton = new JButton("Lancer la partie");
+	    btnNewButton.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent arg0) {
+	    	}
+	    });
+	    btnNewButton.setBounds(607, 310, 200, 40);
+	    attenteJoueur.add(btnNewButton);
+	    
+	    JLabel lblAttente = new JLabel("Attente d'un joueur...");
+	    lblAttente.setBounds(434, 143, 150, 30);
+	    attenteJoueur.add(lblAttente);
+	    
+	    JLabel lblNewLabel = new JLabel("Couleurs multiples :");
+	    lblNewLabel.setBounds(170, 380, 130, 50);
+	    attenteJoueur.add(lblNewLabel);
 	}
 }
