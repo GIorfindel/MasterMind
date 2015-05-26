@@ -148,7 +148,8 @@ public class DeuxJoueurs extends Menu{
 	    JButton btnRejoindre = new JButton("Rejoindre la partie");
 	    btnRejoindre.setBounds(X, 410, W, H);
 	    btnRejoindre.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){	
+		    	  fenetre.showMenu( Fenetre.REJOINDREPARTIE );
 		      }
 		    });
 	    this.add(btnRejoindre);

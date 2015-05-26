@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public class AttenteJoueur extends Menu {
+public class RejoindrePartie extends Menu {
 	
 	private Fenetre fenetre;
 	
@@ -27,8 +27,6 @@ public class AttenteJoueur extends Menu {
 	private JLabel lbljoueur2;
 	private JLabel information;
 
-	private JButton modifier;
-	private JButton lancer;
 	private JButton retour;
 	
 	private JLabel titre;
@@ -47,7 +45,7 @@ public class AttenteJoueur extends Menu {
 	
 	private static int X = 405, W = 200, H = 40;
 
-	public AttenteJoueur( Fenetre fenetre ){
+	public RejoindrePartie( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.init();
 	}
@@ -56,17 +54,15 @@ public class AttenteJoueur extends Menu {
 		this.setLayout( null );
 		this.setBackground( Color.WHITE );
 		this.addTitre();
-		this.addAttente();
 		this.addNbCouleurs();
 		this.addNbCoup();
 		this.addNbPions();
 		this.addDificulte();
 		this.addJ1();
 		this.addJ2();
+		this.addPret();
 		this.addJoueur();
 		this.addInfoPartie();
-		this.addModifier();
-		this.addLancer();
 		this.addQuitter();
 		this.addCouleursMultiples();
 	}
@@ -80,12 +76,6 @@ public class AttenteJoueur extends Menu {
 		this.add( this.lbltitre );
 	}
 	
-	private void addAttente() {
-		this.information = new JLabel("Attente d'un joueur...");
-	    this.information.setBounds(434, 143, 150, 30);
-	    this.add( this.information );
-	}
-	
 	private void addInfoPartie() {
 		this.infoPartie = new JLabel("Paramètres de la partie :");
 	    this.infoPartie.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -94,7 +84,7 @@ public class AttenteJoueur extends Menu {
 	}
 	
 	private void addPret() {
-		this.information = new JLabel("Joueur trouvé");
+		this.information = new JLabel("Attente du démarrage...");
 	    this.information.setBounds(434, 143, 150, 30);
 	    this.add( this.information );
 	}
@@ -148,31 +138,12 @@ public class AttenteJoueur extends Menu {
 	    this.add(this.lblJoueurs);
 	}
 	
-	private void addModifier() {
-		this.modifier = new JButton("Modifier");
-	    this.modifier.setBounds(170, 440, 200, 40);
-	    this.modifier.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent arg0) {
-	    	}
-	    });
-	    this.add(this.modifier);
-	}
-	
-	private void addLancer() {
-		this.lancer = new JButton("Démarrer la partie");
-	    this.lancer.setBounds(607, 310, 200, 40);
-	    this.lancer.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent arg0) {
-	    	}
-	    });
-	    this.add(this.lancer);
-	}
-	
 	private void addQuitter() {
 		this.retour = new JButton("Arrêter la partie");
-	    this.retour.setBounds(607, 360, 200, 40);
+	    this.retour.setBounds(607, 310, 200, 40);
 	    this.retour.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
+	    		fenetre.showMenu(fenetre.DEUXJOUEURS);
 	    	}
 	    });
 	    this.add(this.retour);
