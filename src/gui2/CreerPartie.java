@@ -53,7 +53,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.setNiveauSolo( Niveau.niveauString( "TresFacile" ) );
-		    	  fenetre.showMenu( Fenetre.SOLO );
+		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
 		this.add( btn );
@@ -66,7 +66,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Facile" ) );
-		    	  fenetre.showMenu( Fenetre.SOLO );
+		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
 		this.add( btn );
@@ -79,7 +79,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Normal" ) );
-		    	  fenetre.showMenu( Fenetre.SOLO );
+		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
 		this.add( btn );
@@ -92,7 +92,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Difficile" ) );
-		    	  fenetre.showMenu( Fenetre.SOLO );
+		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
 		this.add( btn );
@@ -105,7 +105,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.setNiveauSolo( Niveau.niveauString( "TresDifficile" ) );
-		    	  fenetre.showMenu( Fenetre.SOLO );
+		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
 		this.add( btn );

@@ -388,7 +388,7 @@ public class PersonnaliserMulti extends Menu{
 	    		quitter();
 	    		Niveau n = new NiveauPerso(nbPions, couleurPossib.length, doubl, coupMax, couleurPossib);
 	    		fenetre.setNiveauSolo( n );
-	    		fenetre.showMenu(Fenetre.SOLO);
+	    		fenetre.showMenu(Fenetre.ATTENTEJOUEUR);
 	    	}
 	    });
 	    this.add(btnValider);
