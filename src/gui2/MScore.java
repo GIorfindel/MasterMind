@@ -13,7 +13,8 @@ import javax.swing.SwingConstants;
 public class MScore extends Menu{
 	
 	private Fenetre fenetre;
-	private JLabel titre, solo, multi, lblSoloJ,lblSoloG, lblSoloRVD, lblSoloRCP, lblMultiJ,lblMultiG, lblMultiRVD, lblMultiRCP;
+	private JLabel titre, solo, multi, lblSoloJ,lblSoloG,
+	lblSoloRVD, lblSoloRCP, lblMultiJ,lblMultiG, lblMultiRVD, lblMultiRCP;
 	
 	public MScore( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -60,7 +61,7 @@ public class MScore extends Menu{
 	private void addLabelSolo(){
 		this.solo = new JLabel("Solo :");
 		solo.setSize(60, 20);
-		solo.setLocation(300, 150);
+		solo.setLocation(100, 150);
 		solo.setFont(new Font("Tahoma", Font.BOLD, 16));
 		this.add(solo);
 	}
@@ -68,7 +69,7 @@ public class MScore extends Menu{
 	private void addLabelSoloJoues(){
 		this.lblSoloJ = new JLabel("Matchs joués :");
 		lblSoloJ.setSize(120, 20);
-		lblSoloJ.setLocation(270, 190);
+		lblSoloJ.setLocation(70, 190);
 		lblSoloJ.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloJ);
 	}
@@ -76,7 +77,7 @@ public class MScore extends Menu{
 	private void addLabelSoloGagnes(){
 		this.lblSoloG = new JLabel("Gagnés :");
 		lblSoloG.setSize(80, 20);
-		lblSoloG.setLocation(270, 230);
+		lblSoloG.setLocation(70, 230);
 		lblSoloG.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloG);
 	}
@@ -84,7 +85,7 @@ public class MScore extends Menu{
 	private void addLabelSoloRatioVD(){
 		this.lblSoloRVD = new JLabel("Ratio (victoires/défaites) :");
 		lblSoloRVD.setSize(200, 20);
-		lblSoloRVD.setLocation(270, 270);
+		lblSoloRVD.setLocation(70, 270);
 		lblSoloRVD.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloRVD);
 	}
@@ -92,7 +93,7 @@ public class MScore extends Menu{
 	private void addLabelSoloRatioCP(){
 		this.lblSoloRCP = new JLabel("Ratio (coups/parties) :");
 		lblSoloRCP.setSize(200, 20);
-		lblSoloRCP.setLocation(270, 310);
+		lblSoloRCP.setLocation(70, 310);
 		lblSoloRCP.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloRCP);
 	}
