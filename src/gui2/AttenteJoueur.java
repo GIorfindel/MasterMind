@@ -10,7 +10,9 @@ import javax.swing.JLabel;
 
 import javax.swing.SwingConstants;
 
+import mastermind.Joueur;
 import mastermind.Niveau;
+import mastermind.Paquet;
 
 @SuppressWarnings("serial")
 public class AttenteJoueur extends Menu {
@@ -47,17 +49,19 @@ public class AttenteJoueur extends Menu {
 	
 
 	private JButton valider;
+	
+	private Niveau niveau;
+	private Joueur j;//peut être le joueur1 ou 2, ca depend de la valeur de createur
+	private boolean createur;
 
 	
 	private static int X = 405, W = 200, H = 40;
 
 	public AttenteJoueur( Fenetre fenetre ){
 		this.fenetre = fenetre;
+		this.niveau = null;
 		this.init();
-	}
-	
-	public void setNiveauMulti( Niveau n ){
-		
+		this.createur = false;
 	}
 	
 	private void init() {
@@ -73,7 +77,7 @@ public class AttenteJoueur extends Menu {
 		this.addJ2();
 		this.addJoueur();
 		this.addInfoPartie();
-		this.addModifier();
+//		this.addModifier(); On le fera après
 		this.addLancer();
 		this.addKicker();
 		this.addQuitter();
@@ -103,9 +107,11 @@ public class AttenteJoueur extends Menu {
 	}
 	
 	private void addPret() {
-		this.information = new JLabel("Joueur trouvé. Démarrage de la partie...");
-	    this.information.setBounds(434, 143, 300, 30);
-	    this.add( this.information );
+		this.information.setText("Joueur trouvé. Démarrage de la partie...");
+	}
+	
+	private void popPret(){
+		this.information.setText("Attente d'un joueur...");
 	}
 	
 	private void addNbCoup() {
@@ -179,10 +185,14 @@ public class AttenteJoueur extends Menu {
 	}
 	
 	private void addKicker() {
-		this.lancer = new JButton("Exclure le joueur");
-	    this.lancer.setBounds(607, 360, 200, 40);
-	    this.lancer.addActionListener(new ActionListener() {
+		this.kicker = new JButton("Exclure le joueur");
+	    this.kicker.setBounds(607, 360, 200, 40);
+	    this.kicker.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
+	    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_KICKER_JOUEUR2() );
+	    		lancer.setEnabled(false);
+	    		kicker.setEnabled(false);
+	    		//Enelever les infos sur le joueur2
 	    	}
 	    });
 	    this.add(this.lancer);
@@ -193,10 +203,87 @@ public class AttenteJoueur extends Menu {
 	    this.retour.setBounds(607, 410, 200, 40);
 	    this.retour.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
+	    		if( createur ){
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR1_PARTI() );
+	    		}else{
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR2_PARTI() );
+	    		}
+	    		quitter();
 	    		fenetre.showMenu(Fenetre.DEUXJOUEURS);
 	    	}
 	    });
 	    this.add(this.retour);
+	}
+	
+	public void setInfoMultiAttente( Niveau n, Joueur j ){
+		this.niveau = n;
+		this.createur = true;
+		if( j != null ){
+			this.createur = false;
+			this.j = j;
+		}
+	}
+	
+	private void quitter(){
+		this.niveau = null;
+		this.j = null;
+		this.createur = false;
+		this.lancer.setVisible(false);
+		this.kicker.setVisible(false);
+		this.lancer.setEnabled(false);
+		this.kicker.setEnabled(false);
+		//Supprimmer les infos sur le niveau, le joueur1 et joueur2 et le pret
+	}
+	
+	public void clic(){
+		if( this.createur ){
+			this.popPret();
+			this.lancer.setVisible(true);
+			this.kicker.setVisible(true);
+			this.lancer.setEnabled(true);
+			this.kicker.setEnabled(true);
+			//Afficher les infos sur le niveau(this.niveau) et les information sur toi(this.fenetre.getClient.getJoueur())
+		}else{
+			this.lancer.setVisible(false);
+			this.kicker.setVisible(false);
+			this.lancer.setEnabled(false);
+			this.kicker.setEnabled(false);
+			//Afficher les infos sur le niveau(this.niveau) et les information sur toi(this.fenetre.getClient.getJoueur())
+			//Afficher les infos sur ton adversaire (this.j)
+		}
+	}
+	
+	//Si on est le createur(true)
+	public void joueur2Arrive( Joueur j2 ){
+		this.j = j2;
+		this.lancer.setEnabled(true);
+		this.kicker.setEnabled(true);
+		//Afficher les info sur le joueur2
+	}
+	
+	//Si on est le createur(true)
+	public void joueur2Pars(){
+		this.j = null;
+		this.lancer.setEnabled(false);
+		this.kicker.setEnabled(false);
+		//Enlever les infos sur le joueur2
+	}
+	
+	//Si on n'est pas le createur(false)
+	public void joueur1Pars(){
+		quitter();
+		fenetre.showMenu(Fenetre.DEUXJOUEURS);
+	}
+	
+	//Si on n'est pas le createur(false)
+	public void tuEsKick(){
+		quitter();
+		fenetre.showMenu(Fenetre.DEUXJOUEURS);
+	}
+	
+	public void decoServeur(){
+		this.quitter();
+		this.fenetre.showMenu(Fenetre.DEUXJOUEURS);
 	}
 
 }

@@ -6,6 +6,7 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import mastermind.Joueur;
 import mastermind.Niveau;
 import mastermind.Solo;
 
@@ -147,7 +148,23 @@ public class Fenetre extends JFrame {
 		((MSolo) this.solo).setSolo(s);
 	}
 	
-	public void setNiveauMulti( Niveau n ){
-		((AttenteJoueur) this.attentejoueur).setNiveauMulti(n);
+	public void setInfoMultiAttente( Niveau n, Joueur j ){
+		((AttenteJoueur) this.attentejoueur).setInfoMultiAttente(n,j);
+	}
+	
+	public void tuEsKick(){
+		((AttenteJoueur) this.attentejoueur).tuEsKick();
+	}
+	
+	public void joueur2Arrive( Joueur joueur ){
+		((AttenteJoueur) this.attentejoueur).joueur2Arrive(joueur);
+	}
+	
+	public void joueur2Pars(){
+		((AttenteJoueur) this.attentejoueur).joueur2Pars();
+	}
+	
+	public void joueur1Pars(){
+		((AttenteJoueur) this.attentejoueur).joueur1Pars();
 	}
 }

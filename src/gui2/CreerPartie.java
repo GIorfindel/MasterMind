@@ -54,7 +54,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "TresFacile" ) ) );
-		    	  fenetre.setNiveauMulti( Niveau.niveauString( "TresFacile" ) );
+		    	  fenetre.setInfoMultiAttente( Niveau.niveauString( "TresFacile" ), null );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -68,7 +68,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "Facile" ) ) );
-		    	  fenetre.setNiveauMulti( Niveau.niveauString( "Facile" ) );
+		    	  fenetre.setInfoMultiAttente( Niveau.niveauString( "Facile" ), null );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -82,7 +82,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "Normal" ) ) );
-		    	  fenetre.setNiveauMulti( Niveau.niveauString( "Normal" ) );
+		    	  fenetre.setInfoMultiAttente( Niveau.niveauString( "Normal" ), null );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -96,7 +96,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "Difficile" ) ) );
-		    	  fenetre.setNiveauMulti( Niveau.niveauString( "Difficile" ) );
+		    	  fenetre.setInfoMultiAttente( Niveau.niveauString( "Difficile" ), null );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -110,7 +110,7 @@ public class CreerPartie extends Menu{
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
 		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "TresDifficile" ) ) );
-		    	  fenetre.setNiveauMulti( Niveau.niveauString( "TresDifficile" ) );
+		    	  fenetre.setInfoMultiAttente( Niveau.niveauString( "TresDifficile" ), null );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });

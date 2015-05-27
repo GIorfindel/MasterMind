@@ -295,12 +295,13 @@ public class Paquet implements Serializable{
 	}
 	
 	//retourne null s'il la partie et introuvé ou la partie est pleine (il faut rafraichir la liste des partie)
-	public static Paquet creeREPONSE_NOUV_JOUEUR2( Joueur j, int id ){
+	public static Paquet creeREPONSE_NOUV_JOUEUR2( Joueur j, Niveau n, int id ){
 		if( j == null ){
 			return new Paquet( 0, REPONSE_NOUV_JOUEUR2, id );
 		}else{
-			Paquet p = new Paquet( 1, REPONSE_NOUV_JOUEUR2, id );
+			Paquet p = new Paquet( 2, REPONSE_NOUV_JOUEUR2, id );
 			p.addObjet(j);
+			p.addObjet(n);
 			return p;
 		}
 	}

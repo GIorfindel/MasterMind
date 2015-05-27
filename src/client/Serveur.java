@@ -49,10 +49,6 @@ public class Serveur {
 			if ( !inet.isReachable(5000)){
 				return false;
 			}
-
-
-
-
 			this.socket = new Socket( this.addr_serveur, this.port_serveur );
 			this.connecte = true;
 		}
