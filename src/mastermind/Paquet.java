@@ -225,48 +225,6 @@ public class Paquet implements Serializable{
 	}
 	
 	
-	/*
-	 * Paquet pour le multijoueur:
-	 * 
-	 * 
-	 * 
-	 * Quand le client est créateur de la partie:
-	 * Tout d'abord quand le joueur créais une partie faire
-	 * 		-this.fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( niveau_partie ) )
-	 * 		-Puis tu le redirige vers la page d'attente
-	 * 		-Sur cette page(la classe AttenteJoueur.java) tu créais une méthode joueur2Arrive( Joueur joueur ), tu peux la nommer autrement
-	 * 				Donc quand il arrive le joueur2 tu active le bouton jouer et le bouton kicker
-	 * 		-Sur la même page tu créais la fonction joueur2AQuitter(), c'est quand le joueur 2 et partis tout seul
-	 * 		-Sur l'event kicker joueur2 tu appelle le code:
-	 * 						this.fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_KICKER_JOUEUR2() )
-	 * 						et tu actualise la page
-	 * 		-Sur le bouton quitter tu fais: this.fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR1_PARTI() )
-	 * 
-	 * Maintenant quand le client rejoins une partie:
-	 * Sur la page liste des parties:
-	 * 		-Pour lister les parties disponible:
-	 * 				Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
-	 * 				int id = p.getId();
-	 * 				this.fenetre.getClient().envoyerPaquet( p );
-	 * 				PAquet pServeur = this.fenetre.getClient().recevoirPaquet( x secondes, id )
-	 * 				if( pServeur == null ){
-	 * 					Limite de temps dépassé
-	 * 				}else{
-	 * 					La tu as la liste des parties:
-	 * 					nbPartie = pServeur.getNbObjet();
-	 * 					Multijoueur0 = (Multijoueur) pServeur.getObjet(0);
-	 * 				}
-	 * 		-Quand le joueur a choisit une partie, tu fait:
-	 * 				envoie la paquet au serveur : creeDEMANDE_NOUV_JOUEUR2( nom_partie )
-	 * 				la reponse c'est : 	pServeur.getNbObjet() == 0, partie pas trouvé ou partie pleine
-	 * 									pServeur.getNbObjet() == 1, Joueur j = (Joueur) pServeur.getOBjet(0)
-	 * 										Et la tu le redirige vers la page attente et donne à cette page le joueur j (c'est le créateur de la partie)
-	 * 		-Sur la page Attente:
-	 * 			-Qaund il clic sur le bouton quitte tu envoie au serveur 
-	 * 
-	 * 
-	 */
-	
 	public static Paquet creeDEMANDE_CREE_MULTI( Niveau niveau ){
 		Paquet p = new Paquet( 1, DEMANDE_CREE_MULTI, -1 );
 		p.addObjet(niveau);

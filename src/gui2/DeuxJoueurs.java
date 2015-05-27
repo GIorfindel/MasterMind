@@ -5,13 +5,48 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+
+
+/*
+ * Quand le joueur a choisit une partie tu fais:
+ * Paquet p = Paquet.creeDEMANDE_NOUV_JOUEUR2( nom_partie )
+ * int id = p.getId();
+ * fenetre.getClient().envoyerPaquet( p );
+ * Paquet rep = fenetre.getClient().recevoirPaquet(x secondes, id);
+ * if(rep==null){
+ * 	Limite de temps dépassé
+ * }else{
+ * 	if(rep.getNbObjet()==0){
+ * 		Partie non trouvé ou Partie pleine
+ * 	}else{
+ * 		Joueur j = (Joueur) p.getObjet(0);
+ * 		Niveau n = (Niveau) p.getObjet(1);
+ * 		fenetre.setInfoMultiAttente(n,j);
+ * 		fenetre.showMenu(Fenetre.ATTENTEJOUEUR);
+ * 	}
+ * }
+ * 
+ * Pour demander la liste des parties:
+ * Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES( nom_partie )
+ * int id = p.getId();
+ * fenetre.getClient().envoyerPaquet( p );
+ * Paquet rep = fenetre.getClient().recevoirPaquet(x secondes, id);
+ * if(rep==null){
+ * 	Limite de temps dépassé
+ * }else{
+ * 	Le nombre de partie disponibles: p.getNbObjet();
+ * 	Tu as une partie avec cette methode:
+ * 		(Multijoueur)p.getObjet(i)
+ * 		Et tu regarde dans la classe Multijoueur pour avoir toutes les infos, par contre ne te sert pas de la variable joueur2 elle est à null
+ * }
+ */
+
 
 @SuppressWarnings("serial")
 public class DeuxJoueurs extends Menu{
