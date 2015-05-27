@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import mastermind.Niveau;
+import mastermind.Paquet;
 
 @SuppressWarnings("serial")
 public class CreerPartie extends Menu{
@@ -32,7 +33,7 @@ public class CreerPartie extends Menu{
 		this.addBoutonIntermediaire();
 		this.addBoutonDifficile();
 		this.addBoutonTresDifficile();
-		this.addBoutonPersonnaliser();
+//		this.addBoutonPersonnaliser(); On fait pas cette fonctionnalité pour l'instant, trop compliqué à sauvegarder
 		this.addBoutonRetour();
 
 	}
@@ -52,7 +53,8 @@ public class CreerPartie extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
-		    	  fenetre.setNiveauSolo( Niveau.niveauString( "TresFacile" ) );
+		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "TresFacile" ) ) );
+		    	  fenetre.setNiveauMulti( Niveau.niveauString( "TresFacile" ) );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -65,7 +67,8 @@ public class CreerPartie extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
-		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Facile" ) );
+		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "Facile" ) ) );
+		    	  fenetre.setNiveauMulti( Niveau.niveauString( "Facile" ) );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -78,7 +81,8 @@ public class CreerPartie extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
-		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Normal" ) );
+		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "Normal" ) ) );
+		    	  fenetre.setNiveauMulti( Niveau.niveauString( "Normal" ) );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -91,7 +95,8 @@ public class CreerPartie extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
-		    	  fenetre.setNiveauSolo( Niveau.niveauString( "Difficile" ) );
+		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "Difficile" ) ) );
+		    	  fenetre.setNiveauMulti( Niveau.niveauString( "Difficile" ) );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -104,7 +109,8 @@ public class CreerPartie extends Menu{
 		Y += H+10;
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
-		    	  fenetre.setNiveauSolo( Niveau.niveauString( "TresDifficile" ) );
+		    	  fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CREE_MULTI( Niveau.niveauString( "TresDifficile" ) ) );
+		    	  fenetre.setNiveauMulti( Niveau.niveauString( "TresDifficile" ) );
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
