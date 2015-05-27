@@ -30,6 +30,8 @@ public class AttenteJoueur extends Menu {
 	private JButton modifier;
 	private JButton lancer;
 	private JButton retour;
+	private JButton kicker;
+
 	
 	private JLabel titre;
 	private JLabel nbPions;
@@ -67,6 +69,7 @@ public class AttenteJoueur extends Menu {
 		this.addInfoPartie();
 		this.addModifier();
 		this.addLancer();
+		this.addKicker();
 		this.addQuitter();
 		this.addCouleursMultiples();
 	}
@@ -94,8 +97,8 @@ public class AttenteJoueur extends Menu {
 	}
 	
 	private void addPret() {
-		this.information = new JLabel("Joueur trouvé");
-	    this.information.setBounds(434, 143, 150, 30);
+		this.information = new JLabel("Joueur trouvé. Démarrage de la partie...");
+	    this.information.setBounds(434, 143, 300, 30);
 	    this.add( this.information );
 	}
 	
@@ -153,6 +156,7 @@ public class AttenteJoueur extends Menu {
 	    this.modifier.setBounds(170, 440, 200, 40);
 	    this.modifier.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
+	    		fenetre.showMenu(Fenetre.CREER);
 	    	}
 	    });
 	    this.add(this.modifier);
@@ -168,11 +172,22 @@ public class AttenteJoueur extends Menu {
 	    this.add(this.lancer);
 	}
 	
+	private void addKicker() {
+		this.lancer = new JButton("Exclure le joueur");
+	    this.lancer.setBounds(607, 360, 200, 40);
+	    this.lancer.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent arg0) {
+	    	}
+	    });
+	    this.add(this.lancer);
+	}
+	
 	private void addQuitter() {
-		this.retour = new JButton("Arrêter la partie");
-	    this.retour.setBounds(607, 360, 200, 40);
+		this.retour = new JButton("Quitter");
+	    this.retour.setBounds(607, 410, 200, 40);
 	    this.retour.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
+	    		fenetre.showMenu(Fenetre.DEUXJOUEURS);
 	    	}
 	    });
 	    this.add(this.retour);

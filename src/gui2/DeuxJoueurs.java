@@ -149,7 +149,7 @@ public class DeuxJoueurs extends Menu{
 	    btnRejoindre.setBounds(X, 410, W, H);
 	    btnRejoindre.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){	
-		    	  fenetre.showMenu( Fenetre.REJOINDREPARTIE );
+		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
 	    this.add(btnRejoindre);
