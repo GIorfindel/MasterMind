@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,11 +17,16 @@ import javax.swing.SwingConstants;
 public class DeuxJoueurs extends Menu{
 
 	private Fenetre fenetre;
+	@SuppressWarnings("rawtypes")
+	private ArrayList listeParties;
 	private static int X = 405, W = 200, H = 40;
 
+	@SuppressWarnings("rawtypes")
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
+		this.listeParties = new ArrayList();
 		this.init();
+
 	}
 	
 	private void init() {
@@ -52,83 +58,30 @@ public class DeuxJoueurs extends Menu{
 	    this.add(lblPartiesDisponibles);
 	}
 	
+	@SuppressWarnings("rawtypes")
+	private Object[][] arrayVersTab(ArrayList listeParties) {
+		Object[][] tableau = new Object[listeParties.size()][6];
+		int i=0;
+		for (i = 0; i<listeParties.size(); i++){
+			Object[] ligne = (Object[]) listeParties.get(i);
+			for(int j = 0; j<6; j++) {
+				tableau[i][j] = ligne[j];
+			}
+		}
+		
+		return tableau;
+	}
+	
 	private void addListeParties() {
-		Object[][] data = {
-				{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Non"}
-		};
-	    
-		String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
+
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setBounds(100, 180, 770, 210);
 	    this.add(scrollPane);
-	    
-	    // Création d'un tableau que l'utilisateur ne peut pas modifier
-	    JTable table = new JTable(data, nomsColonnes){
+		
+	    String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
+	   
+		// Création d'un tableau que l'utilisateur ne peut pas modifier
+	    JTable table = new JTable(arrayVersTab(this.listeParties), nomsColonnes){
 	    	public boolean isCellEditable(int row, int column) {
 	    		return false;
 	    	}
@@ -185,6 +138,15 @@ public class DeuxJoueurs extends Menu{
 		      }
 		    });
 		this.add( btn );
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void ajouterPartie(Object[] partie) {
+		this.listeParties.add(partie);
+	}
+	
+	public void supprimerPartie(int i) {
+		this.listeParties.remove(i);
 	}
 
 }
