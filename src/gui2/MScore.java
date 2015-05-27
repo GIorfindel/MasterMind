@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 public class MScore extends Menu{
 	
 	private Fenetre fenetre;
-	private JLabel titre, solo, multi, lblSoloJ,lblSoloG, lblSoloR,lblMultiJ,lblMultiG, lblMultiR;
+	private JLabel titre, solo, multi, lblSoloJ,lblSoloG, lblSoloRVD, lblSoloRCP, lblMultiJ,lblMultiG, lblMultiRVD, lblMultiRCP;
 	
 	public MScore( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -27,11 +27,13 @@ public class MScore extends Menu{
 		this.addLabelSolo();
 		this.addLabelSoloJoues();
 		this.addLabelSoloGagnes();
-		this.addLabelSoloRatio();
+		this.addLabelSoloRatioVD();
+		this.addLabelSoloRatioCP();
 		this.addLabelMulti();
 		this.addLabelMultiJoues();
 		this.addLabelMultiGagnes();
-		this.addLabelMultiRatio();
+		this.addLabelMultiRatioVD();
+		this.addLabelMultiRatioCP();
 		this.addBoutonRetour();
 	}
 	
@@ -79,12 +81,20 @@ public class MScore extends Menu{
 		this.add(lblSoloG);
 	}
 		
-	private void addLabelSoloRatio(){
-		this.lblSoloR = new JLabel("Ratio :");
-		lblSoloR.setSize(70, 20);
-		lblSoloR.setLocation(270, 270);
-		lblSoloR.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		this.add(lblSoloR);
+	private void addLabelSoloRatioVD(){
+		this.lblSoloRVD = new JLabel("Ratio (victoires/défaites) :");
+		lblSoloRVD.setSize(200, 20);
+		lblSoloRVD.setLocation(270, 270);
+		lblSoloRVD.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(lblSoloRVD);
+	}
+	
+	private void addLabelSoloRatioCP(){
+		this.lblSoloRCP = new JLabel("Ratio (coups/parties) :");
+		lblSoloRCP.setSize(200, 20);
+		lblSoloRCP.setLocation(270, 310);
+		lblSoloRCP.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(lblSoloRCP);
 	}
 		
 	private void addLabelMulti(){
@@ -110,12 +120,20 @@ public class MScore extends Menu{
 		lblMultiG.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiG);
 	}
-		
-	private void addLabelMultiRatio(){
-		this.lblMultiR = new JLabel("Ratio :");
-		lblMultiR.setSize(70, 20);
-		lblMultiR.setLocation(670, 270);
-		lblMultiR.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		this.add(lblMultiR);
+	
+	private void addLabelMultiRatioVD(){
+		this.lblMultiRVD = new JLabel("Ratio (victoires/défaites) :");
+		lblMultiRVD.setSize(200, 20);
+		lblMultiRVD.setLocation(670, 270);
+		lblMultiRVD.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(lblMultiRVD);
+	}
+	
+	private void addLabelMultiRatioCP(){
+		this.lblMultiRCP = new JLabel("Ratio (coups/parties) :");
+		lblMultiRCP.setSize(200, 20);
+		lblMultiRCP.setLocation(670, 310);
+		lblMultiRCP.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(lblMultiRCP);
 	}
 }
