@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 
 import javax.swing.SwingConstants;
 
+import mastermind.Niveau;
+
 @SuppressWarnings("serial")
 public class AttenteJoueur extends Menu {
 	
@@ -52,6 +54,10 @@ public class AttenteJoueur extends Menu {
 	public AttenteJoueur( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.init();
+	}
+	
+	public void setNiveauMulti( Niveau n ){
+		
 	}
 	
 	private void init() {
