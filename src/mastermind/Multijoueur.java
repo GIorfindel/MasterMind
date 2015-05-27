@@ -20,7 +20,6 @@ public class Multijoueur extends Partie {
 		this.coupsJ2 = 0;
 		this.etat = ETAT_CHERCHE_JOUEUR2;
 		this.joueur2 = null;
-		this.niveau = niveau;
 	}
 	
 	public Joueur getJoueur2(){
