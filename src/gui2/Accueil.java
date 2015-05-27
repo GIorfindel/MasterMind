@@ -32,6 +32,7 @@ public class Accueil extends Menu{
 		this.addBoutonConnexion();
 		this.addBoutonInscription();
 		this.addBoutonProfil();
+		this.addBoutonScores();
 		this.addInfoClient();
 		this.addBoutonQuitter();
 
@@ -117,6 +118,18 @@ public class Accueil extends Menu{
 		this.connectCompte.setBounds(0,30,300,30);
 		this.connectCompte.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(this.connectCompte);
+	}
+	
+	private void addBoutonScores(){
+		JButton btn = new JButton( "Scores" );
+		btn.setBounds( X, Y, W, H );
+		Y += H+10;
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		        fenetre.showMenu( Fenetre.SCORE );
+		      }
+		    });
+		this.add( btn );
 	}
 	
 	public void clic(){
