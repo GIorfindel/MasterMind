@@ -93,6 +93,7 @@ public class Accueil extends Menu{
 		      }
 		    });
 		this.profil.setEnabled(false);
+		this.profil.setToolTipText("vous devez-être connecté pour avoir accès à cette fonctionnalité");
 		this.add( this.profil );
 	}
 	
@@ -135,6 +136,7 @@ public class Accueil extends Menu{
 	public void clic(){
 		if( this.fenetre.getClient().connecterAuCompte() ){
 			this.profil.setEnabled(true);
+			this.profil.setToolTipText("");
 			this.connectCompte.setText("Joueur: " + this.fenetre.getClient().getJoueur().getIdentifiant());
 		}else{
 			this.profil.setEnabled(false);
