@@ -21,9 +21,9 @@ public class Fenetre extends JFrame {
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
 			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9",
 			SOLO = "10", CREER="11", PERSONNALISERMULTI = "12", SCORE = "13", ATTENTEJOUEUR = "14",
-			REJOINDREPARTIE = "15";
+			CREE_PARTIE_MULTI = "16";
 	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser, solo, 
-		creer, personnaliserMulti, score, attentejoueur, rejoindrepartie;
+		creer, personnaliserMulti, score, attentejoueur, creePartieMulti;
 	private Menu menu_actuel;
 	
 	public Fenetre(){
@@ -70,7 +70,7 @@ public class Fenetre extends JFrame {
 		this.personnaliserMulti = new PersonnaliserMulti( this );
 		this.score = new MScore( this );
 		this.attentejoueur = new AttenteJoueur( this );
-		this.rejoindrepartie = new RejoindrePartie( this );
+		this.creePartieMulti = new CreePartieMulti( this );
 		this.content.add( this.accueil, ACCUEIL );
 		this.content.add( this.connexion, CONNEXION );
 		this.content.add( this.inscription, INSCRIPTION );
@@ -85,7 +85,7 @@ public class Fenetre extends JFrame {
 		this.content.add( this.personnaliserMulti, PERSONNALISERMULTI );
 		this.content.add( this.score, SCORE );
 		this.content.add( this.attentejoueur, ATTENTEJOUEUR );
-		this.content.add( this.rejoindrepartie, REJOINDREPARTIE );
+		this.connexion.add( this.creePartieMulti, CREE_PARTIE_MULTI);
 
 		
 		this.getContentPane().add( this.content, BorderLayout.CENTER );
@@ -135,9 +135,9 @@ public class Fenetre extends JFrame {
 		}else if( menu.equals( ATTENTEJOUEUR ) ){
 			this.attentejoueur.clic();
 			this.menu_actuel = this.attentejoueur;
-		}else if( menu.equals( REJOINDREPARTIE ) ){
-			this.rejoindrepartie.clic();
-			this.menu_actuel = this.rejoindrepartie;
+		}else if( menu.equals( CREE_PARTIE_MULTI ) ){
+			this.creePartieMulti.clic();
+			this.menu_actuel = this.creePartieMulti;
 		}
 	}
 	
