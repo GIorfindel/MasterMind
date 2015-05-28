@@ -284,7 +284,7 @@ public class AttenteJoueur extends Menu {
 		this.lblnbPions.setText("Nombre de pions : "+this.niveau.getPions());
 		this.lblnbCouleurs.setText("Nombre de couleurs : "+this.niveau.getCouleurs());
 		this.lblcouleursMultiples.setText("Couleurs multiples : "+this.niveau.getDouble());
-		this.lbldifficulte.setText("Difficulté : "+this.niveau.toString());
+		this.lbldifficulte.setText("Difficulté : "+this.niveau.getNomNiveau());
 	}
 	
 	public void refreshJoueur1(){
