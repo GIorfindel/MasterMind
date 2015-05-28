@@ -304,18 +304,29 @@ public class Client extends Thread {
 	
 	public void demandeStats( Paquet p ){
 		try {
-			int joues = this.serveur.getBD().StatJoues((String)p.getObjet(0), "solo");
-			int coups = this.serveur.getBD().StatCoups((String)p.getObjet(0), "solo");
-			int gagnes = this.serveur.getBD().StatGagnes((String)p.getObjet(0), "solo");
-			float rvds = gagnes/joues;
-			float rcps = joues/coups;
-			int jouem = this.serveur.getBD().StatJoues((String)p.getObjet(0), "multi");
-			int coupm = this.serveur.getBD().StatCoups((String)p.getObjet(0), "multi");
-			int gagnem = this.serveur.getBD().StatGagnes((String)p.getObjet(0), "multi");
-			float rvdm = gagnem/jouem;
-			float rcpm = jouem/coupm;
-			float[] stats = {joues, coups, rvds, rcps, jouem, coupm, rvdm, rcpm};
-
+			String login = this.joueur.getIdentifiant();
+			int joues = this.serveur.getBD().StatJoues(login, "solo");
+			int coups = this.serveur.getBD().StatCoups(login, "solo");
+			int gagnes = this.serveur.getBD().StatGagnes(login, "solo");
+			double rvds = 0;
+			double rcps = 0;
+			if (joues != 0)
+			{
+				rvds = gagnes/joues;
+				rcps = coups/joues;
+			}
+			int jouem = this.serveur.getBD().StatJoues(login, "multi");
+			int coupm = this.serveur.getBD().StatCoups(login, "multi");
+			int gagnem = this.serveur.getBD().StatGagnes(login, "multi");
+			double rvdm = 0;
+			double rcpm = 0;
+			if (jouem != 0)
+			{
+				rvdm = gagnem/jouem;
+				rcpm = coupm/jouem;
+			}
+			Object[] stats = {joues, gagnes, coups, jouem, gagnem, coupm};
+			
 			this.envoyerPaquet( Paquet.creeREPONSE_STATS( stats, p.getId() ) );
 		} catch (SQLException e) {
 			e.printStackTrace();

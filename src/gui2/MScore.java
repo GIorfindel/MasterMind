@@ -16,8 +16,8 @@ import mastermind.Paquet;
 public class MScore extends Menu{
 	
 	private Fenetre fenetre;
-	private JLabel titre, solo, multi, lblSoloJ,lblSoloG,
-	lblSoloRVD, lblSoloRCP, lblMultiJ,lblMultiG, lblMultiRVD, lblMultiRCP;
+	private JLabel titre, solo, multi, lblSoloJ,lblSoloG, lblSoloC,
+	lblSoloRVD, lblSoloRCP, lblMultiJ,lblMultiG, lblMultiC, lblMultiRVD, lblMultiRCP;
 	
 	public MScore( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -27,36 +27,8 @@ public class MScore extends Menu{
 	private void init(){
 		this.setLayout( null );
 		this.setBackground( Color.WHITE );
-		/*
-		if( fenetre.getClient().getJoueur() != null ){
-			String login = fenetre.getClient().getJoueur().getIdentifiant();
-			if( login != null && !login.equals("") ){
-				Paquet p = Paquet.creeDEMANDE_STATS( login );
-				int id = p.getId();
-				fenetre.getClient().envoyerPaquet(p);
-				Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id);
-				if( ps != null ){
-						this.addLabelSoloJoues((float) ps.getObjet(0));
-						this.addLabelSoloGagnes((float) ps.getObjet(1));
-						this.addLabelSoloRatioVD((float) ps.getObjet(2));
-						this.addLabelSoloRatioCP((float) ps.getObjet(3));
-						this.addLabelMultiJoues((float) ps.getObjet(4));
-						this.addLabelMultiGagnes((float) ps.getObjet(5));
-						this.addLabelMultiRatioVD((float) ps.getObjet(6));
-						this.addLabelMultiRatioCP((float) ps.getObjet(7));
-			}
-		}
-		}*/
 		this.addLabelTitre();
 		this.addLabelSolo();
-		this.addLabelSoloJoues((float) 0);
-		this.addLabelSoloGagnes((float) 0);
-		this.addLabelSoloRatioVD((float) 0);
-		this.addLabelSoloRatioCP((float) 0);
-		this.addLabelMultiJoues((float) 0);
-		this.addLabelMultiGagnes((float) 0);
-		this.addLabelMultiRatioVD((float) 0);
-		this.addLabelMultiRatioCP((float) 0);
 		this.addLabelMulti();
 		this.addBoutonRetour();
 	}
@@ -72,7 +44,7 @@ public class MScore extends Menu{
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setBounds(405, 350, 200, 50);
+		btn.setBounds(405, 400, 200, 50);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.ACCUEIL );
@@ -89,34 +61,42 @@ public class MScore extends Menu{
 		this.add(solo);
 	}
 		
-	private void addLabelSoloJoues(Float joues){
+	private void addLabelSoloJoues(int joues){
 		this.lblSoloJ = new JLabel("Matchs joués : " + joues);
-		lblSoloJ.setSize(120, 20);
+		lblSoloJ.setSize(130, 20);
 		lblSoloJ.setLocation(70, 190);
 		lblSoloJ.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloJ);
 	}
 		
-	private void addLabelSoloGagnes(Float gagnes){
+	private void addLabelSoloGagnes(int gagnes){
 		this.lblSoloG = new JLabel("Gagnés : " + gagnes);
-		lblSoloG.setSize(80, 20);
+		lblSoloG.setSize(90, 20);
 		lblSoloG.setLocation(70, 230);
 		lblSoloG.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloG);
 	}
+	
+	private void addLabelSoloCoups(int coups){
+		this.lblSoloC = new JLabel("Coups joués : " + coups);
+		lblSoloC.setSize(150, 20);
+		lblSoloC.setLocation(70, 270);
+		lblSoloC.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(lblSoloC);
+	}
 		
-	private void addLabelSoloRatioVD(Float rvd){
+	private void addLabelSoloRatioVD(double rvd){
 		this.lblSoloRVD = new JLabel("Ratio (victoires/défaites) : " + rvd);
-		lblSoloRVD.setSize(200, 20);
-		lblSoloRVD.setLocation(70, 270);
+		lblSoloRVD.setSize(210, 20);
+		lblSoloRVD.setLocation(70, 310);
 		lblSoloRVD.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloRVD);
 	}
 	
-	private void addLabelSoloRatioCP(Float rcp){
+	private void addLabelSoloRatioCP(double rcp){
 		this.lblSoloRCP = new JLabel("Ratio (coups/parties) : " + rcp);
-		lblSoloRCP.setSize(200, 20);
-		lblSoloRCP.setLocation(70, 310);
+		lblSoloRCP.setSize(210, 20);
+		lblSoloRCP.setLocation(70, 350);
 		lblSoloRCP.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloRCP);
 	}
@@ -129,36 +109,86 @@ public class MScore extends Menu{
 		this.add(multi);
 	}
 		
-	private void addLabelMultiJoues(Float joues){
+	private void addLabelMultiJoues(int joues){
 		this.lblMultiJ = new JLabel("Matchs joués : " + joues);
-		lblMultiJ.setSize(120, 20);
+		lblMultiJ.setSize(130, 20);
 		lblMultiJ.setLocation(670, 190);
 		lblMultiJ.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiJ);
 	}
 		
-	private void addLabelMultiGagnes(Float gagnes){
+	private void addLabelMultiGagnes(int gagnes){
 		this.lblMultiG = new JLabel("Gagnés : " + gagnes);
-		lblMultiG.setSize(80, 20);
+		lblMultiG.setSize(90, 20);
 		lblMultiG.setLocation(670, 230);
 		lblMultiG.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiG);
 	}
 	
-	private void addLabelMultiRatioVD(Float rvd){
+	private void addLabelMultiCoups(int coups){
+		this.lblMultiC = new JLabel("Coups joués : " + coups);
+		lblMultiC.setSize(150, 20);
+		lblMultiC.setLocation(670, 270);
+		lblMultiC.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(lblMultiC);
+	}
+	
+	private void addLabelMultiRatioVD(double rvd){
 		this.lblMultiRVD = new JLabel("Ratio (victoires/défaites) : " + rvd);
-		lblMultiRVD.setSize(200, 20);
-		lblMultiRVD.setLocation(670, 270);
+		lblMultiRVD.setSize(210, 20);
+		lblMultiRVD.setLocation(670, 310);
 		lblMultiRVD.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiRVD);
 	}
 	
-	private void addLabelMultiRatioCP(Float rcp){
+	private void addLabelMultiRatioCP(double rcp){
 		this.lblMultiRCP = new JLabel("Ratio (coups/parties) : " + rcp);
-		lblMultiRCP.setSize(200, 20);
-		lblMultiRCP.setLocation(670, 310);
+		lblMultiRCP.setSize(210, 20);
+		lblMultiRCP.setLocation(670, 350);
 		lblMultiRCP.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiRCP);
+	}
+	
+	public void clic(){
+		if( fenetre.getClient().getJoueur() != null ){
+			String login = fenetre.getClient().getJoueur().getIdentifiant();
+			if( login != null && !login.equals("") ){
+				Paquet p = Paquet.creeDEMANDE_STATS( );
+				int id = p.getId();
+				fenetre.getClient().envoyerPaquet(p);
+				Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id);
+				if( ps != null ){
+					int sj = (int)ps.getObjet(0);
+					int sg = (int)ps.getObjet(1);
+					int sc = (int)ps.getObjet(2);
+					int mj = (int) ps.getObjet(3);
+					int mg = (int) ps.getObjet(4);
+					int mc = (int)ps.getObjet(5);
+						this.addLabelSoloJoues(sj);
+						this.addLabelSoloGagnes(sg);
+						this.addLabelSoloCoups(sc);
+						if (sg!=0 && sj!=0)
+							this.addLabelSoloRatioVD((double)sg/(double)sj);
+						else 
+							this.addLabelSoloRatioVD(0.0);
+						if (sc!=0 && sj!=0)
+							this.addLabelSoloRatioCP((double)sc/(double)sj);
+						else
+							this.addLabelSoloRatioCP(0.0);
+						this.addLabelMultiJoues(mj);
+						this.addLabelMultiGagnes(mg);
+						this.addLabelMultiCoups(mc);
+						if (mg!=0 && mj!=0)
+							this.addLabelMultiRatioVD((double)mg/(double)mj);
+						else 
+							this.addLabelMultiRatioVD(0.0);
+						if (mc!=0 && mj!=0)
+							this.addLabelMultiRatioCP((double)mc/(double)mj);
+						else 
+							this.addLabelMultiRatioCP(0.0);
+				}
+			}
+		}
 	}
 	
 }
