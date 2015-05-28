@@ -5,12 +5,16 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 
 /*
@@ -48,18 +52,23 @@ import javax.swing.SwingConstants;
  */
 
 
-@SuppressWarnings("serial")
 public class DeuxJoueurs extends Menu{
 
 	private Fenetre fenetre;
-	@SuppressWarnings("rawtypes")
 	private ArrayList listeParties;
 	private static int X = 405, W = 200, H = 40;
+	private JTable table;
 
-	@SuppressWarnings("rawtypes")
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.listeParties = new ArrayList();
+		
+		// Création d'un tableau que l'utilisateur ne peut pas modifier
+	    this.table = new JTable(new TabListeParties(this.listeParties)){
+	    	public boolean isCellEditable(int row, int column) {
+	    		return false;
+	    	}
+	    };
 		this.init();
 
 	}
@@ -112,24 +121,44 @@ public class DeuxJoueurs extends Menu{
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setBounds(100, 180, 770, 210);
 	    this.add(scrollPane);
-		
-	    String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
-	   
-		// Création d'un tableau que l'utilisateur ne peut pas modifier
-	    JTable table = new JTable(arrayVersTab(this.listeParties), nomsColonnes){
-	    	public boolean isCellEditable(int row, int column) {
-	    		return false;
-	    	}
-	    };
 	    
 	    // Permet de ne sélection qu'une seule ligne
-	    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	    SelectionListener listener = new SelectionListener(table);
 	    
-	    table.setFont(new Font("Tahoma", Font.PLAIN, 13));
-	    table.setCellSelectionEnabled(false);
-	    table.setRowSelectionAllowed(true);
-	    scrollPane.setViewportView(table);
-	    table.setBackground(Color.WHITE);
+	    this.table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	    this.table.setCellSelectionEnabled(false);
+	    this.table.setRowSelectionAllowed(true);
+	    scrollPane.setViewportView(this.table);
+	    this.table.setBackground(Color.WHITE);
+	    
+	    
+	}
+	
+	class SelectionListener implements ListSelectionListener {
+		JTable table;
+		
+		SelectionListener(JTable table) {
+			this.table = table;
+		}
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
+				int first = e.getFirstIndex();
+				int last = e.getLastIndex();
+			} 
+			
+			else if (e.getSource() == table.getColumnModel().getSelectionModel() && table.getColumnSelectionAllowed()) {
+				int first = e.getFirstIndex();
+				int last = e.getLastIndex();
+			}
+			if (e.getValueIsAdjusting()) {
+				System.out.println("The mouse button has not yet been released");
+			}
+		}
+		
 	}
 	
 	private void addBoutonRejoindre(){
@@ -158,7 +187,9 @@ public class DeuxJoueurs extends Menu{
 		JButton btn = new JButton( "Rafraîchir" );
 		btn.setBounds(X, 530, W, H);
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){	
+		    	  Object[] test = { "1","2","3","4","5","6"};
+		    	  ajouterPartie(test);
 		      }
 		    });
 		this.add( btn );
@@ -177,7 +208,9 @@ public class DeuxJoueurs extends Menu{
 	
 	@SuppressWarnings("unchecked")
 	public void ajouterPartie(Object[] partie) {
+		TabListeParties model = (TabListeParties) this.table.getModel();
 		this.listeParties.add(partie);
+		model.fireTableDataChanged();
 	}
 	
 	public void supprimerPartie(int i) {
