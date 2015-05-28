@@ -454,5 +454,44 @@ public class DB {
 		preparedStmt.executeUpdate();
 		preparedStmt.close();
 	}
+	
+	public int StatJoues( String login, String mode ) throws SQLException{
+		String query = "select count(id_Joueur) from Score join Joueur on (Score.id_joueur=Joueur.id)  where identifiant=? and mode_solo_multi=?";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setString( 1, login );
+		preparedStmt.setString( 2, mode );
+		ResultSet resultSet = preparedStmt.executeQuery();
+		int joues=resultSet.getInt(1);
+		resultSet.close();
+		preparedStmt.close();
+		return joues;
+	}
+	
+	public int StatGagnes( String login, String mode ) throws SQLException{
+		String query = "select count(id_Joueur) from Score join Joueur on (Score.id_joueur=Joueur.id)  where identifiant=? and mode_solo_multi=? and victoire=1";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setString( 1, login );
+		preparedStmt.setString( 2, mode );
+		ResultSet resultSet = preparedStmt.executeQuery();
+		int gagnes=resultSet.getInt(1);
+		resultSet.close();
+		preparedStmt.close();
+		return gagnes;
+	}
+	
+	public int StatCoups( String login, String mode ) throws SQLException{
+		String query = "select coups from Score join Joueur on (Score.id_joueur=Joueur.id)  where identifiant=? and mode_solo_multi=?";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setString( 1, login );
+		preparedStmt.setString( 2, mode );
+		ResultSet resultSet = preparedStmt.executeQuery();
+		int coups=0;
+		while( resultSet.next() ){
+			coups += resultSet.getInt("coups");
+		}
+		resultSet.close();
+		preparedStmt.close();
+		return coups;
+	}
 
 }
