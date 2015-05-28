@@ -34,19 +34,7 @@ public class AttenteJoueur extends Menu {
 	private JButton modifier;
 	private JButton lancer;
 	private JButton retour;
-	private JButton kicker;
-
-	
-	private JLabel titre;
-	private JLabel nbPions;
-	private JLabel nbCoups;
-	private JLabel nbCouleurs;
-	private JLabel difficulte;
-	private JLabel couleursMultiples;
-	private JLabel joueur1;
-	private JLabel joueur2;
-	
-	
+	private JButton kicker;	
 
 	private JButton valider;
 	
@@ -116,43 +104,43 @@ public class AttenteJoueur extends Menu {
 	
 	private void addNbCoup() {
 		this.lblnbCoups = new JLabel("Nombre de coups :");
-		this.lblnbCoups.setBounds(170, 300, 130, 50);
+		this.lblnbCoups.setBounds(170, 300, 200, 50);
 		this.add(this.lblnbCoups);
 	}
 	
 	private void addNbPions() {
 		this.lblnbPions = new JLabel("Nombre de pions :");
-	    this.lblnbPions.setBounds(170, 260, 130, 50);
+	    this.lblnbPions.setBounds(170, 260, 200, 50);
 	    this.add(this.lblnbPions);
 	}
 	
 	private void addNbCouleurs() {
 		this.lblnbCouleurs = new JLabel("Nombre de couleurs :");
-	    this.lblnbCouleurs.setBounds(170, 340, 130, 50);
+	    this.lblnbCouleurs.setBounds(170, 340, 200, 50);
 	    this.add(this.lblnbCouleurs);
 	}
 	
 	private void addCouleursMultiples() {
 		this.lblcouleursMultiples = new JLabel("Couleurs multiples :");
-	    this.lblcouleursMultiples.setBounds(170, 380, 130, 50);
+	    this.lblcouleursMultiples.setBounds(170, 380, 200, 50);
 	    this.add(this.lblcouleursMultiples);
 	}
 	
 	private void addDificulte() {
 		this.lbldifficulte = new JLabel("Difficulté :");
-		this.lbldifficulte.setBounds(170, 220, 130, 50);
+		this.lbldifficulte.setBounds(170, 220, 200, 50);
 		this.add(this.lbldifficulte);
 	}
 	
 	private void addJ1() {
 		this.lbljoueur1 = new JLabel("Joueur 1");
-	    this.lbljoueur1.setBounds(607, 220, 56, 50);
+	    this.lbljoueur1.setBounds(607, 220, 200, 50);
 	    this.add(lbljoueur1);
 	}
 
 	private void addJ2() {
 		this.lbljoueur2 = new JLabel("Joueur 2");
-	    this.lbljoueur2.setBounds(607, 260, 56, 50);
+	    this.lbljoueur2.setBounds(607, 260, 200, 50);
 	    this.add(this.lbljoueur2);
 	}
 	
@@ -292,21 +280,21 @@ public class AttenteJoueur extends Menu {
 	}
 	
 	public void refreshNiveau(){
-		this.lblnbCoups.setText("Nombre de coups :"+this.niveau.getCoupMax());
-		this.lblnbPions.setText("Nombre de pions :"+this.niveau.getPions());
-		this.lblnbCouleurs.setText("Nombre de couleurs :"+this.niveau.getCouleurs());
-		this.lblcouleursMultiples.setText("Couleurs multiples :"+this.niveau.getDouble());
-		this.lbldifficulte.setText("Difficulté :"+this.niveau.toString());
+		this.lblnbCoups.setText("Nombre de coups : "+this.niveau.getCoupMax());
+		this.lblnbPions.setText("Nombre de pions : "+this.niveau.getPions());
+		this.lblnbCouleurs.setText("Nombre de couleurs : "+this.niveau.getCouleurs());
+		this.lblcouleursMultiples.setText("Couleurs multiples : "+this.niveau.getDouble());
+		this.lbldifficulte.setText("Difficulté : "+this.niveau.toString());
 	}
 	
 	public void refreshJoueur1(){
 		Joueur j = this.fenetre.getClient().getJoueur();
-		this.lbljoueur1.setText("Joueur 1 :"+j.getIdentifiant()+" Malus :"+j.getMalus());
+		this.lbljoueur1.setText("Joueur 1 : "+j.getIdentifiant()+" Malus : "+j.getMalus());
 	}
 	
 	public void refreshJoueur2(){
 		if( this.j != null ){
-			this.lbljoueur2.setText("Joueur 2 :"+this.j.getIdentifiant()+" Malus :"+this.j.getMalus());
+			this.lbljoueur2.setText("Joueur 2 : "+this.j.getIdentifiant()+" Malus : "+this.j.getMalus());
 		}else{
 			this.lbljoueur2.setText("Aucun joueur 2");
 		}

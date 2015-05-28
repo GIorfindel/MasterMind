@@ -16,6 +16,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import mastermind.Joueur;
+import mastermind.Multijoueur;
+import mastermind.Niveau;
+import mastermind.Paquet;
+
 
 /*
  * Quand le joueur a choisit une partie tu fais:
@@ -58,6 +63,7 @@ public class DeuxJoueurs extends Menu{
 	private ArrayList listeParties;
 	private static int X = 405, W = 200, H = 40;
 	private JTable table;
+	protected String nomPartie = null;
 
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -117,7 +123,34 @@ public class DeuxJoueurs extends Menu{
 	    this.table.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	    this.table.setCellSelectionEnabled(false);
 	    this.table.setRowSelectionAllowed(true);
-	    this.table.setBackground(Color.WHITE);
+	    this.table.setBackground(Color.WHITE);	     	
+	    
+	    Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
+	    int id = p.getId();
+	    fenetre.getClient().envoyerPaquet( p );
+	    Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
+	    if(rep==null){
+	    	System.out.println("Limite de temps dépassé");
+	    }else{
+	    	int nbParties = p.getNbObjet();
+	    	
+	    	for(int i =0; i< nbParties; i++) {
+	    		Multijoueur multi = (Multijoueur) p.getObjet(i);
+	    		
+	    		String nom_partie = multi.getNom();
+	    		String	niveau = multi.getNiveau().toString();
+	    		int	pions_max = multi.getNiveau().getPions();
+	    		int	coups_max = multi.getNiveau().getCoupMax();
+	    		int	couleurs_max = multi.getNiveau().getCouleurs();
+	    		boolean	couleurs_multiples = multi.getNiveau().getDouble();
+	    		
+	    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
+	    		
+	    		ajouterPartie(parametres);
+	    	}
+	    }
+	    rafraichir();
+	    
 	    
 	    scrollPane.setViewportView(this.table);
 	    this.add(scrollPane);
@@ -146,7 +179,7 @@ public class DeuxJoueurs extends Menu{
 				int selectedRowIndex = table.getSelectedRow();
 				int selectedColumnIndex = 0;
 				Object selectedObject = (Object) table.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-				System.out.println(selectedObject.toString());
+				nomPartie = (String) selectedObject;
 			}
 		}
 		
@@ -156,7 +189,27 @@ public class DeuxJoueurs extends Menu{
 	    JButton btnRejoindre = new JButton("Rejoindre la partie");
 	    btnRejoindre.setBounds(X, 410, W, H);
 	    btnRejoindre.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){	
+		      public void actionPerformed(ActionEvent event){
+		    	  if(!nomPartie.equals(null)) {
+		    		  Paquet p = Paquet.creeDEMANDE_NOUV_JOUEUR2( nomPartie );
+		    		  int id = p.getId();
+		    		  fenetre.getClient().envoyerPaquet( p );
+		    		  Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
+		    		  if(rep==null){
+		    				System.out.println("Limite de temps dépassé");
+		    		  }else{
+		    			  if(rep.getNbObjet()==0){
+		    				  System.out.println("Partie non trouvée ou Partie pleine");
+		    			  }else{
+		    				  Joueur j = (Joueur) p.getObjet(0);
+		    				  Niveau n = (Niveau) p.getObjet(1);
+		    				  fenetre.setInfoMultiAttente(n,j);
+		    				  fenetre.showMenu(Fenetre.ATTENTEJOUEUR);
+		    			  }
+		    		  }
+		    	  } else {
+		    		  System.out.println("Aucune partie sélectionnée");
+		    	  }
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -179,10 +232,35 @@ public class DeuxJoueurs extends Menu{
 		btn.setBounds(X, 530, W, H);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){	
-		    	  Object[] test = { "1","2","3","4","5","6"};
-		    	  ajouterPartie(test);
+		    	  
+		    	  Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
+		    	  int id = p.getId();
+		    	  fenetre.getClient().envoyerPaquet( p );
+		    	  Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
+		    	  if(rep==null){
+		    		  System.out.println("Limite de temps dépassé");
+		    	  }else{
+		    		  int nbParties = p.getNbObjet();
+		  	    	
+		    		  for(int i =0; i< nbParties; i++) {
+		    			  Multijoueur multi = (Multijoueur) p.getObjet(i);
+		    			  
+		    			  String nom_partie = multi.getNom();
+		    			  String	niveau = multi.getNiveau().toString();
+		    			  int	pions_max = multi.getNiveau().getPions();
+		    			  int	coups_max = multi.getNiveau().getCoupMax();
+		    			  int	couleurs_max = multi.getNiveau().getCouleurs();
+		    			  boolean	couleurs_multiples = multi.getNiveau().getDouble();
+		  	    		
+		    			  Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
+		    			  
+		    			  ajouterPartie(parametres);
+		    		  }
+		    		  
+		    		  rafraichir();
+		    	  }
 		      }
-		    });
+		});
 		this.add( btn );
 	}
 	
@@ -199,13 +277,16 @@ public class DeuxJoueurs extends Menu{
 	
 	@SuppressWarnings("unchecked")
 	public void ajouterPartie(Object[] partie) {
-		TabListeParties model = (TabListeParties) this.table.getModel();
 		this.listeParties.add(partie);
-		model.fireTableDataChanged();
 	}
 	
 	public void supprimerPartie(int i) {
 		this.listeParties.remove(i);
+	}
+	
+	public void rafraichir() {
+		TabListeParties model = (TabListeParties) this.table.getModel();
+		model.fireTableDataChanged();
 	}
 
 }
