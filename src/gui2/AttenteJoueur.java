@@ -104,43 +104,43 @@ public class AttenteJoueur extends Menu {
 	
 	private void addNbCoup() {
 		this.lblnbCoups = new JLabel("Nombre de coups :");
-		this.lblnbCoups.setBounds(170, 300, 200, 50);
+		this.lblnbCoups.setBounds(170, 300, 300, 50);
 		this.add(this.lblnbCoups);
 	}
 	
 	private void addNbPions() {
 		this.lblnbPions = new JLabel("Nombre de pions :");
-	    this.lblnbPions.setBounds(170, 260, 200, 50);
+	    this.lblnbPions.setBounds(170, 260, 300, 50);
 	    this.add(this.lblnbPions);
 	}
 	
 	private void addNbCouleurs() {
 		this.lblnbCouleurs = new JLabel("Nombre de couleurs :");
-	    this.lblnbCouleurs.setBounds(170, 340, 200, 50);
+	    this.lblnbCouleurs.setBounds(170, 340, 300, 50);
 	    this.add(this.lblnbCouleurs);
 	}
 	
 	private void addCouleursMultiples() {
 		this.lblcouleursMultiples = new JLabel("Couleurs multiples :");
-	    this.lblcouleursMultiples.setBounds(170, 380, 200, 50);
+	    this.lblcouleursMultiples.setBounds(170, 380, 300, 50);
 	    this.add(this.lblcouleursMultiples);
 	}
 	
 	private void addDificulte() {
 		this.lbldifficulte = new JLabel("Difficulté :");
-		this.lbldifficulte.setBounds(170, 220, 200, 50);
+		this.lbldifficulte.setBounds(170, 220, 300, 50);
 		this.add(this.lbldifficulte);
 	}
 	
 	private void addJ1() {
 		this.lbljoueur1 = new JLabel("Joueur 1");
-	    this.lbljoueur1.setBounds(607, 220, 200, 50);
+	    this.lbljoueur1.setBounds(607, 220, 300, 50);
 	    this.add(lbljoueur1);
 	}
 
 	private void addJ2() {
 		this.lbljoueur2 = new JLabel("Joueur 2");
-	    this.lbljoueur2.setBounds(607, 260, 200, 50);
+	    this.lbljoueur2.setBounds(607, 260, 300, 50);
 	    this.add(this.lbljoueur2);
 	}
 	
@@ -167,8 +167,10 @@ public class AttenteJoueur extends Menu {
 	    this.lancer.setBounds(607, 310, 200, 40);
 	    this.lancer.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
-	    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUER_MULTI() );
-	    		//A faire**************************************************************************************************
+	    		if( j != null ){
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUER_MULTI() );
+		    		//A faire**************************************************************************************************
+	    		}
 	    	}
 	    });
 	    this.add(this.lancer);
