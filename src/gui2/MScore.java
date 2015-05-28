@@ -168,22 +168,22 @@ public class MScore extends Menu{
 						this.addLabelSoloGagnes(sg);
 						this.addLabelSoloCoups(sc);
 						if (sg!=0 && sj!=0)
-							this.addLabelSoloRatioVD(sg/sj);
+							this.addLabelSoloRatioVD((double)sg/(double)sj);
 						else 
 							this.addLabelSoloRatioVD(0.0);
 						if (sc!=0 && sj!=0)
-							this.addLabelSoloRatioCP(sc/sj);
+							this.addLabelSoloRatioCP((double)sc/(double)sj);
 						else
 							this.addLabelSoloRatioCP(0.0);
 						this.addLabelMultiJoues(mj);
 						this.addLabelMultiGagnes(mg);
 						this.addLabelMultiCoups(mc);
 						if (mg!=0 && mj!=0)
-							this.addLabelMultiRatioVD(mg/mj);
+							this.addLabelMultiRatioVD((double)mg/(double)mj);
 						else 
 							this.addLabelMultiRatioVD(0.0);
 						if (mc!=0 && mj!=0)
-							this.addLabelMultiRatioCP(mc/mj);
+							this.addLabelMultiRatioCP((double)mc/(double)mj);
 						else 
 							this.addLabelMultiRatioCP(0.0);
 				}
