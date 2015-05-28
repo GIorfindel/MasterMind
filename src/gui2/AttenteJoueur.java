@@ -34,19 +34,7 @@ public class AttenteJoueur extends Menu {
 	private JButton modifier;
 	private JButton lancer;
 	private JButton retour;
-	private JButton kicker;
-
-	
-	private JLabel titre;
-	private JLabel nbPions;
-	private JLabel nbCoups;
-	private JLabel nbCouleurs;
-	private JLabel difficulte;
-	private JLabel couleursMultiples;
-	private JLabel joueur1;
-	private JLabel joueur2;
-	
-	
+	private JButton kicker;	
 
 	private JButton valider;
 	
@@ -116,43 +104,43 @@ public class AttenteJoueur extends Menu {
 	
 	private void addNbCoup() {
 		this.lblnbCoups = new JLabel("Nombre de coups :");
-		this.lblnbCoups.setBounds(170, 300, 130, 50);
+		this.lblnbCoups.setBounds(170, 300, 200, 50);
 		this.add(this.lblnbCoups);
 	}
 	
 	private void addNbPions() {
 		this.lblnbPions = new JLabel("Nombre de pions :");
-	    this.lblnbPions.setBounds(170, 260, 130, 50);
+	    this.lblnbPions.setBounds(170, 260, 200, 50);
 	    this.add(this.lblnbPions);
 	}
 	
 	private void addNbCouleurs() {
 		this.lblnbCouleurs = new JLabel("Nombre de couleurs :");
-	    this.lblnbCouleurs.setBounds(170, 340, 130, 50);
+	    this.lblnbCouleurs.setBounds(170, 340, 200, 50);
 	    this.add(this.lblnbCouleurs);
 	}
 	
 	private void addCouleursMultiples() {
 		this.lblcouleursMultiples = new JLabel("Couleurs multiples :");
-	    this.lblcouleursMultiples.setBounds(170, 380, 130, 50);
+	    this.lblcouleursMultiples.setBounds(170, 380, 200, 50);
 	    this.add(this.lblcouleursMultiples);
 	}
 	
 	private void addDificulte() {
 		this.lbldifficulte = new JLabel("Difficulté :");
-		this.lbldifficulte.setBounds(170, 220, 130, 50);
+		this.lbldifficulte.setBounds(170, 220, 200, 50);
 		this.add(this.lbldifficulte);
 	}
 	
 	private void addJ1() {
 		this.lbljoueur1 = new JLabel("Joueur 1");
-	    this.lbljoueur1.setBounds(607, 220, 56, 50);
+	    this.lbljoueur1.setBounds(607, 220, 200, 50);
 	    this.add(lbljoueur1);
 	}
 
 	private void addJ2() {
 		this.lbljoueur2 = new JLabel("Joueur 2");
-	    this.lbljoueur2.setBounds(607, 260, 56, 50);
+	    this.lbljoueur2.setBounds(607, 260, 200, 50);
 	    this.add(this.lbljoueur2);
 	}
 	
@@ -179,6 +167,8 @@ public class AttenteJoueur extends Menu {
 	    this.lancer.setBounds(607, 310, 200, 40);
 	    this.lancer.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
+	    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUER_MULTI() );
+	    		//A faire**************************************************************************************************
 	    	}
 	    });
 	    this.add(this.lancer);
@@ -192,7 +182,8 @@ public class AttenteJoueur extends Menu {
 	    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_KICKER_JOUEUR2() );
 	    		lancer.setEnabled(false);
 	    		kicker.setEnabled(false);
-	    		//Enelever les infos sur le joueur2
+	    		j = null;
+	    		refreshJoueur2();
 	    	}
 	    });
 	    this.add(this.lancer);
@@ -232,7 +223,7 @@ public class AttenteJoueur extends Menu {
 		this.kicker.setVisible(false);
 		this.lancer.setEnabled(false);
 		this.kicker.setEnabled(false);
-		//Supprimmer les infos sur le niveau, le joueur1 et joueur2 et le pret
+		this.refreshJoueur2();
 	}
 	
 	public void clic(){
@@ -242,14 +233,16 @@ public class AttenteJoueur extends Menu {
 			this.kicker.setVisible(true);
 			this.lancer.setEnabled(true);
 			this.kicker.setEnabled(true);
-			//Afficher les infos sur le niveau(this.niveau) et les information sur toi(this.fenetre.getClient.getJoueur())
+			this.refreshNiveau();
+			this.refreshJoueur1();
 		}else{
 			this.lancer.setVisible(false);
 			this.kicker.setVisible(false);
 			this.lancer.setEnabled(false);
 			this.kicker.setEnabled(false);
-			//Afficher les infos sur le niveau(this.niveau) et les information sur toi(this.fenetre.getClient.getJoueur())
-			//Afficher les infos sur ton adversaire (this.j)
+			this.refreshNiveau();
+			this.refreshJoueur1();
+			this.refreshJoueur2();
 		}
 	}
 	
@@ -258,7 +251,7 @@ public class AttenteJoueur extends Menu {
 		this.j = j2;
 		this.lancer.setEnabled(true);
 		this.kicker.setEnabled(true);
-		//Afficher les info sur le joueur2
+		this.refreshJoueur2();
 	}
 	
 	//Si on est le createur(true)
@@ -266,7 +259,7 @@ public class AttenteJoueur extends Menu {
 		this.j = null;
 		this.lancer.setEnabled(false);
 		this.kicker.setEnabled(false);
-		//Enlever les infos sur le joueur2
+		this.refreshJoueur2();
 	}
 	
 	//Si on n'est pas le createur(false)
@@ -284,6 +277,27 @@ public class AttenteJoueur extends Menu {
 	public void decoServeur(){
 		this.quitter();
 		this.fenetre.showMenu(Fenetre.DEUXJOUEURS);
+	}
+	
+	public void refreshNiveau(){
+		this.lblnbCoups.setText("Nombre de coups : "+this.niveau.getCoupMax());
+		this.lblnbPions.setText("Nombre de pions : "+this.niveau.getPions());
+		this.lblnbCouleurs.setText("Nombre de couleurs : "+this.niveau.getCouleurs());
+		this.lblcouleursMultiples.setText("Couleurs multiples : "+this.niveau.getDouble());
+		this.lbldifficulte.setText("Difficulté : "+this.niveau.getNomNiveau());
+	}
+	
+	public void refreshJoueur1(){
+		Joueur j = this.fenetre.getClient().getJoueur();
+		this.lbljoueur1.setText("Joueur 1 : "+j.getIdentifiant()+" Malus : "+j.getMalus());
+	}
+	
+	public void refreshJoueur2(){
+		if( this.j != null ){
+			this.lbljoueur2.setText("Joueur 2 : "+this.j.getIdentifiant()+" Malus : "+this.j.getMalus());
+		}else{
+			this.lbljoueur2.setText("Aucun joueur 2");
+		}
 	}
 
 }

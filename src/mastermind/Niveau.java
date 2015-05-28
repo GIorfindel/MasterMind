@@ -15,6 +15,7 @@ public abstract class Niveau implements Serializable {
 	/*definie si l'utilisation de deux couleurs differentes dans la combinaison est autorisee*/
 	protected int coupMax=10;
 	/*definie le nombre de combinaisons maximal que peut soumettre l'utilisateur pour un tour*/
+	protected String nomNiveau;
 	
 	public static String PERSO = "perso";
 	
@@ -146,8 +147,12 @@ public abstract class Niveau implements Serializable {
 		
 	}
 	
-	//Doit être redéfini pas les classe qui hérite de niveau
+	//Doit être redéfini par les classe qui hérite de niveau
 	public Couleur[] getCouleurAutorise(){
 		return null;
+	}
+	
+	public String getNomNiveau() {
+		return this.nomNiveau;
 	}
 }

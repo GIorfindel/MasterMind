@@ -27,4 +27,8 @@ public class Difficile extends Niveau {
 		cs[7] = Couleur.Rouge;
 		return cs;
 	}
+	
+	public String getNomNiveau() {
+		return "Difficile";
+	}
 }

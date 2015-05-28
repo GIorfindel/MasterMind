@@ -5,12 +5,21 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+import mastermind.Joueur;
+import mastermind.Multijoueur;
+import mastermind.Niveau;
+import mastermind.Paquet;
 
 
 /*
@@ -48,18 +57,24 @@ import javax.swing.SwingConstants;
  */
 
 
-@SuppressWarnings("serial")
 public class DeuxJoueurs extends Menu{
 
 	private Fenetre fenetre;
-	@SuppressWarnings("rawtypes")
 	private ArrayList listeParties;
 	private static int X = 405, W = 200, H = 40;
+	private JTable table;
+	protected String nomPartie = null;
 
-	@SuppressWarnings("rawtypes")
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.listeParties = new ArrayList();
+		
+		// Création d'un tableau que l'utilisateur ne peut pas modifier
+	    this.table = new JTable(new TabListeParties(this.listeParties)){
+	    	public boolean isCellEditable(int row, int column) {
+	    		return false;
+	    	}
+	    };
 		this.init();
 
 	}
@@ -93,50 +108,57 @@ public class DeuxJoueurs extends Menu{
 	    this.add(lblPartiesDisponibles);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	private Object[][] arrayVersTab(ArrayList listeParties) {
-		Object[][] tableau = new Object[listeParties.size()][6];
-		int i=0;
-		for (i = 0; i<listeParties.size(); i++){
-			Object[] ligne = (Object[]) listeParties.get(i);
-			for(int j = 0; j<6; j++) {
-				tableau[i][j] = ligne[j];
-			}
-		}
-		
-		return tableau;
-	}
-	
 	private void addListeParties() {
 
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setBounds(100, 180, 770, 210);
-	    this.add(scrollPane);
-		
-	    String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
-	   
-		// Création d'un tableau que l'utilisateur ne peut pas modifier
-	    JTable table = new JTable(arrayVersTab(this.listeParties), nomsColonnes){
-	    	public boolean isCellEditable(int row, int column) {
-	    		return false;
-	    	}
-	    };
-	    
+	    	    
 	    // Permet de ne sélection qu'une seule ligne
-	    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	    SelectionListener listener = new SelectionListener(this.table);
+	    this.table.getSelectionModel().addListSelectionListener(listener);
+	    //this.table.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 	    
-	    table.setFont(new Font("Tahoma", Font.PLAIN, 13));
-	    table.setCellSelectionEnabled(false);
-	    table.setRowSelectionAllowed(true);
-	    scrollPane.setViewportView(table);
-	    table.setBackground(Color.WHITE);
+	    this.table.setFont(new Font("Tahoma", Font.PLAIN, 13));
+	    this.table.setCellSelectionEnabled(false);
+	    this.table.setRowSelectionAllowed(true);
+	    this.table.setBackground(Color.WHITE);	     	
+	    
+	    requeteParties();
+	    rafraichir();
+	    
+	    
+	    scrollPane.setViewportView(this.table);
+	    this.add(scrollPane);
+	    
 	}
 	
 	private void addBoutonRejoindre(){
 	    JButton btnRejoindre = new JButton("Rejoindre la partie");
 	    btnRejoindre.setBounds(X, 410, W, H);
 	    btnRejoindre.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){	
+		      public void actionPerformed(ActionEvent event){
+		    	  if(!nomPartie.equals(null)) {
+		    		  Paquet p = Paquet.creeDEMANDE_NOUV_JOUEUR2( nomPartie );
+		    		  int id = p.getId();
+		    		  fenetre.getClient().envoyerPaquet( p );
+		    		  Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
+		    		  if(rep==null){
+		    				System.out.println("Limite de temps dépassé");
+		    		  }else{
+		    			  if(rep.getNbObjet()==0){
+		    				  System.out.println("Partie non trouvée ou Partie pleine");
+		    			  }else{
+		    				  Joueur j = (Joueur) p.getObjet(0);
+		    				  Niveau n = (Niveau) p.getObjet(1);
+		    				  fenetre.setInfoMultiAttente(n,j);
+		    				  fenetre.showMenu(Fenetre.ATTENTEJOUEUR);
+		    			  }
+		    		  }
+		    	  } else {
+		    		  System.out.println("Aucune partie sélectionnée");
+		    	  }
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
@@ -158,9 +180,12 @@ public class DeuxJoueurs extends Menu{
 		JButton btn = new JButton( "Rafraîchir" );
 		btn.setBounds(X, 530, W, H);
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){				
+		      public void actionPerformed(ActionEvent event){
+		    		  
+		    	  requeteParties();
+		    	  rafraichir();
 		      }
-		    });
+		});
 		this.add( btn );
 	}
 	
@@ -183,5 +208,69 @@ public class DeuxJoueurs extends Menu{
 	public void supprimerPartie(int i) {
 		this.listeParties.remove(i);
 	}
+	
+	public void rafraichir() {
+		TabListeParties model = (TabListeParties) this.table.getModel();
+		model.fireTableDataChanged();
+	}
+	
+	public void requeteParties() {
+	 Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
+	    int id = p.getId();
+	    fenetre.getClient().envoyerPaquet( p );
+	    Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
+	    if(rep==null){
+	    	System.out.println("Limite de temps dépassé");
+	    }else{
+	    	int nbParties = p.getNbObjet();
+	    	
+	    	for(int i =0; i< nbParties; i++) {
+	    		Multijoueur multi = (Multijoueur) p.getObjet(i);
+	    		
+	    		String nom_partie = multi.getNom();
+	    		String	niveau = multi.getNiveau().toString();
+	    		int	pions_max = multi.getNiveau().getPions();
+	    		int	coups_max = multi.getNiveau().getCoupMax();
+	    		int	couleurs_max = multi.getNiveau().getCouleurs();
+	    		boolean	couleurs_multiples = multi.getNiveau().getDouble();
+	    		
+	    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
+	    		
+	    		ajouterPartie(parametres);
+	    	}
+	    }
+	}
+	
+	
+	/**********************Listener pour la sélection*************************/
+	class SelectionListener implements ListSelectionListener {
+		JTable table;
+		
+		SelectionListener(JTable table) {
+			this.table = table;
+		}
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
+				int first = e.getFirstIndex();
+				int last = e.getLastIndex();
+			} 
+			
+			else if (e.getSource() == table.getColumnModel().getSelectionModel() && table.getColumnSelectionAllowed()) {
+				int first = e.getFirstIndex();
+				int last = e.getLastIndex();
+			}
+			if (e.getValueIsAdjusting()) {
+				int selectedRowIndex = table.getSelectedRow();
+				int selectedColumnIndex = 0;
+				Object selectedObject = (Object) table.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+				nomPartie = (String) selectedObject;
+			}
+		}
+		
+	}
+	/******************************************************************************/
+	
 
 }
