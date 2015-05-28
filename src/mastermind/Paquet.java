@@ -225,18 +225,17 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
-	public static Paquet creeDEMANDE_STATS( String identifiant ){
-		Paquet p = new Paquet( 1,DEMANDE_STATS, creerId());
-		p.addObjet(identifiant);
+	public static Paquet creeDEMANDE_STATS( ){
+		Paquet p = new Paquet( 0,DEMANDE_STATS, creerId());
 		return p;
 	}
 	
-	public static Paquet creeREPONSE_STATS( float[] stats, int id ){
+	public static Paquet creeREPONSE_STATS( Object[] stats, int id ){
 		if( stats == null ){
 			return new Paquet( 0, REPONSE_STATS, id );
 		}
-		Paquet p = new Paquet( 8, REPONSE_STATS, id );
-		for (int i = 0; i<8; i++)
+		Paquet p = new Paquet( 6, REPONSE_STATS, id );
+		for (int i = 0; i<6; i++)
 		{
 			p.addObjet( stats[i] );
 		}
