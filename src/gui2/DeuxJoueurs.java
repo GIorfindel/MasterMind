@@ -64,6 +64,7 @@ public class DeuxJoueurs extends Menu{
 	private static int X = 405, W = 200, H = 40;
 	private JTable table;
 	protected String nomPartie = null;
+	private JLabel information;
 
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
@@ -89,6 +90,7 @@ public class DeuxJoueurs extends Menu{
 		this.addBoutonCreer();
 		this.addBoutonRafraichir();
 		this.addBoutonRetour();
+		this.addInformation();
 
 	}
 	
@@ -108,6 +110,14 @@ public class DeuxJoueurs extends Menu{
 	    this.add(lblPartiesDisponibles);
 	}
 	
+	private void addInformation() {
+		this.information = new JLabel("");
+		this.information.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.information.setForeground(Color.red);
+		this.information.setBounds(100, 620, 300, H);
+		this.add(this.information);
+	}
+	
 	private void addListeParties() {
 
 	    JScrollPane scrollPane = new JScrollPane();
@@ -123,11 +133,7 @@ public class DeuxJoueurs extends Menu{
 	    this.table.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	    this.table.setCellSelectionEnabled(false);
 	    this.table.setRowSelectionAllowed(true);
-	    this.table.setBackground(Color.WHITE);	     	
-	    
-	    requeteParties();
-	    rafraichir();
-	    
+	    this.table.setBackground(Color.WHITE);	     	   
 	    
 	    scrollPane.setViewportView(this.table);
 	    this.add(scrollPane);
@@ -139,16 +145,16 @@ public class DeuxJoueurs extends Menu{
 	    btnRejoindre.setBounds(X, 410, W, H);
 	    btnRejoindre.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){
-		    	  if(!nomPartie.equals(null)) {
+		    	  if(nomPartie != null) {
 		    		  Paquet p = Paquet.creeDEMANDE_NOUV_JOUEUR2( nomPartie );
 		    		  int id = p.getId();
 		    		  fenetre.getClient().envoyerPaquet( p );
 		    		  Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
 		    		  if(rep==null){
-		    				System.out.println("Limite de temps dépassé");
+		    			  information.setText("Limite de temps dépassé");
 		    		  }else{
 		    			  if(rep.getNbObjet()==0){
-		    				  System.out.println("Partie non trouvée ou Partie pleine");
+		    				  information.setText("Partie non trouvée ou Partie pleine");
 		    			  }else{
 		    				  Joueur j = (Joueur) p.getObjet(0);
 		    				  Niveau n = (Niveau) p.getObjet(1);
@@ -157,7 +163,7 @@ public class DeuxJoueurs extends Menu{
 		    			  }
 		    		  }
 		    	  } else {
-		    		  System.out.println("Aucune partie sélectionnée");
+		    		  information.setText("Aucune partie sélectionnée");
 		    	  }
 		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
@@ -180,8 +186,7 @@ public class DeuxJoueurs extends Menu{
 		JButton btn = new JButton( "Rafraîchir" );
 		btn.setBounds(X, 530, W, H);
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){
-		    		  
+		      public void actionPerformed(ActionEvent event){	  
 		    	  requeteParties();
 		    	  rafraichir();
 		      }
@@ -218,9 +223,9 @@ public class DeuxJoueurs extends Menu{
 	 Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
 	    int id = p.getId();
 	    fenetre.getClient().envoyerPaquet( p );
-	    Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
+	    Paquet rep = fenetre.getClient().recevoirPaquet(5, id);
 	    if(rep==null){
-	    	System.out.println("Limite de temps dépassé");
+	    	information.setText("Limite de temps dépassé");
 	    }else{
 	    	int nbParties = p.getNbObjet();
 	    	
@@ -241,6 +246,10 @@ public class DeuxJoueurs extends Menu{
 	    }
 	}
 	
+	public void clic() {
+		requeteParties();
+	    rafraichir();
+	}
 	
 	/**********************Listener pour la sélection*************************/
 	class SelectionListener implements ListSelectionListener {
