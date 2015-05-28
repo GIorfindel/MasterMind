@@ -29,6 +29,10 @@ public class Client {
 		this.joueur = j;
 	}
 	
+	public Fenetre getFenetre(){
+		return this.fenetre;
+	}
+	
 	public void close(){
 		if( this.getConnecteAuServeur() ){
 			this.serveur.envoyerPaquet( Paquet.creeJEMEDECO() );

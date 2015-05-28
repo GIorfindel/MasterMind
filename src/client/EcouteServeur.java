@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import mastermind.Joueur;
 import mastermind.Paquet;
 
 
@@ -66,7 +67,16 @@ public class EcouteServeur extends Thread {
 		if( p.getType() == Paquet.SERVEUR_ETEINT ){
 			//On gere au niveau du client que le serveur est éteint
 			this.client.closeServeur();
-		}else{
+		}else if( p.getType() == Paquet.TU_ES_KICK ){
+			this.client.getFenetre().tuEsKick();
+		}else if( p.getType() == Paquet.NOUV_JOUEUR2 ){
+			this.client.getFenetre().joueur2Arrive( (Joueur) p.getObjet(0) );
+		}else if( p.getType() == Paquet.JOUEUR2_PARTI ){
+			this.client.getFenetre().joueur2Pars();
+		}else if( p.getType() == Paquet.JOUEUR1_PARTI ){
+			this.client.getFenetre().joueur1Pars();
+		}
+		else{
 			this.paquet = p;
 		}
 	}

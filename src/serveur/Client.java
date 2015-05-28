@@ -350,10 +350,10 @@ public class Client extends Thread {
 		String nom_partie = (String) p.getObjet(0);
 		this.cJoueur1 = this.serveur.addJoueur2( nom_partie, this );
 		if( this.cJoueur1 != null ){
-			this.envoyerPaquet( Paquet.creeREPONSE_NOUV_JOUEUR2( this.cJoueur1.getJoueur(), p.getId() ) );
+			this.envoyerPaquet( Paquet.creeREPONSE_NOUV_JOUEUR2( this.cJoueur1.getJoueur(), this.cJoueur1.getMulti().getNiveau(),  p.getId() ) );
 		}else{
 			//Il n'a pas trouvé la partie ou Partie pleine
-			this.envoyerPaquet( Paquet.creeREPONSE_NOUV_JOUEUR2( null, p.getId() ) );
+			this.envoyerPaquet( Paquet.creeREPONSE_NOUV_JOUEUR2( null, null, p.getId() ) );
 		}
 	}
 	

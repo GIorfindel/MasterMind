@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -12,15 +12,56 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
+
+/*
+ * Quand le joueur a choisit une partie tu fais:
+ * Paquet p = Paquet.creeDEMANDE_NOUV_JOUEUR2( nom_partie )
+ * int id = p.getId();
+ * fenetre.getClient().envoyerPaquet( p );
+ * Paquet rep = fenetre.getClient().recevoirPaquet(x secondes, id);
+ * if(rep==null){
+ * 	Limite de temps dépassé
+ * }else{
+ * 	if(rep.getNbObjet()==0){
+ * 		Partie non trouvé ou Partie pleine
+ * 	}else{
+ * 		Joueur j = (Joueur) p.getObjet(0);
+ * 		Niveau n = (Niveau) p.getObjet(1);
+ * 		fenetre.setInfoMultiAttente(n,j);
+ * 		fenetre.showMenu(Fenetre.ATTENTEJOUEUR);
+ * 	}
+ * }
+ * 
+ * Pour demander la liste des parties:
+ * Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES( nom_partie )
+ * int id = p.getId();
+ * fenetre.getClient().envoyerPaquet( p );
+ * Paquet rep = fenetre.getClient().recevoirPaquet(x secondes, id);
+ * if(rep==null){
+ * 	Limite de temps dépassé
+ * }else{
+ * 	Le nombre de partie disponibles: p.getNbObjet();
+ * 	Tu as une partie avec cette methode:
+ * 		(Multijoueur)p.getObjet(i)
+ * 		Et tu regarde dans la classe Multijoueur pour avoir toutes les infos, par contre ne te sert pas de la variable joueur2 elle est à null
+ * }
+ */
+
+
 @SuppressWarnings("serial")
 public class DeuxJoueurs extends Menu{
 
 	private Fenetre fenetre;
+	@SuppressWarnings("rawtypes")
+	private ArrayList listeParties;
 	private static int X = 405, W = 200, H = 40;
 
+	@SuppressWarnings("rawtypes")
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
+		this.listeParties = new ArrayList();
 		this.init();
+
 	}
 	
 	private void init() {
@@ -52,83 +93,30 @@ public class DeuxJoueurs extends Menu{
 	    this.add(lblPartiesDisponibles);
 	}
 	
+	@SuppressWarnings("rawtypes")
+	private Object[][] arrayVersTab(ArrayList listeParties) {
+		Object[][] tableau = new Object[listeParties.size()][6];
+		int i=0;
+		for (i = 0; i<listeParties.size(); i++){
+			Object[] ligne = (Object[]) listeParties.get(i);
+			for(int j = 0; j<6; j++) {
+				tableau[i][j] = ligne[j];
+			}
+		}
+		
+		return tableau;
+	}
+	
 	private void addListeParties() {
-		Object[][] data = {
-				{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Oui"},
-	    		{"Supraime", "Difficile", "4", "10", "43", "Non"}
-		};
-	    
-		String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
+
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setBounds(100, 180, 770, 210);
 	    this.add(scrollPane);
-	    
-	    // Création d'un tableau que l'utilisateur ne peut pas modifier
-	    JTable table = new JTable(data, nomsColonnes){
+		
+	    String[] nomsColonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
+	   
+		// Création d'un tableau que l'utilisateur ne peut pas modifier
+	    JTable table = new JTable(arrayVersTab(this.listeParties), nomsColonnes){
 	    	public boolean isCellEditable(int row, int column) {
 	    		return false;
 	    	}
@@ -185,6 +173,15 @@ public class DeuxJoueurs extends Menu{
 		      }
 		    });
 		this.add( btn );
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void ajouterPartie(Object[] partie) {
+		this.listeParties.add(partie);
+	}
+	
+	public void supprimerPartie(int i) {
+		this.listeParties.remove(i);
 	}
 
 }
