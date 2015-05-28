@@ -125,64 +125,13 @@ public class DeuxJoueurs extends Menu{
 	    this.table.setRowSelectionAllowed(true);
 	    this.table.setBackground(Color.WHITE);	     	
 	    
-	    Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
-	    int id = p.getId();
-	    fenetre.getClient().envoyerPaquet( p );
-	    Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
-	    if(rep==null){
-	    	System.out.println("Limite de temps dépassé");
-	    }else{
-	    	int nbParties = p.getNbObjet();
-	    	
-	    	for(int i =0; i< nbParties; i++) {
-	    		Multijoueur multi = (Multijoueur) p.getObjet(i);
-	    		
-	    		String nom_partie = multi.getNom();
-	    		String	niveau = multi.getNiveau().toString();
-	    		int	pions_max = multi.getNiveau().getPions();
-	    		int	coups_max = multi.getNiveau().getCoupMax();
-	    		int	couleurs_max = multi.getNiveau().getCouleurs();
-	    		boolean	couleurs_multiples = multi.getNiveau().getDouble();
-	    		
-	    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
-	    		
-	    		ajouterPartie(parametres);
-	    	}
-	    }
+	    requeteParties();
 	    rafraichir();
 	    
 	    
 	    scrollPane.setViewportView(this.table);
 	    this.add(scrollPane);
 	    
-	}
-	
-	class SelectionListener implements ListSelectionListener {
-		JTable table;
-		
-		SelectionListener(JTable table) {
-			this.table = table;
-		}
-		
-		@Override
-		public void valueChanged(ListSelectionEvent e) {
-			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
-				int first = e.getFirstIndex();
-				int last = e.getLastIndex();
-			} 
-			
-			else if (e.getSource() == table.getColumnModel().getSelectionModel() && table.getColumnSelectionAllowed()) {
-				int first = e.getFirstIndex();
-				int last = e.getLastIndex();
-			}
-			if (e.getValueIsAdjusting()) {
-				int selectedRowIndex = table.getSelectedRow();
-				int selectedColumnIndex = 0;
-				Object selectedObject = (Object) table.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
-				nomPartie = (String) selectedObject;
-			}
-		}
-		
 	}
 	
 	private void addBoutonRejoindre(){
@@ -231,34 +180,10 @@ public class DeuxJoueurs extends Menu{
 		JButton btn = new JButton( "Rafraîchir" );
 		btn.setBounds(X, 530, W, H);
 		btn.addActionListener(new ActionListener(){
-		      public void actionPerformed(ActionEvent event){	
-		    	  
-		    	  Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
-		    	  int id = p.getId();
-		    	  fenetre.getClient().envoyerPaquet( p );
-		    	  Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
-		    	  if(rep==null){
-		    		  System.out.println("Limite de temps dépassé");
-		    	  }else{
-		    		  int nbParties = p.getNbObjet();
-		  	    	
-		    		  for(int i =0; i< nbParties; i++) {
-		    			  Multijoueur multi = (Multijoueur) p.getObjet(i);
-		    			  
-		    			  String nom_partie = multi.getNom();
-		    			  String	niveau = multi.getNiveau().toString();
-		    			  int	pions_max = multi.getNiveau().getPions();
-		    			  int	coups_max = multi.getNiveau().getCoupMax();
-		    			  int	couleurs_max = multi.getNiveau().getCouleurs();
-		    			  boolean	couleurs_multiples = multi.getNiveau().getDouble();
-		  	    		
-		    			  Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
-		    			  
-		    			  ajouterPartie(parametres);
-		    		  }
+		      public void actionPerformed(ActionEvent event){
 		    		  
-		    		  rafraichir();
-		    	  }
+		    	  requeteParties();
+		    	  rafraichir();
 		      }
 		});
 		this.add( btn );
@@ -288,5 +213,64 @@ public class DeuxJoueurs extends Menu{
 		TabListeParties model = (TabListeParties) this.table.getModel();
 		model.fireTableDataChanged();
 	}
+	
+	public void requeteParties() {
+	 Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
+	    int id = p.getId();
+	    fenetre.getClient().envoyerPaquet( p );
+	    Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
+	    if(rep==null){
+	    	System.out.println("Limite de temps dépassé");
+	    }else{
+	    	int nbParties = p.getNbObjet();
+	    	
+	    	for(int i =0; i< nbParties; i++) {
+	    		Multijoueur multi = (Multijoueur) p.getObjet(i);
+	    		
+	    		String nom_partie = multi.getNom();
+	    		String	niveau = multi.getNiveau().toString();
+	    		int	pions_max = multi.getNiveau().getPions();
+	    		int	coups_max = multi.getNiveau().getCoupMax();
+	    		int	couleurs_max = multi.getNiveau().getCouleurs();
+	    		boolean	couleurs_multiples = multi.getNiveau().getDouble();
+	    		
+	    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
+	    		
+	    		ajouterPartie(parametres);
+	    	}
+	    }
+	}
+	
+	
+	/**********************Listener pour la sélection*************************/
+	class SelectionListener implements ListSelectionListener {
+		JTable table;
+		
+		SelectionListener(JTable table) {
+			this.table = table;
+		}
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
+				int first = e.getFirstIndex();
+				int last = e.getLastIndex();
+			} 
+			
+			else if (e.getSource() == table.getColumnModel().getSelectionModel() && table.getColumnSelectionAllowed()) {
+				int first = e.getFirstIndex();
+				int last = e.getLastIndex();
+			}
+			if (e.getValueIsAdjusting()) {
+				int selectedRowIndex = table.getSelectedRow();
+				int selectedColumnIndex = 0;
+				Object selectedObject = (Object) table.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+				nomPartie = (String) selectedObject;
+			}
+		}
+		
+	}
+	/******************************************************************************/
+	
 
 }
