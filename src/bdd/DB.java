@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import serveur.Serveur;
 import mastermind.Couleur;
 import mastermind.Joueur;
 import mastermind.Niveau;
@@ -461,7 +462,10 @@ public class DB {
 		preparedStmt.setString( 1, login );
 		preparedStmt.setString( 2, mode );
 		ResultSet resultSet = preparedStmt.executeQuery();
-		int joues=resultSet.getInt(1);
+		int joues=0;
+		 while (resultSet.next()) {
+			 joues = resultSet.getInt(1);
+		 }		
 		resultSet.close();
 		preparedStmt.close();
 		return joues;
@@ -473,7 +477,10 @@ public class DB {
 		preparedStmt.setString( 1, login );
 		preparedStmt.setString( 2, mode );
 		ResultSet resultSet = preparedStmt.executeQuery();
-		int gagnes=resultSet.getInt(1);
+		int gagnes = 0;
+		 while (resultSet.next()) {
+			 gagnes = resultSet.getInt(1);
+		 }
 		resultSet.close();
 		preparedStmt.close();
 		return gagnes;
@@ -493,5 +500,4 @@ public class DB {
 		preparedStmt.close();
 		return coups;
 	}
-
 }
