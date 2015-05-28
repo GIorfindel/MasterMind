@@ -231,8 +231,8 @@ public class AttenteJoueur extends Menu {
 			this.popPret();
 			this.lancer.setVisible(true);
 			this.kicker.setVisible(true);
-			this.lancer.setEnabled(true);
-			this.kicker.setEnabled(true);
+			this.lancer.setEnabled(false);
+			this.kicker.setEnabled(false);
 			this.refreshNiveau();
 			this.refreshJoueur1();
 		}else{

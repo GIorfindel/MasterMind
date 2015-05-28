@@ -156,8 +156,8 @@ public class DeuxJoueurs extends Menu{
 		    			  if(rep.getNbObjet()==0){
 		    				  information.setText("Partie non trouvée ou Partie pleine");
 		    			  }else{
-		    				  Joueur j = (Joueur) p.getObjet(0);
-		    				  Niveau n = (Niveau) p.getObjet(1);
+		    				  Joueur j = (Joueur) rep.getObjet(0);
+		    				  Niveau n = (Niveau) rep.getObjet(1);
 		    				  fenetre.setInfoMultiAttente(n,j);
 		    				  fenetre.showMenu(Fenetre.ATTENTEJOUEUR);
 		    			  }
@@ -227,10 +227,9 @@ public class DeuxJoueurs extends Menu{
 	    if(rep==null){
 	    	information.setText("Limite de temps dépassé");
 	    }else{
-	    	int nbParties = p.getNbObjet();
-	    	
+	    	int nbParties = rep.getNbObjet();
 	    	for(int i =0; i< nbParties; i++) {
-	    		Multijoueur multi = (Multijoueur) p.getObjet(i);
+	    		Multijoueur multi = (Multijoueur) rep.getObjet(i);
 	    		
 	    		String nom_partie = multi.getNom();
 	    		String	niveau = multi.getNiveau().toString();
