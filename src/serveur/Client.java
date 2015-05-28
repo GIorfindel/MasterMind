@@ -155,6 +155,9 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_NOUV_SCORE:
 			this.demandeNouvScore( paquet );
 			break;
+		case Paquet.DEMANDE_STATS:
+			this.demandeStats( paquet );
+			break;
 		case Paquet.DEMANDE_CREE_MULTI:
 			this.demandeCreeMulti( paquet );
 			break;
@@ -292,6 +295,28 @@ public class Client extends Thread {
 		try {
 			Score score = (Score) p.getObjet(0);
 			this.serveur.getBD().nouvScore( this.joueur, score );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void demandeStats( Paquet p ){
+		try {
+			int joues = this.serveur.getBD().StatJoues((String)p.getObjet(0), "solo");
+			int coups = this.serveur.getBD().StatCoups((String)p.getObjet(0), "solo");
+			int gagnes = this.serveur.getBD().StatGagnes((String)p.getObjet(0), "solo");
+			float rvds = gagnes/joues;
+			float rcps = joues/coups;
+			int jouem = this.serveur.getBD().StatJoues((String)p.getObjet(0), "multi");
+			int coupm = this.serveur.getBD().StatCoups((String)p.getObjet(0), "multi");
+			int gagnem = this.serveur.getBD().StatGagnes((String)p.getObjet(0), "multi");
+			float rvdm = gagnem/jouem;
+			float rcpm = jouem/coupm;
+			float[] stats = {joues, coups, rvds, rcps, jouem, coupm, rvdm, rcpm};
+
+			this.envoyerPaquet( Paquet.creeREPONSE_STATS( stats, p.getId() ) );
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {

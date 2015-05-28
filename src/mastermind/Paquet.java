@@ -40,6 +40,7 @@ public class Paquet implements Serializable{
 			DEMANDE_SAVE_SOLO = 10,
 			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12,
 			DEMANDE_NOUV_SCORE = 13,
+			DEMANDE_STATS = 27, REPONSE_STATS = 28,
 			DEMANDE_CREE_MULTI = 14, DEMANDE_NOUV_JOUEUR2 = 15, REPONSE_NOUV_JOUEUR2 = 16, DEMANDE_JOUER_MULTI = 17, DEMANDE_KICKER_JOUEUR2 = 18,
 			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24,
 			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26;
@@ -224,6 +225,23 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
+	public static Paquet creeDEMANDE_STATS( String identifiant ){
+		Paquet p = new Paquet( 1,DEMANDE_STATS, creerId());
+		p.addObjet(identifiant);
+		return p;
+	}
+	
+	public static Paquet creeREPONSE_STATS( float[] stats, int id ){
+		if( stats == null ){
+			return new Paquet( 0, REPONSE_STATS, id );
+		}
+		Paquet p = new Paquet( 8, REPONSE_STATS, id );
+		for (int i = 0; i<8; i++)
+		{
+			p.addObjet( stats[i] );
+		}
+		return p;
+	}
 	
 	/*
 	 * Paquet pour le multijoueur:
