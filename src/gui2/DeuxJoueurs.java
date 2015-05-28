@@ -102,37 +102,25 @@ public class DeuxJoueurs extends Menu{
 	    this.add(lblPartiesDisponibles);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	private Object[][] arrayVersTab(ArrayList listeParties) {
-		Object[][] tableau = new Object[listeParties.size()][6];
-		int i=0;
-		for (i = 0; i<listeParties.size(); i++){
-			Object[] ligne = (Object[]) listeParties.get(i);
-			for(int j = 0; j<6; j++) {
-				tableau[i][j] = ligne[j];
-			}
-		}
-		
-		return tableau;
-	}
-	
 	private void addListeParties() {
 
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setBounds(100, 180, 770, 210);
-	    this.add(scrollPane);
-	    
+	    	    
 	    // Permet de ne sélection qu'une seule ligne
 	    this.table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-	    SelectionListener listener = new SelectionListener(table);
+	    SelectionListener listener = new SelectionListener(this.table);
+	    this.table.getSelectionModel().addListSelectionListener(listener);
+	    //this.table.getColumnModel().getSelectionModel().addListSelectionListener(listener);
 	    
 	    this.table.setFont(new Font("Tahoma", Font.PLAIN, 13));
 	    this.table.setCellSelectionEnabled(false);
 	    this.table.setRowSelectionAllowed(true);
-	    scrollPane.setViewportView(this.table);
 	    this.table.setBackground(Color.WHITE);
 	    
+	    scrollPane.setViewportView(this.table);
+	    this.add(scrollPane);
 	    
 	}
 	
@@ -155,7 +143,10 @@ public class DeuxJoueurs extends Menu{
 				int last = e.getLastIndex();
 			}
 			if (e.getValueIsAdjusting()) {
-				System.out.println("The mouse button has not yet been released");
+				int selectedRowIndex = table.getSelectedRow();
+				int selectedColumnIndex = 0;
+				Object selectedObject = (Object) table.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
+				System.out.println(selectedObject.toString());
 			}
 		}
 		
