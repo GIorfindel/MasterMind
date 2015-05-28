@@ -158,12 +158,12 @@ public class MScore extends Menu{
 				fenetre.getClient().envoyerPaquet(p);
 				Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id);
 				if( ps != null ){
-					int sj = (int)ps.getObjet(0);
-					int sg = (int)ps.getObjet(1);
-					int sc = (int)ps.getObjet(2);
-					int mj = (int) ps.getObjet(3);
-					int mg = (int) ps.getObjet(4);
-					int mc = (int)ps.getObjet(5);
+					int sj = ((Integer)ps.getObjet(0)).intValue();
+					int sg = ((Integer)ps.getObjet(1)).intValue();
+					int sc = ((Integer)ps.getObjet(2)).intValue();
+					int mj = ((Integer) ps.getObjet(3)).intValue();
+					int mg = ((Integer) ps.getObjet(4)).intValue();
+					int mc = ((Integer)ps.getObjet(5)).intValue();
 						this.addLabelSoloJoues(sj);
 						this.addLabelSoloGagnes(sg);
 						this.addLabelSoloCoups(sc);
