@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+@SuppressWarnings("serial")
 public class TabListeParties extends AbstractTableModel {
 
     private final String[] colonnes = {"Nom de la partie", "Difficulté", "Pions max", "Coups max", "Couleurs max", "Couleurs multiples"};
     
-    private ArrayList parties;
+    private ArrayList<Object[]> parties;
     
-    public TabListeParties(ArrayList parties) {
+    public TabListeParties(ArrayList<Object[]> parties) {
     	this.parties = parties;
     }
     
@@ -26,7 +27,7 @@ public class TabListeParties extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int ligne, int colonne) {
-		Object[] partie = (Object[]) this.parties.get(ligne);
+		Object[] partie = this.parties.get(ligne);
 		return partie[colonne];
 	}
 	

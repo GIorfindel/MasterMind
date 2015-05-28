@@ -14,8 +14,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-
 import mastermind.Joueur;
 import mastermind.Multijoueur;
 import mastermind.Niveau;
@@ -57,10 +55,11 @@ import mastermind.Paquet;
  */
 
 
+@SuppressWarnings("serial")
 public class DeuxJoueurs extends Menu{
 
 	private Fenetre fenetre;
-	private ArrayList listeParties;
+	private ArrayList<Object[]> listeParties;
 	private static int X = 405, W = 200, H = 40;
 	private JTable table;
 	protected String nomPartie = null;
@@ -68,7 +67,7 @@ public class DeuxJoueurs extends Menu{
 
 	public DeuxJoueurs( Fenetre fenetre ){
 		this.fenetre = fenetre;
-		this.listeParties = new ArrayList();
+		this.listeParties = new ArrayList<Object[]>();
 		
 		// Création d'un tableau que l'utilisateur ne peut pas modifier
 	    this.table = new JTable(new TabListeParties(this.listeParties)){
@@ -114,7 +113,9 @@ public class DeuxJoueurs extends Menu{
 		this.information = new JLabel("");
 		this.information.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.information.setForeground(Color.red);
-		this.information.setBounds(100, 620, 300, H);
+		this.information.setBounds(170, 630, 660, 30);
+		
+		this.information.setHorizontalAlignment( SwingConstants.CENTER );
 		this.add(this.information);
 	}
 	
@@ -151,10 +152,10 @@ public class DeuxJoueurs extends Menu{
 		    		  fenetre.getClient().envoyerPaquet( p );
 		    		  Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
 		    		  if(rep==null){
-		    			  information.setText("Limite de temps dépassé");
+		    			  information.setText("Limite de temps dépassée");
 		    		  }else{
 		    			  if(rep.getNbObjet()==0){
-		    				  information.setText("Partie non trouvée ou Partie pleine");
+		    				  information.setText("Partie non trouvée ou partie complète");
 		    			  }else{
 		    				  Joueur j = (Joueur) rep.getObjet(0);
 		    				  Niveau n = (Niveau) rep.getObjet(1);
@@ -165,7 +166,6 @@ public class DeuxJoueurs extends Menu{
 		    	  } else {
 		    		  information.setText("Aucune partie sélectionnée");
 		    	  }
-		    	  fenetre.showMenu( Fenetre.ATTENTEJOUEUR );
 		      }
 		    });
 	    this.add(btnRejoindre);
@@ -205,7 +205,6 @@ public class DeuxJoueurs extends Menu{
 		this.add( btn );
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void ajouterPartie(Object[] partie) {
 		this.listeParties.add(partie);
 	}
@@ -223,24 +222,30 @@ public class DeuxJoueurs extends Menu{
 	 Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
 	    int id = p.getId();
 	    fenetre.getClient().envoyerPaquet( p );
-	    Paquet rep = fenetre.getClient().recevoirPaquet(5, id);
+	    Paquet rep = fenetre.getClient().recevoirPaquet(3, id);
 	    if(rep==null){
-	    	information.setText("Limite de temps dépassé");
+	    	information.setText("Limite de temps dépassée");
 	    }else{
 	    	int nbParties = rep.getNbObjet();
-	    	for(int i =0; i< nbParties; i++) {
-	    		Multijoueur multi = (Multijoueur) rep.getObjet(i);
-	    		
-	    		String nom_partie = multi.getNom();
-	    		String	niveau = multi.getNiveau().toString();
-	    		int	pions_max = multi.getNiveau().getPions();
-	    		int	coups_max = multi.getNiveau().getCoupMax();
-	    		int	couleurs_max = multi.getNiveau().getCouleurs();
-	    		boolean	couleurs_multiples = multi.getNiveau().getDouble();
-	    		
-	    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
-	    		
-	    		ajouterPartie(parametres);
+	    	if(nbParties == 0){
+	    		information.setText("Aucune partie trouvée");
+	    	}
+	    	else {
+		    	this.listeParties.clear();
+		    	for(int i =0; i< nbParties; i++) {
+		    		Multijoueur multi = (Multijoueur) rep.getObjet(i);
+		    		
+		    		String nom_partie = multi.getNom();
+		    		String	niveau = multi.getNiveau().toString();
+		    		int	pions_max = multi.getNiveau().getPions();
+		    		int	coups_max = multi.getNiveau().getCoupMax();
+		    		int	couleurs_max = multi.getNiveau().getCouleurs();
+		    		boolean	couleurs_multiples = multi.getNiveau().getDouble();
+		    		
+		    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
+		    		
+		    		ajouterPartie(parametres);
+		    	}
 	    	}
 	    }
 	}
@@ -260,15 +265,6 @@ public class DeuxJoueurs extends Menu{
 		
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			if (e.getSource() == table.getSelectionModel() && table.getRowSelectionAllowed()) {
-				int first = e.getFirstIndex();
-				int last = e.getLastIndex();
-			} 
-			
-			else if (e.getSource() == table.getColumnModel().getSelectionModel() && table.getColumnSelectionAllowed()) {
-				int first = e.getFirstIndex();
-				int last = e.getLastIndex();
-			}
 			if (e.getValueIsAdjusting()) {
 				int selectedRowIndex = table.getSelectedRow();
 				int selectedColumnIndex = 0;
