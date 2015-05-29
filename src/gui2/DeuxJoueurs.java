@@ -219,6 +219,7 @@ public class DeuxJoueurs extends Menu{
 	}
 	
 	public void requeteParties() {
+	 this.listeParties.clear();
 	 Paquet p = Paquet.creeDEMANDE_LISTE_PARTIES();
 	    int id = p.getId();
 	    fenetre.getClient().envoyerPaquet( p );
@@ -231,7 +232,6 @@ public class DeuxJoueurs extends Menu{
 	    		information.setText("Aucune partie trouvée");
 	    	}
 	    	else {
-		    	this.listeParties.clear();
 		    	for(int i =0; i< nbParties; i++) {
 		    		Multijoueur multi = (Multijoueur) rep.getObjet(i);
 		    		
@@ -267,6 +267,10 @@ public class DeuxJoueurs extends Menu{
 		public void valueChanged(ListSelectionEvent e) {
 			if (e.getValueIsAdjusting()) {
 				int selectedRowIndex = table.getSelectedRow();
+				if( selectedRowIndex == -1 ){
+					nomPartie = null;
+					return;
+				}
 				int selectedColumnIndex = 0;
 				Object selectedObject = (Object) table.getModel().getValueAt(selectedRowIndex, selectedColumnIndex);
 				nomPartie = (String) selectedObject;

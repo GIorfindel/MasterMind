@@ -226,6 +226,7 @@ public class AttenteJoueur extends Menu {
 		this.lancer.setEnabled(false);
 		this.kicker.setEnabled(false);
 		this.refreshJoueur2();
+		this.popPret();
 	}
 	
 	public void clic(){
@@ -245,6 +246,7 @@ public class AttenteJoueur extends Menu {
 			this.refreshNiveau();
 			this.refreshJoueur1();
 			this.refreshJoueur2();
+			this.addPret();
 		}
 	}
 	
@@ -254,6 +256,7 @@ public class AttenteJoueur extends Menu {
 		this.lancer.setEnabled(true);
 		this.kicker.setEnabled(true);
 		this.refreshJoueur2();
+		this.addPret();
 	}
 	
 	//Si on est le createur(true)
@@ -262,6 +265,7 @@ public class AttenteJoueur extends Menu {
 		this.lancer.setEnabled(false);
 		this.kicker.setEnabled(false);
 		this.refreshJoueur2();
+		this.popPret();
 	}
 	
 	//Si on n'est pas le createur(false)
