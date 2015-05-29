@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import mastermind.Joueur;
 import mastermind.Niveau;
+import mastermind.Paquet;
 import mastermind.Pions;
 
 @SuppressWarnings("serial")
@@ -43,6 +44,7 @@ public class PartieMulti extends Menu{
 	private JButton effEssai;
 	
 	private JLabel information;
+	private JLabel tourDe;
 	
 	public PartieMulti(Fenetre f){
 		this.fenetre = f;
@@ -78,7 +80,9 @@ public class PartieMulti extends Menu{
 		this.valider.setEnabled(false);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		
+	    		if( essai != null && essai.getNbPion() == niveau.getPions() ){
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_ENVOI_COMB(essai) );
+	    		}
 	    	}
 		});
 		this.add(this.valider);
@@ -114,6 +118,12 @@ public class PartieMulti extends Menu{
 	    	}
 		});
 		this.add(quit);
+		
+		this.tourDe = new JLabel();
+		this.tourDe.setBounds(350,100,300,30);
+		this.add(this.tourDe);
+		
+		
 	}
 	
 	public void quitter(){
@@ -143,5 +153,45 @@ public class PartieMulti extends Menu{
 	//Si on n'est pas le createur(false)
 	public void joueur1Pars(){
 			
+	}
+	
+	//C'est à toi de choisir la combinaison à faire deviner
+	public void choisitCombADeviner(){
+		
+	}
+	
+	//C'est à l'autre de choisir la combinaison à faire deviner
+	public void choisitPasCombADeviner(){
+		
+	}
+	
+	//Le 1er compteur est écoulé
+	public void compteur1Rate(){
+		
+	}
+	
+	//L'adversaire a écoulé son 1er compteur
+	public void compteur1RateAdv(){
+		
+	}
+	
+	//Tu as perdu un coup car 10 seconde ce sont écoulées du 2eme compteur
+	public void perduCoupsCmpt2() {
+		
+	}
+	
+	//L'adversaire a perdu un coups car 10 seconde ce sont écoulées du 2eme compteur
+	public void advPerduCoupsCmpt2() {
+		
+	}
+	
+	//Tu as perdu à cause du compteur2 écoulé
+	public void perduCmpt2() {
+			
+	}
+		
+	//L'adversaire a perdu à cause du compteur2 écoulé
+	public void advPerduCmpt2() {
+		
 	}
 }

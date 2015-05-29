@@ -44,7 +44,9 @@ public class Paquet implements Serializable{
 			DEMANDE_CLASSEMENT = 29, REPONSE_CLASSEMENT = 30,
 			DEMANDE_CREE_MULTI = 14, DEMANDE_NOUV_JOUEUR2 = 15, REPONSE_NOUV_JOUEUR2 = 16, DEMANDE_JOUER_MULTI = 17, DEMANDE_KICKER_JOUEUR2 = 18,
 			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24,
-			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26, PARTIE_LANCER = 27;
+			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26, PARTIE_LANCER = 27, CHOISIT_COMB_A_DEVINER = 28, CHOISITPAS_COMB_A_DEVINER = 29,
+			COMPTEUR1_RATE = 30, COMPTEUR1_RATE_ADVER = 31, PERDU_COUP_CMPT2 = 32, ADV_PERDU_COUP_CMPT2 = 33, PERDU_CMPT2 = 34, ADV_PERDU_CMPT2 = 35,
+			DEMANDE_ENVOI_COMB = 36;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -344,5 +346,43 @@ public class Paquet implements Serializable{
 	
 	public static Paquet creePARTIE_LANCER(){
 		return new Paquet( 0, PARTIE_LANCER, -1);
+	}
+	
+	public static Paquet creeCHOISIT_COMB_A_DEVINER(){
+		return new Paquet( 0, CHOISIT_COMB_A_DEVINER, -1 );
+	}
+	
+	public static Paquet creeCHOISITPAS_COMB_A_DEVINER(){
+		return new Paquet( 0, CHOISIT_COMB_A_DEVINER, -1 );
+	}
+	
+	public static Paquet creeCOMPTEUR1_RATE(){
+		return new Paquet( 0, COMPTEUR1_RATE, -1 );
+	}
+	
+	public static Paquet creeCOMPTEUR1_RATE_ADVER(){
+		return new Paquet( 0, COMPTEUR1_RATE_ADVER, -1 );
+	}
+	
+	public static Paquet creePERDU1_COUP_CMPT2(){
+		return new Paquet( 0, PERDU_COUP_CMPT2, -1 );
+	}
+	
+	public static Paquet creeADV_PERDU1_COUP_CMPT2(){
+		return new Paquet( 0, ADV_PERDU_COUP_CMPT2, -1 );
+	}
+	
+	public static Paquet creePERDU_CMPT2(){
+		return new Paquet( 0, PERDU_CMPT2, -1 );
+	}
+	
+	public static Paquet creeADV_PERDU1_CMPT2(){
+		return new Paquet( 0, ADV_PERDU_CMPT2, -1 );
+	}
+	
+	public static Paquet creeDEMANDE_ENVOI_COMB( Pions pions ){
+		Paquet p = new Paquet( 1, DEMANDE_ENVOI_COMB, creerId() );
+		p.addObjet(pions);
+		return p;
 	}
 }
