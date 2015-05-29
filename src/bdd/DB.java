@@ -1,5 +1,7 @@
 package bdd;
 
+import gui2.Fenetre;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -500,4 +502,22 @@ public class DB {
 		preparedStmt.close();
 		return coups;
 	}
+	
+	public String[] getJoueurs() throws SQLException 
+	{
+		String query = "select distinct identifiant from Joueur";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		ResultSet resultSet = preparedStmt.executeQuery();
+		int i = 0;
+		resultSet.last();
+		System.out.println(resultSet.getRow());
+		String[] joueurs = new String[resultSet.getRow()];
+		resultSet.beforeFirst();;
+		while (resultSet.next()) {
+		  joueurs[i] = resultSet.getString(1);
+		  i++;
+		}
+		return joueurs;
+	}
+
 }

@@ -41,6 +41,7 @@ public class Paquet implements Serializable{
 			DEMANDE_CHARGER_SOLO = 11, REPONSE_CHARGER_SOLO = 12,
 			DEMANDE_NOUV_SCORE = 13,
 			DEMANDE_STATS = 27, REPONSE_STATS = 28,
+			DEMANDE_CLASSEMENT = 29, REPONSE_CLASSEMENT = 30,
 			DEMANDE_CREE_MULTI = 14, DEMANDE_NOUV_JOUEUR2 = 15, REPONSE_NOUV_JOUEUR2 = 16, DEMANDE_JOUER_MULTI = 17, DEMANDE_KICKER_JOUEUR2 = 18,
 			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24,
 			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26, PARTIE_LANCER = 27;
@@ -225,8 +226,9 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
-	public static Paquet creeDEMANDE_STATS( ){
-		Paquet p = new Paquet( 0,DEMANDE_STATS, creerId());
+	public static Paquet creeDEMANDE_STATS( String identifiant ){
+		Paquet p = new Paquet( 1,DEMANDE_STATS, creerId());
+		p.addObjet(identifiant);
 		return p;
 	}
 	
@@ -238,6 +240,23 @@ public class Paquet implements Serializable{
 		for (int i = 0; i<6; i++)
 		{
 			p.addObjet( stats[i] );
+		}
+		return p;
+	}
+	
+	public static Paquet creeDEMANDE_CLASSEMENT( ){
+		Paquet p = new Paquet( 0,DEMANDE_CLASSEMENT, creerId());
+		return p;
+	}
+	
+	public static Paquet creeREPONSE_CLASSEMENT( Object[] joueurs, int id ){
+		if( joueurs == null ){
+			return new Paquet( 0, REPONSE_CLASSEMENT, id );
+		}
+		Paquet p = new Paquet( joueurs.length, REPONSE_CLASSEMENT, id );
+		for (int i = 0; i<joueurs.length; i++)
+		{
+			p.addObjet( joueurs[i] );
 		}
 		return p;
 	}

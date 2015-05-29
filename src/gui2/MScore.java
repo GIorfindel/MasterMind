@@ -153,7 +153,7 @@ public class MScore extends Menu{
 		if( fenetre.getClient().getJoueur() != null ){
 			String login = fenetre.getClient().getJoueur().getIdentifiant();
 			if( login != null && !login.equals("") ){
-				Paquet p = Paquet.creeDEMANDE_STATS( );
+				Paquet p = Paquet.creeDEMANDE_STATS( login );
 				int id = p.getId();
 				fenetre.getClient().envoyerPaquet(p);
 				Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id);
