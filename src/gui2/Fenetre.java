@@ -158,18 +158,18 @@ public class Fenetre extends JFrame {
 	}
 	
 	public void tuEsKick(){
-		((AttenteJoueur) this.attentejoueur).tuEsKick();
+		this.menu_actuel.tuEsKick();
 	}
 	
 	public void joueur2Arrive( Joueur joueur ){
-		((AttenteJoueur) this.attentejoueur).joueur2Arrive(joueur);
+		this.menu_actuel.joueur2Arrive(joueur);
 	}
 	
 	public void joueur2Pars(){
-		((AttenteJoueur) this.attentejoueur).joueur2Pars();
+		this.menu_actuel.joueur2Pars();
 	}
 	
 	public void joueur1Pars(){
-		((AttenteJoueur) this.attentejoueur).joueur1Pars();
+		this.menu_actuel.joueur1Pars();
 	}
 }
