@@ -21,9 +21,9 @@ public class Fenetre extends JFrame {
 	
 	public static final String ACCUEIL = "0", CONNEXION = "1", INSCRIPTION = "3", JOUER = "4", 
 			UNJOUEUR = "5", DEUXJOUEURS = "6", REGLES = "7", PROFIL = "8", PERSONNALISER = "9",
-			SOLO = "10", CREER="11", PERSONNALISERMULTI = "12", SCORE = "13", ATTENTEJOUEUR = "14";
+			SOLO = "10", CREER="11", PERSONNALISERMULTI = "12", SCORE = "13", ATTENTEJOUEUR = "14", PARTIE_MULTI = "15";
 	private Menu accueil, connexion, inscription, jouer, profil, unjoueur, deuxjoueurs, regles, personnaliser, solo, 
-		creer, personnaliserMulti, score, attentejoueur;
+		creer, personnaliserMulti, score, attentejoueur, partieMulti;
 	private Menu menu_actuel;
 	
 	public Fenetre(){
@@ -70,6 +70,7 @@ public class Fenetre extends JFrame {
 		this.personnaliserMulti = new PersonnaliserMulti( this );
 		this.score = new MScore( this );
 		this.attentejoueur = new AttenteJoueur( this );
+		this.partieMulti = new PartieMulti( this );
 		this.content.add( this.accueil, ACCUEIL );
 		this.content.add( this.connexion, CONNEXION );
 		this.content.add( this.inscription, INSCRIPTION );
@@ -84,6 +85,7 @@ public class Fenetre extends JFrame {
 		this.content.add( this.personnaliserMulti, PERSONNALISERMULTI );
 		this.content.add( this.score, SCORE );
 		this.content.add( this.attentejoueur, ATTENTEJOUEUR );
+		this.content.add( this.partieMulti, PARTIE_MULTI);
 
 		
 		this.getContentPane().add( this.content, BorderLayout.CENTER );
@@ -133,6 +135,9 @@ public class Fenetre extends JFrame {
 		}else if( menu.equals( ATTENTEJOUEUR ) ){
 			this.attentejoueur.clic();
 			this.menu_actuel = this.attentejoueur;
+		}else if( menu.equals( PARTIE_MULTI ) ){
+			this.partieMulti.clic();
+			this.menu_actuel = this.partieMulti;
 		}
 	}
 	
