@@ -18,6 +18,7 @@ import mastermind.Joueur;
 import mastermind.Multijoueur;
 import mastermind.Niveau;
 import mastermind.Paquet;
+import mastermind.Pions;
 import mastermind.Score;
 import mastermind.Solo;
 
@@ -34,6 +35,7 @@ public class Client extends Thread {
 	private Multijoueur multi;//Il y a que le joueur1(createur de la partie) qui a cette variable initialisé.Le joueur2 cette variable est à null
 	private Client cJoueur2;//Si il n'est pas null ca veut dire qu'on est le joueur1(Celui qu'a créé la partie)
 	private Client cJoueur1;//Si il n'est pas null ca veut dire qu'on est le joueur2(Celui qu'a rejoins la partie)
+	private CompteurMulti cmptMulti;
 	
 	public Client( Socket socket, Serveur serveur ) {
 		this.socket = socket;
@@ -47,6 +49,7 @@ public class Client extends Thread {
 		this.multi = null;
 		this.cJoueur2 = null;
 		this.cJoueur1 = null;
+		this.cmptMulti = null;
 	}
 	
 	public void run() {
@@ -181,11 +184,11 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_JOUEUR1_PARTI:
 			this.demandeJoueur1Parti();
 			break;
-			
-			
-			
 		case Paquet.DEMANDE_JOUER_MULTI:
 			this.demandeJouerMulti( paquet );
+			break;
+		case Paquet.DEMANDE_ENVOI_COMB:
+			this.demandeEnvoiComb( paquet );
 			break;
 		 }
 	}
@@ -396,6 +399,11 @@ public class Client extends Thread {
 	public void demandeJoueur2Parti(){
 		this.cJoueur1.joueur2Parti();
 		this.cJoueur1 = null;
+		/*
+		else if( this.multi.getEtat() == Multijoueur.ETAT_JOUE ){
+			Les malus+ Ferme le thread CompteurMulti********************************************************************
+		}
+		*/
 	}
 	
 	public void joueur2Parti(){
@@ -404,11 +412,6 @@ public class Client extends Thread {
 			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
 			this.cJoueur2 = null;
 		}
-		/*
-		else if( this.multi.getEtat() == Multijoueur.ETAT_JOUE ){
-			Les malus+ variable joueur2 à null
-		}
-		*/
 	}
 	
 	public void demandeJoueur1Parti(){
@@ -420,6 +423,11 @@ public class Client extends Thread {
 		}
 		this.serveur.popPartieMulti( this.multi.getNom() );
 		this.multi = null;
+		/*
+		else if( this.multi.getEtat() == Multijoueur.ETAT_JOUE ){
+			Les malus+ Ferme le thread CompteurMulti********************************************************************
+		}
+		*/
 	}
 	
 	public void joueur1Parti(){
@@ -427,9 +435,77 @@ public class Client extends Thread {
 		this.envoyerPaquet( Paquet.creeJOUEUR1_PARTI() );
 	}
 	
+	//C'est le créateur qui demande à commencer à jouer(dans la page AttenteJoueur)
 	public void demandeJouerMulti( Paquet p ){
 		this.cJoueur2.envoyerPaquet( Paquet.creePARTIE_LANCER() );
-		//Commencer la partie, choisir qui commence, ...
+		this.multi.commencerPartie();
+		this.choisirCombAtrouve();
+		
+	}
+	
+	//Choisir la combinaison à trouvé
+	private void choisirCombAtrouve(){
+		if( this.multi.getTourDeCreateur() ){
+			this.envoyerPaquet( Paquet.creeCHOISIT_COMB_A_DEVINER() );
+			this.cJoueur2.envoyerPaquet( Paquet.creeCHOISITPAS_COMB_A_DEVINER() );
+		}else{
+			this.cJoueur2.envoyerPaquet( Paquet.creeCHOISIT_COMB_A_DEVINER() );
+			this.envoyerPaquet( Paquet.creeCHOISITPAS_COMB_A_DEVINER() );
+		}
+		this.cmptMulti = new CompteurMulti( this, CompteurMulti.COMPTEUR_1);
+		this.cmptMulti.start();
+	}
+	
+	//Quand les 60 secondes sont passés (le 1er compteur)
+	public void compteur1TempsAtteint(){
+		if( this.multi.getEtat() == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ){
+			if( this.multi.getTourDeCreateur() ){
+				this.envoyerPaquet( Paquet.creeCOMPTEUR1_RATE() );
+				this.cJoueur2.envoyerPaquet( Paquet.creeCOMPTEUR1_RATE_ADVER() );
+			}else{
+				this.cJoueur2.envoyerPaquet( Paquet.creeCOMPTEUR1_RATE() );
+				this.envoyerPaquet( Paquet.creeCOMPTEUR1_RATE_ADVER() );
+			}
+			this.multi.compteur1Ecoule();
+			this.cmptMulti = new CompteurMulti( this, CompteurMulti.COMPTEUR_2);
+			this.cmptMulti.start();
+		}
+	}
+	
+	//Pour le compteur2 10 secondes se sont écoulé
+	public void compteur2AjouteCoups(){
+		if( this.multi.getTourDeCreateur() ){
+			this.multi.addCoupsJ1();
+			this.envoyerPaquet( Paquet.creePERDU1_COUP_CMPT2() );
+			this.cJoueur2.envoyerPaquet( Paquet.creeADV_PERDU1_COUP_CMPT2() );
+		}else{
+			this.multi.addCoupsJ2();
+			this.cJoueur2.envoyerPaquet( Paquet.creePERDU1_COUP_CMPT2() );
+			this.envoyerPaquet( Paquet.creeADV_PERDU1_COUP_CMPT2() );
+		}
+	}
+	
+	//Les 60 secondes sont passé pour le compteur2
+	public void compteur2TempsAtteint(){
+		if( this.multi.getTourDeCreateur() ){
+			//Ajouter le malus dans la bdd****************************************************************************************************
+			this.envoyerPaquet( Paquet.creePERDU_CMPT2() );
+			this.cJoueur2.envoyerPaquet( Paquet.creeADV_PERDU1_CMPT2() );
+		}else{
+			//Ajouter le malus dans la bdd****************************************************************************************************
+			this.cJoueur2.envoyerPaquet( Paquet.creePERDU_CMPT2() );
+			this.envoyerPaquet( Paquet.creeADV_PERDU1_CMPT2() );
+		}
+	}
+	
+	public void demandeEnvoiComb( Paquet p ){
+		Pions pions = (Pions) p.getObjet(0);
+		if( this.multi.getEtat() == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ){
+			
+		}else if( this.multi.getEtat() == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
+			
+		}
+		//... **********************************************************************************************************************
 	}
 	
 	

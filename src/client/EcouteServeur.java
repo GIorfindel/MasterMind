@@ -77,6 +77,22 @@ public class EcouteServeur extends Thread {
 			this.client.getFenetre().joueur1Pars();
 		}else if( p.getType() == Paquet.PARTIE_LANCER ){
 			this.client.getFenetre().partieLancer();
+		}else if( p.getType() == Paquet.CHOISIT_COMB_A_DEVINER ){
+			this.client.getFenetre().choisitCombADeviner();
+		}else if( p.getType() == Paquet.CHOISITPAS_COMB_A_DEVINER ){
+			this.client.getFenetre().choisitPasCombADeviner();
+		}else if( p.getType() == Paquet.COMPTEUR1_RATE ){
+			this.client.getFenetre().compteur1Rate();
+		}else if( p.getType() == Paquet.COMPTEUR1_RATE_ADVER ){
+			this.client.getFenetre().compteur1RateAdv();
+		}else if( p.getType() == Paquet.PERDU_COUP_CMPT2 ){
+			this.client.getFenetre().perduCoupsCmpt2();
+		}else if( p.getType() == Paquet.ADV_PERDU_COUP_CMPT2 ){
+			this.client.getFenetre().advPerduCoupsCmpt2();
+		}else if( p.getType() == Paquet.PERDU_CMPT2 ){
+			this.client.getFenetre().perduCmpt2();
+		}else if( p.getType() == Paquet.ADV_PERDU_CMPT2 ){
+			this.client.getFenetre().advPerduCmpt2();
 		}
 		else{
 			this.paquet = p;

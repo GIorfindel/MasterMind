@@ -180,4 +180,36 @@ public class Fenetre extends JFrame {
 	public void partieLancer(){
 		((AttenteJoueur) this.attentejoueur).partieLancer();
 	}
+	
+	public void choisitCombADeviner(){
+		((PartieMulti) this.partieMulti).choisitCombADeviner();
+	}
+	
+	public void choisitPasCombADeviner(){
+		((PartieMulti) this.partieMulti).choisitPasCombADeviner();
+	}
+	
+	public void compteur1Rate(){
+		((PartieMulti) this.partieMulti).compteur1Rate();
+	}
+	
+	public void compteur1RateAdv(){
+		((PartieMulti) this.partieMulti).compteur1RateAdv();
+	}
+
+	public void perduCoupsCmpt2() {
+		((PartieMulti) this.partieMulti).perduCoupsCmpt2();
+	}
+
+	public void advPerduCoupsCmpt2() {
+		((PartieMulti) this.partieMulti).advPerduCoupsCmpt2();
+	}
+	
+	public void perduCmpt2() {
+		((PartieMulti) this.partieMulti).perduCmpt2();
+	}
+
+	public void advPerduCmpt2() {
+		((PartieMulti) this.partieMulti).advPerduCmpt2();
+	}
 }
