@@ -157,12 +157,12 @@ public class PartieMulti extends Menu{
 	
 	//C'est à toi de choisir la combinaison à faire deviner
 	public void choisitCombADeviner(){
-		
+		//vider la maquette et ...
 	}
 	
 	//C'est à l'autre de choisir la combinaison à faire deviner
 	public void choisitPasCombADeviner(){
-		
+		//vider la maquette et ...
 	}
 	
 	//Le 1er compteur est écoulé

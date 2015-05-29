@@ -575,11 +575,16 @@ public class Client extends Thread {
 	}
 	
 	public void reEssaye(){
-		
+		if( this.multi.getTourDeCreateur() ){
+			this.cJoueur2.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
+		}else{
+			this.envoyerPaquet( Paquet.creeTU_AS_PERDU() );
+		}
 	}
 	
 	public void switchTour(){
-		
+		this.multi.switchTourDe();
+		this.choisirCombAtrouve();
 	}
 	
 	

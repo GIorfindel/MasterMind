@@ -10,7 +10,6 @@ public class Multijoueur extends Partie {
 	private int coupsJ1;
 	private int coupsJ2;
 	private int coupTour;
-	private int compteur;
 	private Pions comb;
 	private Joueur joueur2;
 	private boolean tourDeCreateur;//Celui qui donne la combinaison à deviner
@@ -43,7 +42,6 @@ public class Multijoueur extends Partie {
 	public void setComb( Pions p ){
 		this.comb = p;
 		this.etat = ETAT_COMB_FIXE;
-		this.coupTour = 0;
 	}
 	
 	public int getCoupsJ1(){
@@ -78,6 +76,8 @@ public class Multijoueur extends Partie {
 	
 	public void switchTourDe(){
 		this.tourDeCreateur = !this.tourDeCreateur;
+		this.coupTour = 0;
+		this.comb = null;
 	}
 	
 	public void commencerPartie(){
