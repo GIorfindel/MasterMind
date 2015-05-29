@@ -36,7 +36,7 @@ public class Serveur {
 	}
 	
 	private void initDB(){
-		 this.db = new DB( "localhost", "ben", "ben", "mastermind" ); 
+		this.db = new DB("localhost", "ben", "ben", "mastermind");
 		 this.db.connexion();
 	}
 	
@@ -159,7 +159,7 @@ public class Serveur {
 	public Paquet listeParties( int id_paquet ){
 		ArrayList<Multijoueur> parties = new ArrayList<Multijoueur>();
 		for( int i=0; i< this.partiesMulti.size(); i++ ){
-			if( this.partiesMulti.get(i).getMulti().getEtat() == Multijoueur.ETAT_ATTENTE_JOUER ){
+			if( this.partiesMulti.get(i).getMulti().getEtat() == Multijoueur.ETAT_CHERCHE_JOUEUR2 ){
 				parties.add( this.partiesMulti.get(i).getMulti() );
 			}
 		}
