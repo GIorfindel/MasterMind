@@ -282,7 +282,7 @@ public class AttenteJoueur extends Menu {
 	
 	public void decoServeur(){
 		this.quitter();
-		this.fenetre.showMenu(Fenetre.DEUXJOUEURS);
+		this.fenetre.showMenu(Fenetre.ACCUEIL);
 	}
 	
 	public void refreshNiveau(){
