@@ -15,8 +15,8 @@ public class Multijoueur extends Partie {
 	private boolean tourDeCreateur;//Celui qui donne la combinaison à deviner
 	
 	private int etat;
-	public static int ETAT_CHERCHE_JOUEUR2 = 0, ETAT_ATTENTE_JOUER = 1, ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 = 2,
-			ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 = 3, ETAT_COMB_FIXE = 4;
+	public static int ETAT_CHERCHE_JOUEUR2 = 0, ETAT_ATTENTE_JOUER = 1, ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 = 2,
+			ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 = 3, ETAT_COMB_FIXE = 4;
 	
 	public Multijoueur(String nom, Niveau niveau, Joueur joueur) {
 		super(nom, niveau, joueur);
@@ -78,16 +78,17 @@ public class Multijoueur extends Partie {
 		this.tourDeCreateur = !this.tourDeCreateur;
 		this.coupTour = 0;
 		this.comb = null;
+		this.etat = ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1;
 	}
 	
 	public void commencerPartie(){
 		Random rand = new Random();
 		this.tourDeCreateur = rand.nextBoolean();
-		this.etat = ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1;
+		this.etat = ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1;
 	}
 	
 	public void compteur1Ecoule(){
-		this.etat = ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2;
+		this.etat = ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2;
 	}
 	
 	public void addCoupsJ1(){
@@ -96,5 +97,13 @@ public class Multijoueur extends Partie {
 	
 	public void addCoupsJ2(){
 		this.coupsJ2++;
+	}
+	
+	public void reset(){
+		this.comb = null;
+		this.coupsJ1 = 0;
+		this.coupsJ2 = 0;
+		this.coupTour = 0;
+		this.joueur2 = null;
 	}
 }

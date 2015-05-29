@@ -397,7 +397,6 @@ public class Client extends Thread {
 		this.cJoueur2 = cJoueur2;
 		this.multi.setJoueur2(cJoueur2.getJoueur());
 		this.envoyerPaquet( Paquet.creeNOUV_JOUEUR2( this.cJoueur2.getJoueur() ) );
-		//Activier le bouton Jouer, kicker
 	}
 	
 	public void demandeKickerJoueur2( Paquet p ){
@@ -416,11 +415,6 @@ public class Client extends Thread {
 	public void demandeJoueur2Parti(){
 		this.cJoueur1.joueur2Parti();
 		this.cJoueur1 = null;
-		/*
-		else if( this.multi.getEtat() == Multijoueur.ETAT_JOUE ){
-			Les malus+ Ferme le thread CompteurMulti********************************************************************
-		}
-		*/
 	}
 	
 	public void joueur2Parti(){
@@ -428,23 +422,43 @@ public class Client extends Thread {
 			this.multi.kickJoueur2();
 			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
 			this.cJoueur2 = null;
+		} else if( this.multi.getEtat() == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ||  this.multi.getEtat() == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
+			this.cmptMulti.close();
+			this.multi.reset();
+			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
+			this.cJoueur2 = null;
+		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE ){
+			this.multi.reset();
+			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
+			this.cJoueur2 = null;
 		}
+		//Les malus********************************************************************************************
 	}
 	
 	public void demandeJoueur1Parti(){
 		if( this.multi.getEtat() == Multijoueur.ETAT_CHERCHE_JOUEUR2 ){
-			
+			this.serveur.popPartieMulti( this.multi.getNom() );
+			this.multi = null;
 		}else if( this.multi.getEtat() == Multijoueur.ETAT_ATTENTE_JOUER ){
 			this.cJoueur2.joueur1Parti();
 			this.cJoueur2 = null;
+			this.serveur.popPartieMulti( this.multi.getNom() );
+			this.multi = null;
+		} else if( this.multi.getEtat() == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ||  this.multi.getEtat() == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
+			this.cmptMulti.close();
+			this.multi.reset();
+			this.cJoueur2.joueur1Parti();
+			this.cJoueur2 = null;
+			this.serveur.popPartieMulti( this.multi.getNom() );
+			this.multi = null;
+		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE ){
+			this.multi.reset();
+			this.cJoueur2.joueur1Parti();
+			this.cJoueur2 = null;
+			this.serveur.popPartieMulti( this.multi.getNom() );
+			this.multi = null;
 		}
-		this.serveur.popPartieMulti( this.multi.getNom() );
-		this.multi = null;
-		/*
-		else if( this.multi.getEtat() == Multijoueur.ETAT_JOUE ){
-			Les malus+ Ferme le thread CompteurMulti********************************************************************
-		}
-		*/
+		//Les malus********************************************************************************************
 	}
 	
 	public void joueur1Parti(){
@@ -475,7 +489,7 @@ public class Client extends Thread {
 	
 	//Quand les 60 secondes sont passés (le 1er compteur)
 	public void compteur1TempsAtteint(){
-		if( this.multi.getEtat() == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ){
+		if( this.multi.getEtat() == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ){
 			if( this.multi.getTourDeCreateur() ){
 				this.envoyerPaquet( Paquet.creeCOMPTEUR1_RATE() );
 				this.cJoueur2.envoyerPaquet( Paquet.creeCOMPTEUR1_RATE_ADVER() );
@@ -522,14 +536,14 @@ public class Client extends Thread {
 		}
 		Pions pions = (Pions) p.getObjet(0);
 		int etat = this.multi.getEtat(); 
-		if( etat == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 || etat ==  Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
+		if( etat == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 || etat ==  Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
 			this.multi.setComb(pions);
 			this.cmptMulti.close();
 			if( this.multi.getTourDeCreateur() ){
 				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_FIXE() );
 				this.cJoueur2.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 			}else{
-				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_FIXE() );
+				this.envoyerPaquet( Paquet.creeCOMB_FIXE() );
 				this.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 			}
 		}else if( etat == Multijoueur.ETAT_COMB_FIXE ){
@@ -556,10 +570,9 @@ public class Client extends Thread {
 	
 	public void envoiPionsJoueurAdversse( Pions p ){
 		if( this.multi.getTourDeCreateur() ){
-			this.cJoueur2.envoyerPaquet( Paquet.creeENVOI_ESSAI_ADV(p) );
-		}else{
-			this.multi.addCoupsJ1();
 			this.envoyerPaquet( Paquet.creeENVOI_ESSAI_ADV(p) );
+		}else{
+			this.cJoueur2.envoyerPaquet( Paquet.creeENVOI_ESSAI_ADV(p) );
 		}
 	}
 	
@@ -583,16 +596,23 @@ public class Client extends Thread {
 		//Sauvegarder les scores****************************************************************
 		if( this.multi.getTourDeCreateur() ){
 			this.envoyerPaquet( Paquet.creeTU_AS_GAGNE() );
-		}else{
 			this.cJoueur2.envoyerPaquet( Paquet.creeTU_AS_PERDU() );
+		}else{
+			this.cJoueur2.envoyerPaquet( Paquet.creeTU_AS_GAGNE() );
+			this.envoyerPaquet( Paquet.creeTU_AS_PERDU() );
 		}
+		this.multi.reset();
+		this.cJoueur2 = null;
+		this.cJoueur2.cJoueur1 = null;
+		this.serveur.popPartieMulti( this.multi.getNom() );
+		this.multi = null;
 	}
 	
 	public void reEssaye(){
 		if( this.multi.getTourDeCreateur() ){
 			this.cJoueur2.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 		}else{
-			this.envoyerPaquet( Paquet.creeTU_AS_PERDU() );
+			this.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 		}
 	}
 	

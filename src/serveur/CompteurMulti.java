@@ -40,8 +40,9 @@ public class CompteurMulti extends Thread{
 				e.printStackTrace();
 			}
 		}
-		if( this.getTempsSeconde() > temps_max ){
+		if( this.getTempsSeconde() > temps_max && this.continuer ){
 			this.client.compteur1TempsAtteint();
+			this.continuer = false;
 		}
 	}
 	

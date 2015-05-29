@@ -107,6 +107,12 @@ public class Maquette extends JPanel{
 		this.plateau[this.niveau.getCoupMax() - essai - 1][indicePion].setIcon( this.getImage(c) );
 	}
 	
+	public void addPions( int essai, Pions p ){
+		for( int i =0; i<p.getNbPion();i++ ){
+			this.addPion(essai, i, p.getPion(i));
+		}
+	}
+	
 	//essai va de 0 à getCoupMax() exclu. indicePion va de 0 à getPions() exclu
 	public void popPion( int essai, int indicePion ){
 		this.plateau[this.niveau.getCoupMax() - essai - 1][indicePion].setIcon( this.pionsVide );
