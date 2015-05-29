@@ -45,7 +45,7 @@ public class Paquet implements Serializable{
 			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24,
 			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26, PARTIE_LANCER = 27, CHOISIT_COMB_A_DEVINER = 28, CHOISITPAS_COMB_A_DEVINER = 29,
 			COMPTEUR1_RATE = 30, COMPTEUR1_RATE_ADVER = 31, PERDU_COUP_CMPT2 = 32, ADV_PERDU_COUP_CMPT2 = 33, PERDU_CMPT2 = 34, ADV_PERDU_CMPT2 = 35,
-			DEMANDE_ENVOI_COMB = 36;
+			DEMANDE_ENVOI_COMB = 36, COMB_FIXE = 37, CHOISI_ESSAI = 38, TU_AS_PERDU = 39, TU_AS_GAGNE = 40, ENVOI_ESSAI_ADV = 41;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -322,7 +322,7 @@ public class Paquet implements Serializable{
 	
 	//C'est le joueur1 qui demande de commencer la partie(il clic sur le bouton jouer). Donc il faut que le joueur2 soit la aussi
 	public static Paquet creeDEMANDE_JOUER_MULTI(){
-		return new Paquet( 0, DEMANDE_JOUER_MULTI, creerId() );
+		return new Paquet( 0, DEMANDE_JOUER_MULTI, -1 );
 	}
 	
 	public static Paquet creePARTIE_LANCER(){
@@ -357,13 +357,35 @@ public class Paquet implements Serializable{
 		return new Paquet( 0, PERDU_CMPT2, -1 );
 	}
 	
-	public static Paquet creeADV_PERDU1_CMPT2(){
+	public static Paquet creeADV_PERDU_CMPT2(){
 		return new Paquet( 0, ADV_PERDU_CMPT2, -1 );
 	}
 	
 	public static Paquet creeDEMANDE_ENVOI_COMB( Pions pions ){
-		Paquet p = new Paquet( 1, DEMANDE_ENVOI_COMB, creerId() );
+		Paquet p = new Paquet( 1, DEMANDE_ENVOI_COMB, -1 );
 		p.addObjet(pions);
 		return p;
+	}
+	
+	public static Paquet creeCOMB_FIXE(){
+		return new Paquet( 0, COMB_FIXE, -1 );
+	}
+	
+	public static Paquet creeCHOISI_ESSAI(){
+		return new Paquet( 0, CHOISI_ESSAI, -1 );
+	}
+	
+	public static Paquet creeTU_AS_GAGNE(){
+		return new Paquet( 0, TU_AS_GAGNE, -1 );
+	}
+	
+	public static Paquet creeTU_AS_PERDU(){
+		return new Paquet( 0, TU_AS_PERDU, -1 );
+	}
+	
+	public static Paquet creeENVOI_ESSAI_ADV( Pions p ){
+		Paquet paq = new Paquet( 1, ENVOI_ESSAI_ADV, -1 );
+		paq.addObjet(p);
+		return paq;
 	}
 }

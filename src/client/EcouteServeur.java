@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 
 import mastermind.Joueur;
 import mastermind.Paquet;
+import mastermind.Pions;
 
 
 public class EcouteServeur extends Thread {
@@ -93,6 +94,12 @@ public class EcouteServeur extends Thread {
 			this.client.getFenetre().perduCmpt2();
 		}else if( p.getType() == Paquet.ADV_PERDU_CMPT2 ){
 			this.client.getFenetre().advPerduCmpt2();
+		}else if( p.getType() == Paquet.COMB_FIXE ){
+			this.client.getFenetre().combFixe();
+		}else if( p.getType() == Paquet.CHOISI_ESSAI ){
+			this.client.getFenetre().choisitEssai();
+		}else if( p.getType() == Paquet.ENVOI_ESSAI_ADV ){
+			this.client.getFenetre().envoiEssaiAdv( (Pions) p.getObjet(0) );
 		}
 		else{
 			this.paquet = p;

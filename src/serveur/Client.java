@@ -490,22 +490,93 @@ public class Client extends Thread {
 		if( this.multi.getTourDeCreateur() ){
 			//Ajouter le malus dans la bdd****************************************************************************************************
 			this.envoyerPaquet( Paquet.creePERDU_CMPT2() );
-			this.cJoueur2.envoyerPaquet( Paquet.creeADV_PERDU1_CMPT2() );
+			this.cJoueur2.envoyerPaquet( Paquet.creeADV_PERDU_CMPT2() );
 		}else{
 			//Ajouter le malus dans la bdd****************************************************************************************************
 			this.cJoueur2.envoyerPaquet( Paquet.creePERDU_CMPT2() );
-			this.envoyerPaquet( Paquet.creeADV_PERDU1_CMPT2() );
+			this.envoyerPaquet( Paquet.creeADV_PERDU_CMPT2() );
 		}
 	}
 	
 	public void demandeEnvoiComb( Paquet p ){
+		if( this.cJoueur2 == null ){
+			this.cJoueur1.demandeEnvoiComb(p);
+			return;
+		}
 		Pions pions = (Pions) p.getObjet(0);
-		if( this.multi.getEtat() == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ){
-			
-		}else if( this.multi.getEtat() == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
-			
+		int etat = this.multi.getEtat(); 
+		if( etat == Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 || etat ==  Multijoueur.ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
+			this.multi.setComb(pions);
+			this.cmptMulti.close();
+			if( this.multi.getTourDeCreateur() ){
+				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_FIXE() );
+				this.cJoueur2.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
+			}else{
+				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_FIXE() );
+				this.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
+			}
+		}else if( etat == Multijoueur.ETAT_COMB_FIXE ){
+			this.envoiPionsJoueurAdversse( pions );
+			this.addCoupsActuel();
+			this.multi.addCoupsTour();
+			if( this.getCoupsJActuel() == 100 ){
+				this.partiFini();
+				return;
+			}
+			if( pions.equals(this.multi.getComb()) ){
+				this.switchTour();
+				return;
+			}else{
+				if( this.multi.getCoupTour() == this.multi.getNiveau().getCoupMax() ){
+					this.partiFini();
+				}else{
+					this.reEssaye();
+				}
+			}
 		}
 		//... **********************************************************************************************************************
+	}
+	
+	public void envoiPionsJoueurAdversse( Pions p ){
+		if( this.multi.getTourDeCreateur() ){
+			this.cJoueur2.envoyerPaquet( Paquet.creeENVOI_ESSAI_ADV(p) );
+		}else{
+			this.multi.addCoupsJ1();
+			this.envoyerPaquet( Paquet.creeENVOI_ESSAI_ADV(p) );
+		}
+	}
+	
+	public int getCoupsJActuel(){
+		if( this.multi.getTourDeCreateur() ){
+			return this.multi.getCoupsJ2();
+		}else{
+			return this.multi.getCoupsJ1();
+		}
+	}
+	
+	public void addCoupsActuel(){
+		if( this.multi.getTourDeCreateur() ){
+			this.multi.addCoupsJ2();
+		}else{
+			this.multi.addCoupsJ1();
+		}
+	}
+	
+	public void partiFini(){
+		//Sauvegarder les scores****************************************************************
+		if( this.multi.getTourDeCreateur() ){
+			this.envoyerPaquet( Paquet.creeTU_AS_GAGNE() );
+		}else{
+			this.cJoueur2.envoyerPaquet( Paquet.creeTU_AS_PERDU() );
+		}
+	}
+	
+	public void reEssaye(){
+		
+	}
+	
+	public void switchTour(){
+		
 	}
 	
 	
