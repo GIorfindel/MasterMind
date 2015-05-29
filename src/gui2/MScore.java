@@ -191,4 +191,8 @@ public class MScore extends Menu{
 		}
 	}
 	
+	public void decoServeur(){
+		this.fenetre.showMenu( Fenetre.ACCUEIL );
+	}
+	
 }
