@@ -34,6 +34,7 @@ public class Accueil extends Menu{
 		this.addBoutonProfil();
 		this.addBoutonScores();
 		this.addInfoClient();
+		this.addBoutonClassement();
 		this.addBoutonQuitter();
 
 	}
@@ -133,6 +134,18 @@ public class Accueil extends Menu{
 		this.score.setEnabled(false);
 		this.score.setToolTipText("vous devez-être connecté pour avoir accès à cette fonctionnalité");
 		this.add( score );
+	}
+	
+	private void addBoutonClassement(){
+		JButton btn = new JButton( "Classement" );
+		btn.setBounds( X, Y, W, H );
+		Y += H+10;
+		btn.addActionListener(new ActionListener(){
+		      public void actionPerformed(ActionEvent event){				
+		        fenetre.showMenu( Fenetre.CLASSEMENT );
+		      }
+		    });
+		this.add( btn );
 	}
 	
 	public void clic(){

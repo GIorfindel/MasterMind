@@ -11,6 +11,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -166,6 +168,9 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_STATS:
 			this.demandeStats( paquet );
 			break;
+		case Paquet.DEMANDE_CLASSEMENT:
+			this.demandeClassement ( paquet );
+			break;
 		case Paquet.DEMANDE_CREE_MULTI:
 			this.demandeCreeMulti( paquet );
 			break;
@@ -312,7 +317,7 @@ public class Client extends Thread {
 	
 	public void demandeStats( Paquet p ){
 		try {
-			String login = this.joueur.getIdentifiant();
+			String login = (String) p.getObjet(0);
 			Integer joues = new Integer(this.serveur.getBD().StatJoues(login, "solo"));
 			Integer coups = new Integer(this.serveur.getBD().StatCoups(login, "solo"));
 			Integer gagnes = new Integer(this.serveur.getBD().StatGagnes(login, "solo"));
@@ -336,6 +341,18 @@ public class Client extends Thread {
 			Object[] stats = {joues, gagnes, coups, jouem, gagnem, coupm};
 			
 			this.envoyerPaquet( Paquet.creeREPONSE_STATS( stats, p.getId() ) );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void demandeClassement ( Paquet p)
+	{
+		try {
+			Object[] joueurs = this.serveur.getBD().getJoueurs();
+			this.envoyerPaquet( Paquet.creeREPONSE_CLASSEMENT( joueurs, p.getId() ) );
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
