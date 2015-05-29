@@ -31,9 +31,9 @@ public class Client extends Thread {
 	private int id;
 	private boolean continuer;
 	
-	private Multijoueur multi;
-	private Client cJoueur2;
-	private Client cJoueur1;
+	private Multijoueur multi;//Il y a que le joueur1(createur de la partie) qui a cette variable initialisé.Le joueur2 cette variable est à null
+	private Client cJoueur2;//Si il n'est pas null ca veut dire qu'on est le joueur1(Celui qu'a créé la partie)
+	private Client cJoueur1;//Si il n'est pas null ca veut dire qu'on est le joueur2(Celui qu'a rejoins la partie)
 	
 	public Client( Socket socket, Serveur serveur ) {
 		this.socket = socket;
@@ -88,6 +88,11 @@ public class Client extends Thread {
 	
 	
 	public void close(){
+		if( this.multi != null ){//On a créé une partie
+			this.demandeJoueur1Parti();
+		}else if( this.cJoueur1 != null ){//On a rejoins une partie
+			this.demandeJoueur2Parti();
+		}
 		this.continuer = false;
 		this.multi = null;
 		this.cJoueur2 = null;
@@ -171,10 +176,10 @@ public class Client extends Thread {
 			this.demandeKickerJoueur2( paquet );
 			break;
 		case Paquet.DEMANDE_JOUEUR2_PARTI:
-			this.demandeJoueur2Parti( paquet );
+			this.demandeJoueur2Parti();
 			break;
 		case Paquet.DEMANDE_JOUEUR1_PARTI:
-			this.demandeJoueur1Parti( paquet );
+			this.demandeJoueur1Parti();
 			break;
 			
 			
@@ -388,7 +393,7 @@ public class Client extends Thread {
 		this.cJoueur1 = null;
 	}
 	
-	public void demandeJoueur2Parti( Paquet p ){
+	public void demandeJoueur2Parti(){
 		this.cJoueur1.joueur2Parti();
 		this.cJoueur1 = null;
 	}
@@ -399,9 +404,14 @@ public class Client extends Thread {
 			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
 			this.cJoueur2 = null;
 		}
+		/*
+		else if( this.multi.getEtat() == Multijoueur.ETAT_JOUE ){
+			Les malus+ variable joueur2 à null
+		}
+		*/
 	}
 	
-	public void demandeJoueur1Parti( Paquet p ){
+	public void demandeJoueur1Parti(){
 		if( this.multi.getEtat() == Multijoueur.ETAT_CHERCHE_JOUEUR2 ){
 			
 		}else if( this.multi.getEtat() == Multijoueur.ETAT_ATTENTE_JOUER ){
