@@ -1,6 +1,7 @@
 package gui2;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +27,7 @@ public class Classement extends Menu {
 	}
 	
 	private void init(){
-		this.setLayout(new BorderLayout());
+		this.setLayout(null);
 		this.addLabelTitre();
 		this.addBoutonRetour();
 	}
@@ -34,21 +35,19 @@ public class Classement extends Menu {
 	private void addLabelTitre(){
 		this.titre = new JLabel("Classement");
 		titre.setFont(new Font("Agency FB", Font.PLAIN, 40));
-		titre.setBounds(170, 50, 660, 100);
-		titre.setVerticalAlignment( SwingConstants.TOP );
-		titre.setHorizontalAlignment( SwingConstants.CENTER );
-	    this.add(titre, BorderLayout.NORTH);
+		titre.setBounds(405, 50, 660, 100);
+	    this.add(titre);
 	}
 	
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
-		btn.setSize(200, 50);
 		btn.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.ACCUEIL );
 		      }
 		    });
-		this.add( btn , BorderLayout.SOUTH);
+		btn.setBounds(405, 400, 200, 50);
+		this.add( btn );
 	}
 	
 	private void addTableaux()
@@ -71,26 +70,24 @@ public class Classement extends Menu {
 		this.solo = new JTable(model);
 		solo.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(solo);
-		model.addColumn("identifiant");
-		model.addColumn("Matchs joués");
-		model.addColumn("Matchs gagnés");
-		model.addColumn("Coups joués");
-		model.addColumn("Ratio (victoires/défaites)");
-		model.addColumn("Ratio (coups/parties)");
+		model.addColumn("Identifiant");
+		model.addColumn("Joués");
+		model.addColumn("Gagnés");
+		model.addColumn("Coups");
+		model.addColumn("victoires/défaites");
+		model.addColumn("coups/parties");
 			    
 		this.multi = 
 		new JTable(model2);
 		multi.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane2 = new JScrollPane(multi);
-		model2.addColumn("identifiant");
-		model2.addColumn("Matchs joués");
-		model2.addColumn("Matchs gagnés");
-		model2.addColumn("Coups joués");
-		model2.addColumn("Ratio (victoires/défaites)");
-		model2.addColumn("Ratio (coups/parties)");
+		model2.addColumn("Identifiant");
+		model2.addColumn("Joués");
+		model2.addColumn("Gagnés");
+		model2.addColumn("Coups");
+		model2.addColumn("victoires/défaites");
+		model2.addColumn("coups/parties");
 		
-		if (joueurss != null)
-		{
 		for (int i =0; i<joueurss.getNbObjet(); i++)
 		{
 				String login = (String) joueurss.getObjet(i);
@@ -123,11 +120,18 @@ public class Classement extends Menu {
 					}
 				}
 			}
-		}
-		solo.setSize(100, 100);
-		multi.setSize(100, 100);
-		this.add(scrollPane, BorderLayout.WEST);
-		this.add(scrollPane2, BorderLayout.EAST);
+		JLabel s = new JLabel("Solo :");
+		s.setBounds(10,150, 50, 50);
+		s.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		JLabel m = new JLabel("Multi :");
+		m.setBounds(500,130, 50, 90);
+		m.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		scrollPane.setBounds(10, 200, 450, 100);
+		scrollPane2.setBounds(500, 200, 450,100);
+		this.add(s);
+		this.add(m);
+		this.add(scrollPane);
+		this.add(scrollPane2);
 			
 	}
 	
