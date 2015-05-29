@@ -321,23 +321,9 @@ public class Client extends Thread {
 			Integer joues = new Integer(this.serveur.getBD().StatJoues(login, "solo"));
 			Integer coups = new Integer(this.serveur.getBD().StatCoups(login, "solo"));
 			Integer gagnes = new Integer(this.serveur.getBD().StatGagnes(login, "solo"));
-			double rvds = 0;
-			double rcps = 0;
-			if (joues != 0)
-			{
-				rvds = gagnes/joues;
-				rcps = coups/joues;
-			}
 			Integer jouem = new Integer(this.serveur.getBD().StatJoues(login, "multi"));
 			Integer coupm = new Integer(this.serveur.getBD().StatCoups(login, "multi"));
 			Integer gagnem = new Integer(this.serveur.getBD().StatGagnes(login, "multi"));
-			double rvdm = 0;
-			double rcpm = 0;
-			if (jouem != 0)
-			{
-				rvdm = gagnem/jouem;
-				rcpm = coupm/jouem;
-			}
 			Object[] stats = {joues, gagnes, coups, jouem, gagnem, coupm};
 			
 			this.envoyerPaquet( Paquet.creeREPONSE_STATS( stats, p.getId() ) );
