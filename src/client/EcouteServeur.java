@@ -75,6 +75,8 @@ public class EcouteServeur extends Thread {
 			this.client.getFenetre().joueur2Pars();
 		}else if( p.getType() == Paquet.JOUEUR1_PARTI ){
 			this.client.getFenetre().joueur1Pars();
+		}else if( p.getType() == Paquet.PARTIE_LANCER ){
+			this.client.getFenetre().partieLancer();
 		}
 		else{
 			this.paquet = p;

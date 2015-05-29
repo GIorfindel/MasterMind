@@ -43,7 +43,7 @@ public class Paquet implements Serializable{
 			DEMANDE_STATS = 27, REPONSE_STATS = 28,
 			DEMANDE_CREE_MULTI = 14, DEMANDE_NOUV_JOUEUR2 = 15, REPONSE_NOUV_JOUEUR2 = 16, DEMANDE_JOUER_MULTI = 17, DEMANDE_KICKER_JOUEUR2 = 18,
 			TU_ES_KICK = 19, NOUV_JOUEUR2 = 20, DEMANDE_JOUEUR2_PARTI= 21, JOUEUR2_PARTI = 22, DEMANDE_JOUEUR1_PARTI = 23, JOUEUR1_PARTI = 24,
-			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26;
+			DEMANDE_LISTE_PARTIES = 25, REPONSE_LISTE_PARTIES = 26, PARTIE_LANCER = 27;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -321,5 +321,9 @@ public class Paquet implements Serializable{
 	//C'est le joueur1 qui demande de commencer la partie(il clic sur le bouton jouer). Donc il faut que le joueur2 soit la aussi
 	public static Paquet creeDEMANDE_JOUER_MULTI(){
 		return new Paquet( 0, DEMANDE_JOUER_MULTI, creerId() );
+	}
+	
+	public static Paquet creePARTIE_LANCER(){
+		return new Paquet( 0, PARTIE_LANCER, -1);
 	}
 }

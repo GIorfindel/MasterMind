@@ -8,30 +8,20 @@ import mastermind.Joueur;
 public class Menu extends JPanel{
 
 	public void clic(){
-		
+		//Quand on arrive sur un menu
 	}
 	
 	public void decoServeur(){
-		
-	}
-
-	public void tuEsKick() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void joueur2Arrive(Joueur joueur) {
-		// TODO Auto-generated method stub
-		
+		//Quand on est deconnecté avec le serveur
 	}
 
 	public void joueur2Pars() {
-		// TODO Auto-generated method stub
+		//Utile pour les classes AttenteJoueur et PartieMulti
 		
 	}
 
 	public void joueur1Pars() {
-		// TODO Auto-generated method stub
+		//Utile pour les classes AttenteJoueur et PartieMulti
 		
 	}
 

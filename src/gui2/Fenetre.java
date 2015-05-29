@@ -157,12 +157,16 @@ public class Fenetre extends JFrame {
 		((AttenteJoueur) this.attentejoueur).setInfoMultiAttente(n,j);
 	}
 	
+	public void setInfoPartieMulti( Niveau n, Joueur j, boolean createur ){
+		((PartieMulti) this.partieMulti).setInfoPartieMulti(n,j, createur);
+	}
+	
 	public void tuEsKick(){
-		this.menu_actuel.tuEsKick();
+		((AttenteJoueur) this.attentejoueur).tuEsKick();
 	}
 	
 	public void joueur2Arrive( Joueur joueur ){
-		this.menu_actuel.joueur2Arrive(joueur);
+		((AttenteJoueur) this.attentejoueur).joueur2Arrive(joueur);
 	}
 	
 	public void joueur2Pars(){
@@ -171,5 +175,9 @@ public class Fenetre extends JFrame {
 	
 	public void joueur1Pars(){
 		this.menu_actuel.joueur1Pars();
+	}
+	
+	public void partieLancer(){
+		((AttenteJoueur) this.attentejoueur).partieLancer();
 	}
 }

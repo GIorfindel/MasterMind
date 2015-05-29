@@ -428,6 +428,7 @@ public class Client extends Thread {
 	}
 	
 	public void demandeJouerMulti( Paquet p ){
+		this.cJoueur2.envoyerPaquet( Paquet.creePARTIE_LANCER() );
 		//Commencer la partie, choisir qui commence, ...
 	}
 	

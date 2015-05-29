@@ -169,7 +169,8 @@ public class AttenteJoueur extends Menu {
 	    	public void actionPerformed(ActionEvent arg0) {
 	    		if( j != null ){
 	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUER_MULTI() );
-		    		//A faire**************************************************************************************************
+		    		fenetre.setInfoPartieMulti(niveau, j, createur);
+		    		fenetre.showMenu( Fenetre.PARTIE_MULTI );
 	    		}
 	    	}
 	    });
@@ -278,6 +279,12 @@ public class AttenteJoueur extends Menu {
 	public void tuEsKick(){
 		quitter();
 		fenetre.showMenu(Fenetre.DEUXJOUEURS);
+	}
+	
+	//Si on n'est pas le createur(false)
+	public void partieLancer(){
+		fenetre.setInfoPartieMulti(niveau, j, createur);
+		fenetre.showMenu( Fenetre.PARTIE_MULTI );
 	}
 	
 	public void decoServeur(){
