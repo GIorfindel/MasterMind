@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import mastermind.Joueur;
 import mastermind.Niveau;
+import mastermind.Pions;
 import mastermind.Solo;
 
 import client.Client;
@@ -216,5 +217,17 @@ public class Fenetre extends JFrame {
 
 	public void advPerduCmpt2() {
 		((PartieMulti) this.partieMulti).advPerduCmpt2();
+	}
+	
+	public void combFixe() {
+		((PartieMulti) this.partieMulti).combFixe();
+	}
+
+	public void choisitEssai() {
+		((PartieMulti) this.partieMulti).choisitEssai();
+	}
+
+	public void envoiEssaiAdv(Pions essai) {
+		((PartieMulti) this.partieMulti).envoiEssaiAdv( essai );
 	}
 }

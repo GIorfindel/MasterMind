@@ -9,21 +9,49 @@ public class Multijoueur extends Partie {
 	
 	private int coupsJ1;
 	private int coupsJ2;
+	private int coupTour;
 	private int compteur;
 	private Pions comb;
 	private Joueur joueur2;
-	private boolean tourDeCreateur;
+	private boolean tourDeCreateur;//Celui qui donne la combinaison à deviner
 	
 	private int etat;
 	public static int ETAT_CHERCHE_JOUEUR2 = 0, ETAT_ATTENTE_JOUER = 1, ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 = 2,
-			ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 = 3;
+			ETAT_ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 = 3, ETAT_COMB_FIXE = 4;
 	
 	public Multijoueur(String nom, Niveau niveau, Joueur joueur) {
 		super(nom, niveau, joueur);
 		this.coupsJ1 = 0;
 		this.coupsJ2 = 0;
+		this.coupTour = 0;
 		this.etat = ETAT_CHERCHE_JOUEUR2;
 		this.joueur2 = null;
+	}
+	
+	public int getCoupTour(){
+		return this.coupTour;
+	}
+	
+	public void addCoupsTour(){
+		this.coupTour ++;
+	}
+	
+	public Pions getComb(){
+		return this.comb;
+	}
+	
+	public void setComb( Pions p ){
+		this.comb = p;
+		this.etat = ETAT_COMB_FIXE;
+		this.coupTour = 0;
+	}
+	
+	public int getCoupsJ1(){
+		return this.coupsJ1;
+	}
+	
+	public int getCoupsJ2(){
+		return this.coupsJ2;
 	}
 	
 	public Joueur getJoueur2(){

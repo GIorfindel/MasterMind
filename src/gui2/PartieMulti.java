@@ -194,4 +194,19 @@ public class PartieMulti extends Menu{
 	public void advPerduCmpt2() {
 		
 	}
+	
+	//La combinaison à trouver a été fixé
+	public void combFixe(){
+		
+	}
+	
+	//On n'attend(et autorise) que tu choisis(et envoi) ton essai
+	public void choisitEssai(){
+		
+	}
+	
+	//L'adversaire a sousmis un essai
+	public void envoiEssaiAdv(Pions essai) {
+		
+	}
 }
