@@ -223,13 +223,13 @@ public class MSolo extends Menu{
 		
 		this.addMenuBar();
 		this.infoPartie = new JLabel();
-		this.infoPartie.setBounds(350,50,500,40);
+		this.infoPartie.setBounds(380,50,500,40);
 		this.add(this.infoPartie);
 		this.bouton = new JPanel();
 		this.add( bouton );
 		
 		this.valider = new JButton("Valider");
-		this.valider.setBounds(350,300,200,40);
+		this.valider.setBounds(380,300,200,40);
 		this.valider.setEnabled(false);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -273,7 +273,7 @@ public class MSolo extends Menu{
 		this.add(this.valider);
 		
 		this.effEssai = new JButton("Effacer l'essai");
-		this.effEssai.setBounds(350,350,200,40);
+		this.effEssai.setBounds(380,350,200,40);
 		this.effEssai.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		essai = new Pions(solo.getNiveau().getPions());;
@@ -284,7 +284,7 @@ public class MSolo extends Menu{
 		this.add(this.effEssai);
 		
 		this.suivant = new JButton("Suivant");
-		this.suivant.setBounds(350,400,200,40);
+		this.suivant.setBounds(380,400,200,40);
 		this.suivant.setEnabled(false);
 		this.suivant.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -312,7 +312,7 @@ public class MSolo extends Menu{
 		this.add(this.suivant);
 		
 		this.information = new JLabel();
-		this.information.setBounds(350,500,300,40);
+		this.information.setBounds(380,500,300,40);
 		this.add(this.information);
 
 	}
@@ -385,7 +385,7 @@ public class MSolo extends Menu{
 	
 	private void initBoutonCouleur(){
 		this.bouton.setLayout(new GridLayout(2,5,5,5));
-		this.bouton.setBounds(350, 150, 200,100);
+		this.bouton.setBounds(380, 150, 200,100);
 		JButton b = null;
 		for( int i = 0; i < this.couleursAutorise.length; i++ ){
 			b = new JButton( this.getImage( this.couleursAutorise[i] ) );
