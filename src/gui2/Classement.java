@@ -1,7 +1,5 @@
 package gui2;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import mastermind.Paquet;
@@ -34,6 +31,9 @@ public class Classement extends Menu {
 		this.addLabelMulti();
 	}
 	
+	/*
+	 * Fonction qui instancie le label contenant le tire et l'ajoute a la page 
+	 */
 	private void addLabelTitre(){
 		this.titre = new JLabel("Classement");
 		titre.setFont(new Font("Agency FB", Font.PLAIN, 40));
@@ -41,6 +41,9 @@ public class Classement extends Menu {
 	    this.add(titre);
 	}
 	
+	/*
+	 * Fonction qui ajoute un bouton retour pour retourner à l'accueil
+	 */
 	private void addBoutonRetour(){
 		JButton btn = new JButton( "Retour" );
 		btn.addActionListener(new ActionListener(){
@@ -52,6 +55,9 @@ public class Classement extends Menu {
 		this.add( btn );
 	}
 	
+	/*
+	 * Fonction qui instancie et ajoute le label du classement solo
+	 */
 	private void addLabelSolo()
 	{
 		this.lSolo = new JLabel("Solo :");
@@ -60,6 +66,9 @@ public class Classement extends Menu {
 		this.add(this.lSolo);
 	}
 	
+	/*
+	 * Fonction qui instancie et ajoute le label du classement multi
+	 */
 	private void addLabelMulti()
 	{
 		this.lMulti = new JLabel("Multi :");
@@ -68,12 +77,26 @@ public class Classement extends Menu {
 		this.add(this.lMulti);
 	}
 	
+	/*
+	 * Fonction qui instancie et ajoute les JTables contenant les classements solo et multi
+	 */
 	private void addTableaux()
 	{
+		/*
+		 * On commence par envoyer un paquet de demande de classement
+		 */
 		Paquet joueursd = Paquet.creeDEMANDE_CLASSEMENT( );
 		int id = joueursd.getId();
 		fenetre.getClient().envoyerPaquet(joueursd);
+		
+		/*
+		 * On récupérer ensuite le paquet de réponse qui contient la liste des joueurs dans la base de données
+		 */
 		Paquet joueurss = fenetre.getClient().recevoirPaquet(20.0, id);
+		
+		/*
+		 * On créé des modèles pour les JTables afin de désactiver l'édition des cellules
+		 */
 		DefaultTableModel model = new DefaultTableModel()
 			{ public boolean isCellEditable(int row, int column){  
 				return false;  
@@ -85,6 +108,9 @@ public class Classement extends Menu {
 			}
 		};
 		
+		/*
+		 * On instancie les JTables et on y ajoute le nom des colonnes 
+		 */
 		this.solo = new JTable(model);
 		solo.setAutoCreateRowSorter(true);
 		JScrollPane scrollPane = new JScrollPane(solo);
@@ -106,6 +132,9 @@ public class Classement extends Menu {
 		model2.addColumn("victoires/défaites");
 		model2.addColumn("coups/parties");
 		
+		/*
+		 * Pour chaque joueur on envoie une demande de statistiques puis on ajoute les données dans les JTables
+		 */
 		for (int i =0; i<joueurss.getNbObjet(); i++)
 		{
 				String login = (String) joueurss.getObjet(i);
@@ -150,6 +179,9 @@ public class Classement extends Menu {
 		this.addTableaux();
 	}
 	
+	/*
+	 * Fonction appelée en cas de déconnexion au serveur, le joueur est redirigé vers l'accueil
+	 */
 	public void decoServeur(){
 		this.fenetre.showMenu( Fenetre.ACCUEIL );
 	}
