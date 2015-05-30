@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
@@ -71,9 +72,18 @@ public class MSolo extends Menu{
 		    
 	    this.mntmNouvellePartie = new JMenuItem("Nouvelle partie");
 	    this.mntmNouvellePartie.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		solo.reset();
-	    		nouveauTour();
+			public void actionPerformed(ActionEvent e) {
+	    		int option = JOptionPane.showConfirmDialog(null,
+	    				"Voulez-vous démarrer une nouvelle partie ?\n La partie actuelle sera perdue.",
+	    				"Nouvelle partie", 
+	    				JOptionPane.YES_NO_OPTION, 
+	    				JOptionPane.QUESTION_MESSAGE);
+
+	    		if(option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION){
+	    			solo.reset();
+		    		nouveauTour();
+	    	      }
+	    		
 	    	}
 		});
 	    this.mnJeu.add(mntmNouvellePartie);
@@ -82,12 +92,20 @@ public class MSolo extends Menu{
 	    this.save.setEnabled(false);
 		this.save.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		if( fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
-	    			solo.setJoueur(fenetre.getClient().getJoueur());
-	    			solo.setNom( solo.getJoueur().getIdentifiant() );
-		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
-		    		information.setText("Partie sauvegardé");
-	    		}
+	    		int option = JOptionPane.showConfirmDialog(null,
+	    				"Sauvegarder la partie actuelle ?",
+	    				"Sauvegarder", 
+	    				JOptionPane.YES_NO_OPTION, 
+	    				JOptionPane.QUESTION_MESSAGE);
+
+	    		if(option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION){
+	    			if( fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
+		    			solo.setJoueur(fenetre.getClient().getJoueur());
+		    			solo.setNom( solo.getJoueur().getIdentifiant() );
+			    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
+			    		information.setText("Partie sauvegardée");
+		    		}
+	    	      }
 	    	}
 		});
 	    this.mnJeu.add(save);
@@ -96,30 +114,38 @@ public class MSolo extends Menu{
 	    this.charger.setEnabled(false);
 	    this.charger.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent event){
-				if( fenetre.getClient().connecterAuCompte()){
-					Paquet p = Paquet.creeDEMANDE_CHARGER_SOLO();
-					int id = p.getId();
-					fenetre.getClient().envoyerPaquet( p );
-					Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id );
-					
-					if(ps != null) {
+				int option = JOptionPane.showConfirmDialog(null,
+	    				"Voulez-vous charger une partie ?\n La partie actuelle sera perdue.",
+	    				"Sauvegarder", 
+	    				JOptionPane.YES_NO_OPTION, 
+	    				JOptionPane.QUESTION_MESSAGE);
+
+	    		if(option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION){
+	    			if( fenetre.getClient().connecterAuCompte()){
+						Paquet p = Paquet.creeDEMANDE_CHARGER_SOLO();
+						int id = p.getId();
+						fenetre.getClient().envoyerPaquet( p );
+						Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id );
 						
-						if(ps.getNbObjet() == 0) {
-							information.setText("Partie introuvable");
+						if(ps != null) {
+							
+							if(ps.getNbObjet() == 0) {
+								information.setText("Partie introuvable");
+							}
+							
+							else {
+								quitter();
+					    		fenetre.showMenu( Fenetre.ACCUEIL );
+								Solo s = Paquet.getSolo(ps);
+								s.getTour().ajouteAides();
+								fenetre.setSoloCharger(s);
+								fenetre.showMenu( Fenetre.SOLO );
+							}
+						}else{
+							information.setText("Impossible de charger votre partie");
 						}
-						
-						else {
-							quitter();
-				    		fenetre.showMenu( Fenetre.ACCUEIL );
-							Solo s = Paquet.getSolo(ps);
-							s.getTour().ajouteAides();
-							fenetre.setSoloCharger(s);
-							fenetre.showMenu( Fenetre.SOLO );
-						}
-					}else{
-						information.setText("Impossible de charger votre partie");
 					}
-				}
+	    	      }
 			}
 	    });
 	    this.mnJeu.add(charger);
@@ -127,8 +153,16 @@ public class MSolo extends Menu{
 	    this.retourChoixNiveau = new JMenuItem("Changer la difficulté");
 	    this.retourChoixNiveau.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		quitter();
-	    		fenetre.showMenu( Fenetre.UNJOUEUR );
+	    		int option = JOptionPane.showConfirmDialog(null,
+	    				"Changer la difficulté ?\n La partie actuelle sera perdue.",
+	    				"Changer la difficulté", 
+	    				JOptionPane.YES_NO_OPTION, 
+	    				JOptionPane.QUESTION_MESSAGE);
+
+	    		if(option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION){
+	    			quitter();
+		    		fenetre.showMenu( Fenetre.UNJOUEUR );
+	    	      }
 	    	}
 		});
 	    this.mnJeu.add(retourChoixNiveau);
@@ -136,8 +170,17 @@ public class MSolo extends Menu{
 	    this.mntmQuitter = new JMenuItem("Quitter");
 	    this.mntmQuitter.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		quitter();
-	    		fenetre.showMenu( Fenetre.ACCUEIL );
+	    		int option = JOptionPane.showConfirmDialog(null,
+	    				"Voulez-vous vraiment quitter ?\n La partie actuelle sera perdue.",
+	    				"Quitter", 
+	    				JOptionPane.YES_NO_OPTION, 
+	    				JOptionPane.QUESTION_MESSAGE);
+
+	    		if(option != JOptionPane.NO_OPTION && option != JOptionPane.CLOSED_OPTION){
+	    			quitter();
+		    		fenetre.showMenu( Fenetre.ACCUEIL );
+	    	      }
+	    		
 	    	}
 		});
 	    this.mnJeu.add(mntmQuitter);
