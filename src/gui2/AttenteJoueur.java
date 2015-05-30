@@ -189,7 +189,7 @@ public class AttenteJoueur extends Menu {
 	    		refreshJoueur2();
 	    	}
 	    });
-	    this.add(this.lancer);
+	    this.add(this.kicker);
 	}
 	
 	private void addQuitter() {

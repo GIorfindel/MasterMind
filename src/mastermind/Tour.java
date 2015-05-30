@@ -86,6 +86,23 @@ public class Tour  implements Serializable{
 		this.addAide( aide );
 	}
 	
+	public static Pions getAide( Pions comb, Pions combTrouve ){
+		Pions aide = new Pions( combTrouve.getNbPion() );
+		for ( int i = 0; i < comb.getNbPion(); i++ ){
+			if( comb.getPion( i ) == combTrouve.getPion( i ) ){
+				aide.addPion( Couleur.Noir );
+			}else{
+				for ( int j = 0; j < combTrouve.getNbPion(); j++ ){
+					if ( comb.getPion( i ) == combTrouve.getPion( j ) ){
+						aide.addPion( Couleur.Blanc );
+						break;
+					}
+				}
+			}
+		}
+		return aide;
+	}
+	
 	//Vérifie si le joueur à trouvé la combinaison et ajoute des indications dans la variable aides
 	public boolean testCombinaison(Pions comb){
 		this.addEssai(comb);
@@ -102,7 +119,7 @@ public class Tour  implements Serializable{
 		}
 	}
 	
-	private int comptePionsCouleur( Pions pions, Couleur couleur ){
+	public static int comptePionsCouleur( Pions pions, Couleur couleur ){
 		int compt = 0;
 		for( int i= 0; i < pions.getNbPion(); i++ ){
 			if( pions.getPion( i ) == couleur ){
@@ -114,12 +131,12 @@ public class Tour  implements Serializable{
 	
 	//Pions blanc: Bonne couleur mais mal placé
 	public int getNombreBonneCouleur( int coups ){
-		return this.comptePionsCouleur( this.aides.get( coups ), Couleur.Blanc );
+		return comptePionsCouleur( this.aides.get( coups ), Couleur.Blanc );
 	}
 	
 	//Pions noir: Bonne couleur et bien placé
 	public int getNombreBonnePosition( int coups ){
-		return this.comptePionsCouleur( this.aides.get( coups ), Couleur.Noir );
+		return comptePionsCouleur( this.aides.get( coups ), Couleur.Noir );
 	}
 	
 	public void nouveauTour( Pions combinaison ){

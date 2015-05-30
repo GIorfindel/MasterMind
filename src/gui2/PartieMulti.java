@@ -1,7 +1,5 @@
 package gui2;
 
-import gui2.MSolo.ListenerBoutonColor;
-
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -17,6 +15,7 @@ import mastermind.Joueur;
 import mastermind.Niveau;
 import mastermind.Paquet;
 import mastermind.Pions;
+import mastermind.Tour;
 
 @SuppressWarnings("serial")
 public class PartieMulti extends Menu{
@@ -48,11 +47,12 @@ public class PartieMulti extends Menu{
 	private ImageIcon noir;
 	
 	private Pions essai;
+	private Pions comb_a_trouve;
 	
 	private Couleur[] couleursAutorise;
 	
 	private JButton valider;
-	private JButton suivant;
+	private JButton voirScore;
 	private JButton effEssai;
 	
 	private JLabel information;
@@ -67,6 +67,7 @@ public class PartieMulti extends Menu{
 		this.niveau = null;
 		
 		this.maquette = null;
+		
 		this.bouton = null;
 		this.essai = null;
 		
@@ -93,6 +94,7 @@ public class PartieMulti extends Menu{
 		this.valider = new JButton("Valider");
 		this.valider.setBounds(380,415,100,30);
 		this.valider.setEnabled(false);
+		this.valider.setVisible(true);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( essai != null && essai.getNbPion() == niveau.getPions() ){
@@ -110,16 +112,21 @@ public class PartieMulti extends Menu{
 	    				effEssai.setEnabled(false);
 	    				valider.setEnabled(false);
 	    				nbCoupsJ1 ++;
+	    				Pions aide = Tour.getAide(essai, comb_a_trouve);
+	    				maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Blanc), Tour.comptePionsCouleur(aide, Couleur.Noir));
+	    				nbCoupsTour ++;
 	    				refreshInfoPartie();
 	    				essai = new Pions( niveau.getPions() );
 	    			}
 	    		}
+	    		information.setText("");
 	    	}
 		});
 		this.add(this.valider);
 		
 		this.effEssai = new JButton("Effacer l'essai");
 		this.effEssai.setBounds(500,415,200,30);
+		this.effEssai.setVisible(true);
 		this.effEssai.setEnabled(false);
 		this.effEssai.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -130,15 +137,17 @@ public class PartieMulti extends Menu{
 		});
 		this.add(this.effEssai);
 		
-		this.suivant = new JButton("Suivant");
-		this.suivant.setBounds(380,450,100,30);
-		this.suivant.setEnabled(false);
-		this.suivant.addActionListener(new ActionListener() {
+		this.voirScore = new JButton("Voir score");
+		this.voirScore.setBounds(380,450,150,30);
+		this.voirScore.setVisible(true);
+		this.voirScore.setEnabled(false);
+		this.voirScore.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		
+	    		quitter();
+	    		fenetre.showMenu(Fenetre.SCORE);
 	    	}
 		});
-		this.add(this.suivant);
+		this.add(this.voirScore);
 		
 		this.information = new JLabel();
 		this.information.setBounds(350,500,400,30);
@@ -148,7 +157,13 @@ public class PartieMulti extends Menu{
 		quit.setBounds(800,0,100,30);
 		quit.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		
+	    		if(createur){
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR1_PARTI() );
+	    		}else{
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR2_PARTI() );
+	    		}
+	    		quitter();
+	    		fenetre.showMenu(Fenetre.DEUXJOUEURS);
 	    	}
 		});
 		this.add(quit);
@@ -178,7 +193,7 @@ public class PartieMulti extends Menu{
 		this.essai = null;
 		this.couleursAutorise = null;
 		this.valider.setEnabled(false);
-		this.suivant.setEnabled(false);
+		this.voirScore.setEnabled(false);
 		this.effEssai.setEnabled(false);
 		this.information.setText("");
 		this.tourDe.setText("");
@@ -204,6 +219,7 @@ public class PartieMulti extends Menu{
 		this.maquette.setBounds(0, 0, 500, 700);
 		this.maquette.setVisible(true);
 		this.add(this.maquette);
+		this.maquette.repaint();
 		
 		this.couleursAutorise = this.niveau.getCouleurAutorise();
 		this.bouton.setLayout(new GridLayout(2,5,5,5));
@@ -214,37 +230,58 @@ public class PartieMulti extends Menu{
 			b.addActionListener(new ListenerBoutonColor(this.couleursAutorise[i]));
 			this.bouton.add(b);
 		}
-		this.desactiveBoutonColor();
 		
 		this.essai = new Pions( this.niveau.getPions() );
+		this.refreshInfoPartie();
 	}
 	
 	//Si on est le createur(true)
 	public void joueur2Pars(){
 		this.quitter();
-		this.fenetre.showMenu( Fenetre.DEUXJOUEURS );
+		this.information.setText("L'adversaire est parti");
+		this.valider.setEnabled(false);
+		this.effEssai.setEnabled(false);
+		this.voirScore.setEnabled(false);
 	}
 		
 	//Si on n'est pas le createur(false)
 	public void joueur1Pars(){
 		this.quitter();
-		this.fenetre.showMenu( Fenetre.DEUXJOUEURS );
+		this.information.setText("L'adversaire est parti");
+		this.valider.setEnabled(false);
+		this.effEssai.setEnabled(false);
+		this.voirScore.setEnabled(false);
 	}
 	
 	//C'est à toi de choisir la combinaison à faire deviner
 	public void choisitCombADeviner(){
+		this.nbCoupsTour = 0;
+		this.valider.setEnabled(false);
+		this.essai = new Pions( this.niveau.getPions() );
+		if( this.maquette != null ){
+			this.maquette.reset();
+		}
+		
 		this.information.setText("60 secondes pour choisir un combinaison");
-		this.maquette.reset();
 		this.etat = CHOISIT_COMB_A_DEVI;
 		this.activeBoutonColor();
 		this.effEssai.setEnabled(true);
+		this.repaint();
 	}
 	
 	//C'est à l'autre de choisir la combinaison à faire deviner
 	public void choisitPasCombADeviner(){
-		this.maquette.reset();
+		this.nbCoupsTour = 0;
+		this.valider.setEnabled(false);
+		this.essai = new Pions( this.niveau.getPions() );
+		if( this.maquette != null ){
+			this.maquette.reset();
+		}
+		
+		this.desactiveBoutonColor();
 		this.etat = ATTEND_COMB_A_DEVI_ADV;
 		this.information.setText("L'adversaire choisit une combinaison");
+		this.repaint();
 	}
 	
 	//Le 1er compteur est écoulé
@@ -274,17 +311,24 @@ public class PartieMulti extends Menu{
 	//Tu as perdu à cause du compteur2 écoulé
 	public void perduCmpt2() {
 		this.information.setText("Compteur terminé, tu as perdu, malus augmenté");
-		//Quitter partie****************************************************************************************
+		this.effEssai.setEnabled(false);
+		this.valider.setEnabled(false);
+		this.voirScore.setEnabled(false);
+		Joueur j = this.fenetre.getClient().getJoueur();
+		j.setMalus( j.getMalus() + 1 );
 	}
 		
 	//L'adversaire a perdu à cause du compteur2 écoulé
 	public void advPerduCmpt2() {
 		this.information.setText("L'adversaire à écoulé son compteur, il a perdu");
-		//Quitter partie****************************************************************************************
+		this.effEssai.setEnabled(false);
+		this.valider.setEnabled(false);
+		this.voirScore.setEnabled(false);
 	}
 	
 	//La combinaison à trouver a été fixé
-	public void combFixe(){
+	public void combFixe(Pions comb){
+		this.comb_a_trouve = comb;
 		this.information.setText("La combinaison à deviner, a été fixé");
 	}
 	
@@ -300,6 +344,8 @@ public class PartieMulti extends Menu{
 	public void envoiEssaiAdv(Pions essai) {
 		this.information.setText("L'adversaire a soumis un essai");
 		this.maquette.addPions(this.nbCoupsJ2,essai);
+		Pions aide = Tour.getAide(essai, comb_a_trouve);
+		maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Blanc), Tour.comptePionsCouleur(aide, Couleur.Noir));
 		this.nbCoupsJ2 ++;
 		this.refreshInfoPartie();
 	}
@@ -341,9 +387,10 @@ public class PartieMulti extends Menu{
 	
 	private void clicBoutonCouleur( Couleur c ){
 		if( this.essai.getNbPion() < this.niveau.getPions() ){
-			this.essai.addPion( c );
 			this.maquette.addPion( this.nbCoupsTour, this.essai.getNbPion(), c);
-		}else{
+			this.essai.addPion( c );
+		}
+		if( this.essai.getNbPion() == this.niveau.getPions() ){
 			this.valider.setEnabled(true);
 		}
 	}
@@ -360,5 +407,21 @@ public class PartieMulti extends Menu{
 		for(int i = 0; i < tab.length; i++ ){
 			tab[i].setEnabled(true);
 		}
+	}
+
+	public void tuAsGagne() {
+		this.information.setText("Tu as gagné");
+		this.effEssai.setEnabled(false);
+		this.valider.setEnabled(false);
+		this.voirScore.setEnabled(true);
+		desactiveBoutonColor();
+	}
+
+	public void tuAsPerdu() {
+		this.information.setText("Tu as perdu");
+		this.effEssai.setEnabled(false);
+		this.valider.setEnabled(false);
+		this.voirScore.setEnabled(true);
+		desactiveBoutonColor();
 	}
 }

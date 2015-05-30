@@ -520,4 +520,14 @@ public class DB {
 		return joueurs;
 	}
 
+	public void addMalus(Joueur joueur) throws SQLException {
+		joueur.setMalus( joueur.getMalus() + 1 );
+		String query = "update Joueur set malus = ? where identifiant = ?";
+		PreparedStatement preparedStmt = this.connexion.prepareStatement( query );
+		preparedStmt.setInt( 1, joueur.getMalus() );
+		preparedStmt.setString( 2, joueur.getIdentifiant() );
+		preparedStmt.executeUpdate();
+		preparedStmt.close();
+	}
+
 }

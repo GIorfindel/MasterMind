@@ -353,7 +353,7 @@ public class Paquet implements Serializable{
 	}
 	
 	public static Paquet creeCHOISITPAS_COMB_A_DEVINER(){
-		return new Paquet( 0, CHOISIT_COMB_A_DEVINER, -1 );
+		return new Paquet( 0, CHOISITPAS_COMB_A_DEVINER, -1 );
 	}
 	
 	public static Paquet creeCOMPTEUR1_RATE(){
@@ -386,8 +386,10 @@ public class Paquet implements Serializable{
 		return p;
 	}
 	
-	public static Paquet creeCOMB_FIXE(){
-		return new Paquet( 0, COMB_FIXE, -1 );
+	public static Paquet creeCOMB_FIXE(Pions comb){
+		Paquet p = new Paquet( 1, COMB_FIXE, -1 );
+		p.addObjet(comb);
+		return p;
 	}
 	
 	public static Paquet creeCHOISI_ESSAI(){

@@ -219,8 +219,8 @@ public class Fenetre extends JFrame {
 		((PartieMulti) this.partieMulti).advPerduCmpt2();
 	}
 	
-	public void combFixe() {
-		((PartieMulti) this.partieMulti).combFixe();
+	public void combFixe(Pions comb) {
+		((PartieMulti) this.partieMulti).combFixe(comb);
 	}
 
 	public void choisitEssai() {
@@ -229,5 +229,13 @@ public class Fenetre extends JFrame {
 
 	public void envoiEssaiAdv(Pions essai) {
 		((PartieMulti) this.partieMulti).envoiEssaiAdv( essai );
+	}
+
+	public void tuAsGagne() {
+		((PartieMulti) this.partieMulti).tuAsGagne();
+	}
+
+	public void tuAsPerdu() {
+		((PartieMulti) this.partieMulti).tuAsPerdu();
 	}
 }

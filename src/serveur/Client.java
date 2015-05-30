@@ -399,8 +399,10 @@ public class Client extends Thread {
 	}
 	
 	public void demandeJoueur2Parti(){
-		this.cJoueur1.joueur2Parti();
-		this.cJoueur1 = null;
+		if(this.cJoueur1 != null){
+			this.cJoueur1.joueur2Parti();
+			this.cJoueur1 = null;
+		}
 	}
 	
 	public void joueur2Parti(){
@@ -412,16 +414,28 @@ public class Client extends Thread {
 			this.cmptMulti.close();
 			this.multi.reset();
 			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
+			try {
+				this.serveur.getBD().addMalus( this.cJoueur2.joueur );
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			this.cJoueur2 = null;
 		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE ){
 			this.multi.reset();
 			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
+			try {
+				this.serveur.getBD().addMalus( this.cJoueur2.joueur );
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			this.cJoueur2 = null;
 		}
-		//Les malus********************************************************************************************
 	}
-	
+		
 	public void demandeJoueur1Parti(){
+		if( this.multi != null ){
+			return;
+		}
 		if( this.multi.getEtat() == Multijoueur.ETAT_CHERCHE_JOUEUR2 ){
 			this.serveur.popPartieMulti( this.multi.getNom() );
 			this.multi = null;
@@ -433,18 +447,31 @@ public class Client extends Thread {
 		} else if( this.multi.getEtat() == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 ||  this.multi.getEtat() == Multijoueur.ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 ){
 			this.cmptMulti.close();
 			this.multi.reset();
-			this.cJoueur2.joueur1Parti();
-			this.cJoueur2 = null;
+			if( this.cJoueur2 != null ){
+				this.cJoueur2.joueur1Parti();
+				this.cJoueur2 = null;
+			}
 			this.serveur.popPartieMulti( this.multi.getNom() );
 			this.multi = null;
+			try {
+				this.serveur.getBD().addMalus( this.joueur );
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE ){
 			this.multi.reset();
-			this.cJoueur2.joueur1Parti();
-			this.cJoueur2 = null;
+			if( this.cJoueur2 != null ){
+				this.cJoueur2.joueur1Parti();
+				this.cJoueur2 = null;
+			}
 			this.serveur.popPartieMulti( this.multi.getNom() );
 			this.multi = null;
+			try {
+				this.serveur.getBD().addMalus( this.joueur );
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-		//Les malus********************************************************************************************
 	}
 	
 	public void joueur1Parti(){
@@ -505,14 +532,29 @@ public class Client extends Thread {
 	//Les 60 secondes sont passé pour le compteur2
 	public void compteur2TempsAtteint(){
 		if( this.multi.getTourDeCreateur() ){
-			//Ajouter le malus dans la bdd****************************************************************************************************
+			try {
+				this.serveur.getBD().addMalus( this.joueur );
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			this.envoyerPaquet( Paquet.creePERDU_CMPT2() );
 			this.cJoueur2.envoyerPaquet( Paquet.creeADV_PERDU_CMPT2() );
 		}else{
-			//Ajouter le malus dans la bdd****************************************************************************************************
+			try {
+				this.serveur.getBD().addMalus( this.cJoueur2.joueur );
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			this.cJoueur2.envoyerPaquet( Paquet.creePERDU_CMPT2() );
 			this.envoyerPaquet( Paquet.creeADV_PERDU_CMPT2() );
 		}
+		this.multi.reset();
+		if( this.cJoueur2 != null ){
+			this.cJoueur2.cJoueur1 = null;
+			this.cJoueur2 = null;
+		}
+		this.serveur.popPartieMulti( this.multi.getNom() );
+		this.multi = null;
 	}
 	
 	public void demandeEnvoiComb( Paquet p ){
@@ -526,10 +568,10 @@ public class Client extends Thread {
 			this.multi.setComb(pions);
 			this.cmptMulti.close();
 			if( this.multi.getTourDeCreateur() ){
-				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_FIXE() );
+				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_FIXE(pions) );
 				this.cJoueur2.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 			}else{
-				this.envoyerPaquet( Paquet.creeCOMB_FIXE() );
+				this.envoyerPaquet( Paquet.creeCOMB_FIXE(pions) );
 				this.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 			}
 		}else if( etat == Multijoueur.ETAT_COMB_FIXE ){
@@ -551,7 +593,6 @@ public class Client extends Thread {
 				}
 			}
 		}
-		//... **********************************************************************************************************************
 	}
 	
 	public void envoiPionsJoueurAdversse( Pions p ){
@@ -579,17 +620,34 @@ public class Client extends Thread {
 	}
 	
 	public void partiFini(){
-		//Sauvegarder les scores****************************************************************
 		if( this.multi.getTourDeCreateur() ){
 			this.envoyerPaquet( Paquet.creeTU_AS_GAGNE() );
 			this.cJoueur2.envoyerPaquet( Paquet.creeTU_AS_PERDU() );
+			try {
+				this.serveur.getBD().nouvScore(this.joueur, new Score(Score.MODE_MULTI,this.multi.getCoupsJ1(),true,this.multi.getNbTour(),this.multi.getNiveau()));
+				this.serveur.getBD().nouvScore(this.cJoueur2.getJoueur(), new Score(Score.MODE_MULTI,this.multi.getCoupsJ2(),false,this.multi.getNbTour(),this.multi.getNiveau()));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}else{
 			this.cJoueur2.envoyerPaquet( Paquet.creeTU_AS_GAGNE() );
 			this.envoyerPaquet( Paquet.creeTU_AS_PERDU() );
+			try {
+				this.serveur.getBD().nouvScore(this.joueur, new Score(Score.MODE_MULTI,this.multi.getCoupsJ1(),false,this.multi.getNbTour(),this.multi.getNiveau()));
+				this.serveur.getBD().nouvScore(this.cJoueur2.getJoueur(), new Score(Score.MODE_MULTI,this.multi.getCoupsJ2(),true,this.multi.getNbTour(),this.multi.getNiveau()));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		this.multi.reset();
-		this.cJoueur2 = null;
-		this.cJoueur2.cJoueur1 = null;
+		if( this.cJoueur2 != null ){
+			this.cJoueur2.cJoueur1 = null;
+			this.cJoueur2 = null;
+		}
 		this.serveur.popPartieMulti( this.multi.getNom() );
 		this.multi = null;
 	}

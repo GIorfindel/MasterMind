@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 import mastermind.Paquet;
 
@@ -80,8 +81,12 @@ public class Serveur {
 			this.ecouteServeur = null;
 		}
 		try{
-			if( this.envoi != null ){
-				this.envoi.close();
+			if( this.envoi != null){
+				try{
+					this.envoi.close();
+				}catch( SocketException e ){//Socket déjà fermé
+					
+				}
 				this.envoi = null;
 			}
 			if( this.socket != null ){
