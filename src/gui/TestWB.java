@@ -18,6 +18,10 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JToolBar;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 public class TestWB {
 
@@ -62,7 +66,7 @@ public class TestWB {
 	private void initialize() {
 		frmMastermind = new JFrame();
 		frmMastermind.setTitle("Mastermind");
-	    frmMastermind.setSize(960, 544);
+	    frmMastermind.setSize(960, 700);
 	    frmMastermind.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frmMastermind.setLocationRelativeTo(null);
 	    frmMastermind.setResizable(false);
@@ -138,19 +142,7 @@ public class TestWB {
 	    /*******************************************************************/	    
 	    //Création du panel
 	    JPanel jouer = new JPanel();
-	    jouer.setBackground(Color.yellow);	
-	    
-	    // Création des différents composants
-	    JButton retour0 = new JButton("Retour");
-	    //Définition de l'action du retour0
-	    retour0.addActionListener(new ActionListener(){
-	      public void actionPerformed(ActionEvent event){				
-	        cl.show(content, listeMenus[0]);
-	      }
-	    });
-	    
-	    // Ajout des composants au panel
-	    jouer.add(retour0);
+	    jouer.setBackground(Color.yellow);
 	    /*** FIN MENU JOUER ***/
 
 	    
@@ -285,6 +277,9 @@ public class TestWB {
 	    textField_3.setBounds(492, 176, 176, 22);
 	    inscription.add(textField_3);
 	    content.add(jouer, listeMenus[5]);
+	    jouer.setLayout(null);
+	    
+	    
 
 
 	    frmMastermind.getContentPane().add(content, BorderLayout.CENTER);

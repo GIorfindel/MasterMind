@@ -8,7 +8,11 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import mastermind.Couleur;
 import mastermind.Niveau;
@@ -43,14 +47,106 @@ public class MSolo extends Menu{
 	private JButton valider;
 	private JButton suivant;
 	private JButton effEssai;
-	
+
 	private JLabel information;
-	
 	private JLabel infoPartie;
 	
-	private JButton save;
+	private JMenuBar menuBar;
 	
+	private JMenu mnJeu;
 	
+	JMenuItem mntmNouvellePartie;
+	JMenuItem save;
+	JMenuItem charger;
+	JMenuItem mntmQuitter;
+	JMenuItem retourChoixNiveau;
+
+	
+	private void addMenuBar() {
+		this.menuBar= new JMenuBar();
+		menuBar.setBounds(0, 0, 960, 26);
+		    
+		this.mnJeu = new JMenu("Jeu");
+		this.menuBar.add(mnJeu);
+		    
+	    this.mntmNouvellePartie = new JMenuItem("Nouvelle partie");
+	    this.mntmNouvellePartie.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		solo.reset();
+	    		nouveauTour();
+	    	}
+		});
+	    this.mnJeu.add(mntmNouvellePartie);
+	    
+	    this.save = new JMenuItem("Sauvegarder");
+	    this.save.setEnabled(false);
+		this.save.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		if( fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
+	    			solo.setJoueur(fenetre.getClient().getJoueur());
+	    			solo.setNom( solo.getJoueur().getIdentifiant() );
+		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
+		    		information.setText("Partie sauvegardé");
+	    		}
+	    	}
+		});
+	    this.mnJeu.add(save);
+	    
+	    this.charger = new JMenuItem("Charger");
+	    this.charger.setEnabled(false);
+	    this.charger.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent event){
+				if( fenetre.getClient().connecterAuCompte()){
+					Paquet p = Paquet.creeDEMANDE_CHARGER_SOLO();
+					int id = p.getId();
+					fenetre.getClient().envoyerPaquet( p );
+					Paquet ps = fenetre.getClient().recevoirPaquet(5.0, id );
+					
+					if(ps != null) {
+						
+						if(ps.getNbObjet() == 0) {
+							information.setText("Partie introuvable");
+						}
+						
+						else {
+							quitter();
+				    		fenetre.showMenu( Fenetre.ACCUEIL );
+							Solo s = Paquet.getSolo(ps);
+							s.getTour().ajouteAides();
+							fenetre.setSoloCharger(s);
+							fenetre.showMenu( Fenetre.SOLO );
+						}
+					}else{
+						information.setText("Impossible de charger votre partie");
+					}
+				}
+			}
+	    });
+	    this.mnJeu.add(charger);
+	    
+	    this.retourChoixNiveau = new JMenuItem("Changer la difficulté");
+	    this.retourChoixNiveau.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		quitter();
+	    		fenetre.showMenu( Fenetre.UNJOUEUR );
+	    	}
+		});
+	    this.mnJeu.add(retourChoixNiveau);
+	    
+	    this.mntmQuitter = new JMenuItem("Quitter");
+	    this.mntmQuitter.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		quitter();
+	    		fenetre.showMenu( Fenetre.ACCUEIL );
+	    	}
+		});
+	    this.mnJeu.add(mntmQuitter);
+	    
+		
+	    this.add(this.menuBar);
+			
+	}
+    
 	public MSolo( Fenetre fenetre ){
 		this.fenetre = fenetre;
 		this.solo = new Solo("",Niveau.niveauString("TresFacile"),null);
@@ -82,16 +178,15 @@ public class MSolo extends Menu{
 	private void init(){
 		this.setLayout( null );
 		
-		
+		this.addMenuBar();
 		this.infoPartie = new JLabel();
-		this.infoPartie.setBounds(380,100,500,30);
+		this.infoPartie.setBounds(350,50,500,40);
 		this.add(this.infoPartie);
-		
 		this.bouton = new JPanel();
 		this.add( bouton );
 		
 		this.valider = new JButton("Valider");
-		this.valider.setBounds(380,415,100,30);
+		this.valider.setBounds(350,300,200,40);
 		this.valider.setEnabled(false);
 		this.valider.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -135,7 +230,7 @@ public class MSolo extends Menu{
 		this.add(this.valider);
 		
 		this.effEssai = new JButton("Effacer l'essai");
-		this.effEssai.setBounds(500,415,200,30);
+		this.effEssai.setBounds(350,350,200,40);
 		this.effEssai.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		essai = new Pions(solo.getNiveau().getPions());;
@@ -146,7 +241,7 @@ public class MSolo extends Menu{
 		this.add(this.effEssai);
 		
 		this.suivant = new JButton("Suivant");
-		this.suivant.setBounds(380,450,100,30);
+		this.suivant.setBounds(350,400,200,40);
 		this.suivant.setEnabled(false);
 		this.suivant.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -174,43 +269,9 @@ public class MSolo extends Menu{
 		this.add(this.suivant);
 		
 		this.information = new JLabel();
-		this.information.setBounds(350,500,300,30);
+		this.information.setBounds(350,500,300,40);
 		this.add(this.information);
-		
-		JButton quit = new JButton("Quitter");
-		quit.setBounds(800,0,100,30);
-		quit.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		quitter();
-	    		fenetre.showMenu( Fenetre.ACCUEIL );
-	    	}
-		});
-		this.add(quit);
-		
-		JButton recomm = new JButton("Recommencer");
-		recomm.setBounds(800,400,150,30);
-		recomm.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		solo.reset();
-	    		nouveauTour();
-	    	}
-		});
-		this.add(recomm);
-		
-		this.save = new JButton("Sauvegarder");
-		this.save.setBounds(800,450,150,30);
-		this.save.setEnabled(false);
-		this.save.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		if( fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO )){
-	    			solo.setJoueur(fenetre.getClient().getJoueur());
-	    			solo.setNom( solo.getJoueur().getIdentifiant() );
-		    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_SAVE_SOLO(solo) );
-		    		information.setText("Partie sauvegardé");
-	    		}
-	    	}
-		});
-		this.add(this.save);
+
 	}
 	
 	public void quitter(){
@@ -230,7 +291,7 @@ public class MSolo extends Menu{
 	
 	public void clic(){
 		this.maquette = new Maquette( this.solo.getNiveau());
-		this.maquette.setBounds(0, 0, 500, 700);
+		this.maquette.setBounds(20, 50, 500, 700);
 		this.maquette.setVisible(true);
 		this.add(this.maquette);
 		this.couleursAutorise = this.solo.getNiveau().getCouleurAutorise();
@@ -238,6 +299,7 @@ public class MSolo extends Menu{
 		this.essai = new Pions(this.solo.getNiveau().getPions());
 		if( this.fenetre.getClient().connecterAuCompte() && !solo.getNiveau().toString().equals( Niveau.PERSO ) ){
 			this.save.setEnabled(true);
+			this.charger.setEnabled(true);
 		}
 		if( this.soloCharger ){
 			this.maquette.reset();
@@ -275,12 +337,12 @@ public class MSolo extends Menu{
 	}
 	
 	private void refreshInfoPartie(){
-		this.infoPartie.setText("Coups totals: "+this.solo.getCoups()+", Tour: "+this.solo.getNbTour()+", Coups: "+this.solo.getTour().getCoups());
+		this.infoPartie.setText("Tour : "+this.solo.getNbTour()+"      Coups : "+this.solo.getTour().getCoups()+"      Coups totaux : "+this.solo.getCoups());
 	}
 	
 	private void initBoutonCouleur(){
 		this.bouton.setLayout(new GridLayout(2,5,5,5));
-		this.bouton.setBounds(350, 255, 200,100);
+		this.bouton.setBounds(350, 150, 200,100);
 		JButton b = null;
 		for( int i = 0; i < this.couleursAutorise.length; i++ ){
 			b = new JButton( this.getImage( this.couleursAutorise[i] ) );
