@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 public class Accueil extends Menu{
 
 	private Fenetre fenetre;
-	private JButton profil, score;
+	private JButton profil, score, classement;
 	private JLabel connectServeur;
 	private JLabel connectCompte;
 	
@@ -137,15 +137,17 @@ public class Accueil extends Menu{
 	}
 	
 	private void addBoutonClassement(){
-		JButton btn = new JButton( "Classement" );
-		btn.setBounds( X, Y, W, H );
+		this.classement= new JButton( "Classement" );
+		this.classement.setBounds( X, Y, W, H );
 		Y += H+10;
-		btn.addActionListener(new ActionListener(){
+		classement.addActionListener(new ActionListener(){
 		      public void actionPerformed(ActionEvent event){				
 		        fenetre.showMenu( Fenetre.CLASSEMENT );
 		      }
 		    });
-		this.add( btn );
+		this.classement.setEnabled(false);
+		this.classement.setToolTipText("vous devez-être connecté pour avoir accès à cette fonctionnalité");
+		this.add( this.classement );
 	}
 	
 	public void clic(){
@@ -154,6 +156,8 @@ public class Accueil extends Menu{
 			this.profil.setToolTipText("");
 			this.score.setEnabled(true);
 			this.score.setToolTipText("");
+			this.classement.setEnabled(true);
+			this.classement.setToolTipText("");
 			this.connectCompte.setText("Joueur: " + this.fenetre.getClient().getJoueur().getIdentifiant());
 		}else{
 			this.profil.setEnabled(false);

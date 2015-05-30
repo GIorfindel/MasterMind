@@ -18,7 +18,7 @@ import mastermind.Paquet;
 @SuppressWarnings("serial")
 public class Classement extends Menu {
 	private Fenetre fenetre;
-	private JLabel titre;
+	private JLabel titre, lSolo, lMulti;
 	private JTable solo, multi;
 	
 	public Classement (Fenetre fenetre){
@@ -30,6 +30,8 @@ public class Classement extends Menu {
 		this.setLayout(null);
 		this.addLabelTitre();
 		this.addBoutonRetour();
+		this.addLabelSolo();
+		this.addLabelMulti();
 	}
 	
 	private void addLabelTitre(){
@@ -46,8 +48,24 @@ public class Classement extends Menu {
 		        fenetre.showMenu( Fenetre.ACCUEIL );
 		      }
 		    });
-		btn.setBounds(405, 400, 200, 50);
+		btn.setBounds(405, 550, 200, 50);
 		this.add( btn );
+	}
+	
+	private void addLabelSolo()
+	{
+		this.lSolo = new JLabel("Solo :");
+		this.lSolo.setBounds(100,150, 50, 50);
+		this.lSolo.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(this.lSolo);
+	}
+	
+	private void addLabelMulti()
+	{
+		this.lMulti = new JLabel("Multi :");
+		this.lMulti.setBounds(100,300, 50, 90);
+		this.lMulti.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		this.add(this.lMulti);
 	}
 	
 	private void addTableaux()
@@ -120,16 +138,8 @@ public class Classement extends Menu {
 					}
 				}
 			}
-		JLabel s = new JLabel("Solo :");
-		s.setBounds(10,150, 50, 50);
-		s.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		JLabel m = new JLabel("Multi :");
-		m.setBounds(500,130, 50, 90);
-		m.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		scrollPane.setBounds(10, 200, 450, 100);
-		scrollPane2.setBounds(500, 200, 450,100);
-		this.add(s);
-		this.add(m);
+		scrollPane.setBounds(100, 200, 800, 100);
+		scrollPane2.setBounds(100, 370, 800,100);
 		this.add(scrollPane);
 		this.add(scrollPane2);
 			
@@ -138,6 +148,10 @@ public class Classement extends Menu {
 	public void clic()
 	{
 		this.addTableaux();
+	}
+	
+	public void decoServeur(){
+		this.fenetre.showMenu( Fenetre.ACCUEIL );
 	}
 	
 }
