@@ -54,12 +54,17 @@ public class PartieMulti extends Menu{
 	private JButton valider;
 	private JButton voirScore;
 	private JButton effEssai;
+	private JButton choisirQuiComm;
+	private JButton tourSuivant;
 	
 	private JLabel information;
-	private JLabel tourDe;
+	
+	private JLabel imgJ1;
+	private JLabel imgJ2;
+	private JLabel infoNiveau;
 	
 	private int etat;
-	private static int CHOISIT_COMB_A_DEVI = 0, ATTEND_COMB_A_DEVI_ADV = 1, CHOISIT_ESSAI = 2;
+	private static int CHOISIR_QUI_COMM = 0 , CHOISIT_COMB_A_DEVI = 1, ATTEND_COMB_A_DEVI_ADV = 2, CHOISIT_ESSAI = 3, QUITTER = 4, TOUR_SUIVANT = 5;
 	
 	public PartieMulti(Fenetre f){
 		this.fenetre = f;
@@ -88,6 +93,10 @@ public class PartieMulti extends Menu{
 	private void init(){
 		this.setLayout( null );
 		
+		this.infoNiveau = new JLabel();
+		this.infoNiveau.setBounds(350,100,400,30);
+		this.add(this.infoNiveau);
+		
 		this.bouton = new JPanel();
 		this.add( bouton );
 		
@@ -99,11 +108,16 @@ public class PartieMulti extends Menu{
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( essai != null && essai.getNbPion() == niveau.getPions() ){
 	    			if( etat == CHOISIT_COMB_A_DEVI ){
+	    				if( !niveau.valideCombinaison(essai) ){
+	    					information.setText("Combinaison ne respecte pas le niveau");
+	    					return;
+	    				}
 	    				fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_ENVOI_COMB(essai) );
 	    				desactiveBoutonColor();
 	    				effEssai.setEnabled(false);
 	    				valider.setEnabled(false);
 	    				maquette.dessineSolution(essai);
+	    				comb_a_trouve = essai;
 	    				essai = new Pions( niveau.getPions() );
 	    				maquette.popEssai(0);
 	    			}else if( etat == CHOISIT_ESSAI ){
@@ -113,7 +127,7 @@ public class PartieMulti extends Menu{
 	    				valider.setEnabled(false);
 	    				nbCoupsJ1 ++;
 	    				Pions aide = Tour.getAide(essai, comb_a_trouve);
-	    				maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Blanc), Tour.comptePionsCouleur(aide, Couleur.Noir));
+	    				maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Noir), Tour.comptePionsCouleur(aide, Couleur.Blanc));
 	    				nbCoupsTour ++;
 	    				refreshInfoPartie();
 	    				essai = new Pions( niveau.getPions() );
@@ -157,24 +171,60 @@ public class PartieMulti extends Menu{
 		quit.setBounds(800,0,100,30);
 		quit.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		if(createur){
-	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR1_PARTI() );
+	    		if( fenetre.getClient().getConnecteAuServeur() ){
+	    			if(createur){
+		    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR1_PARTI() );
+		    		}else{
+		    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR2_PARTI() );
+		    		}
+		    		if( etat == CHOISIT_COMB_A_DEVI || etat == CHOISIT_ESSAI ){
+		    			Joueur j = fenetre.getClient().getJoueur();
+		    			j.setMalus( j.getMalus() + 1 );
+		    		}
+		    		quitter();
+		    		fenetre.showMenu(Fenetre.DEUXJOUEURS);
 	    		}else{
-	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_JOUEUR2_PARTI() );
+	    			quitter();
+		    		fenetre.showMenu(Fenetre.ACCUEIL);
 	    		}
-	    		quitter();
-	    		fenetre.showMenu(Fenetre.DEUXJOUEURS);
 	    	}
 		});
 		this.add(quit);
 		
-		this.tourDe = new JLabel();
-		this.tourDe.setBounds(350,100,300,30);
-		this.add(this.tourDe);
-		
 		this.infoPartie = new JLabel();
 		this.infoPartie.setBounds(350,130,400,30);
 		this.add(this.infoPartie);
+		
+		this.choisirQuiComm = new JButton("Choisir qui commence");
+		this.choisirQuiComm.setBounds(350,160,400,30);
+		this.choisirQuiComm.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		if( createur && etat == CHOISIR_QUI_COMM ){
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CHOISIR_QUI_COMMENCE() );
+	    			choisirQuiComm.setVisible(false);
+	    		}
+	    	}
+		});
+		this.add(this.choisirQuiComm);
+		
+		this.tourSuivant = new JButton("Tour suivant");
+		this.tourSuivant.setBounds(380,480,150,30);
+		this.tourSuivant.setVisible(false);
+		this.tourSuivant.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_TOUR_SUIVANT() );
+	    		tourSuivant.setVisible(false);
+	    	}
+		});
+		this.add(this.tourSuivant);
+		
+		this.imgJ1 = new JLabel();
+		this.imgJ1.setBounds(500,400, Joueur.WIDTH_AVATAR, Joueur.HEIGHT_AVATAR);
+		this.add(this.imgJ1);
+		
+		this.imgJ2 = new JLabel();
+		this.imgJ2.setBounds(500, 400+Joueur.HEIGHT_AVATAR+10, Joueur.WIDTH_AVATAR, Joueur.HEIGHT_AVATAR);
+		this.add(this.imgJ1);
 	}
 	
 	private void refreshInfoPartie(){
@@ -187,20 +237,24 @@ public class PartieMulti extends Menu{
 		this.nbCoupsJ1 = 0;
 		this.nbCoupsJ2 = 0;
 		this.nbTours = 0;
-		this.remove(this.maquette);
-		this.maquette = null;
+		if( this.maquette != null ){
+			this.remove(this.maquette);
+			this.maquette = null;
+		}
 		this.bouton.removeAll();
 		this.essai = null;
 		this.couleursAutorise = null;
 		this.valider.setEnabled(false);
 		this.voirScore.setEnabled(false);
 		this.effEssai.setEnabled(false);
+		this.tourSuivant.setEnabled(false);
+		this.choisirQuiComm.setEnabled(false);
 		this.information.setText("");
-		this.tourDe.setText("");
 	}
 	
 	public void decoServeur(){
-		
+		this.quitter();
+		this.information.setText("Vous êtes déconecté du serveur");
 	}
 	
 	public void setInfoPartieMulti( Niveau n, Joueur j, boolean createur ){
@@ -214,6 +268,18 @@ public class PartieMulti extends Menu{
 		this.nbCoupsJ2 = 0;
 		this.nbCoupsTour = 0;
 		this.nbTours = 0;
+		
+		this.infoNiveau.setText("Niveau: "+this.niveau.getNomNiveau());
+		
+		if( this.joueur.getAvatar() != null ){
+			this.imgJ2.setIcon( this.joueur.getAvatar() );
+			this.repaint();
+		}
+		
+		if( this.fenetre.getClient().getJoueur().getAvatar() != null ){
+			this.imgJ2.setIcon( this.fenetre.getClient().getJoueur().getAvatar() );
+			this.repaint();
+		}
 		
 		this.maquette = new Maquette( this.niveau);
 		this.maquette.setBounds(0, 0, 500, 700);
@@ -233,36 +299,47 @@ public class PartieMulti extends Menu{
 		
 		this.essai = new Pions( this.niveau.getPions() );
 		this.refreshInfoPartie();
+		
+		this.valider.setEnabled(false);
+		this.effEssai.setEnabled(false);
+		this.voirScore.setVisible(false);
+		this.desactiveBoutonColor();
+		this.etat = CHOISIR_QUI_COMM;
+		if( this.createur ){
+			this.choisirQuiComm.setVisible(true);
+			this.choisirQuiComm.setEnabled(true);
+		}else{
+			this.choisirQuiComm.setVisible(false);
+			this.information.setText("On choisit qui commence...");
+		}
+		this.tourSuivant.setVisible(false);
 	}
 	
 	//Si on est le createur(true)
 	public void joueur2Pars(){
 		this.quitter();
 		this.information.setText("L'adversaire est parti");
-		this.valider.setEnabled(false);
-		this.effEssai.setEnabled(false);
-		this.voirScore.setEnabled(false);
+		this.etat = QUITTER;
 	}
 		
 	//Si on n'est pas le createur(false)
 	public void joueur1Pars(){
 		this.quitter();
 		this.information.setText("L'adversaire est parti");
-		this.valider.setEnabled(false);
-		this.effEssai.setEnabled(false);
-		this.voirScore.setEnabled(false);
+		this.etat = QUITTER;
 	}
 	
 	//C'est à toi de choisir la combinaison à faire deviner
 	public void choisitCombADeviner(){
 		this.nbCoupsTour = 0;
+		this.nbTours++;
 		this.valider.setEnabled(false);
 		this.essai = new Pions( this.niveau.getPions() );
 		if( this.maquette != null ){
 			this.maquette.reset();
 		}
 		
-		this.information.setText("60 secondes pour choisir un combinaison");
+		this.information.setText("60 secondes pour choisir une combinaison");
 		this.etat = CHOISIT_COMB_A_DEVI;
 		this.activeBoutonColor();
 		this.effEssai.setEnabled(true);
@@ -272,6 +349,7 @@ public class PartieMulti extends Menu{
 	//C'est à l'autre de choisir la combinaison à faire deviner
 	public void choisitPasCombADeviner(){
 		this.nbCoupsTour = 0;
+		this.nbTours++;
 		this.valider.setEnabled(false);
 		this.essai = new Pions( this.niveau.getPions() );
 		if( this.maquette != null ){
@@ -316,6 +394,7 @@ public class PartieMulti extends Menu{
 		this.voirScore.setEnabled(false);
 		Joueur j = this.fenetre.getClient().getJoueur();
 		j.setMalus( j.getMalus() + 1 );
+		this.etat = QUITTER;
 	}
 		
 	//L'adversaire a perdu à cause du compteur2 écoulé
@@ -328,8 +407,12 @@ public class PartieMulti extends Menu{
 	
 	//La combinaison à trouver a été fixé
 	public void combFixe(Pions comb){
+		this.nbCoupsTour = 0;
 		this.comb_a_trouve = comb;
-		this.information.setText("La combinaison à deviner, a été fixé");
+		this.information.setText("La combinaison à deviner, a été fixé, fait ton essai");
+		this.activeBoutonColor();
+		this.effEssai.setEnabled(true);
+		this.etat = CHOISIT_ESSAI;
 	}
 	
 	//On n'attend(et autorise) que tu choisis(et envoi) ton essai
@@ -343,11 +426,23 @@ public class PartieMulti extends Menu{
 	//L'adversaire a sousmis un essai
 	public void envoiEssaiAdv(Pions essai) {
 		this.information.setText("L'adversaire a soumis un essai");
-		this.maquette.addPions(this.nbCoupsJ2,essai);
+		this.maquette.addPions(nbCoupsTour,essai);
 		Pions aide = Tour.getAide(essai, comb_a_trouve);
-		maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Blanc), Tour.comptePionsCouleur(aide, Couleur.Noir));
+		maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Noir), Tour.comptePionsCouleur(aide, Couleur.Blanc));
+		this.nbCoupsTour++;
 		this.nbCoupsJ2 ++;
 		this.refreshInfoPartie();
+	}
+	
+	public void combTrouve() {
+		this.etat = TOUR_SUIVANT;
+		if( this.createur ){
+			this.information.setText("Combinaison trouvé");
+			this.tourSuivant.setVisible(true);
+			this.tourSuivant.setEnabled(true);
+		}else{
+			this.information.setText("Combinaison trouvé, attendre le tour suivant");
+		}
 	}
 	
 	private ImageIcon getImage( Couleur c ){
@@ -413,15 +508,19 @@ public class PartieMulti extends Menu{
 		this.information.setText("Tu as gagné");
 		this.effEssai.setEnabled(false);
 		this.valider.setEnabled(false);
+		this.voirScore.setVisible(true);
 		this.voirScore.setEnabled(true);
 		desactiveBoutonColor();
+		this.etat = QUITTER;
 	}
 
 	public void tuAsPerdu() {
 		this.information.setText("Tu as perdu");
 		this.effEssai.setEnabled(false);
 		this.valider.setEnabled(false);
+		this.voirScore.setVisible(true);
 		this.voirScore.setEnabled(true);
 		desactiveBoutonColor();
+		this.etat = QUITTER;
 	}
 }

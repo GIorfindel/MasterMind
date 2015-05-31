@@ -238,4 +238,8 @@ public class Fenetre extends JFrame {
 	public void tuAsPerdu() {
 		((PartieMulti) this.partieMulti).tuAsPerdu();
 	}
+
+	public void combTrouve() {
+		((PartieMulti) this.partieMulti).combTrouve();
+	}
 }

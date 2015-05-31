@@ -40,7 +40,7 @@ public class Personnaliser extends Menu{
 	private JRadioButton rdbtnDsactiver;
     private JRadioButton rdbtnActiver;
     
-    private JTextField txtNbCoupsMax;
+    private JComboBox selectNbCoupsMax;
     
     private JLabel information;
 	
@@ -76,7 +76,7 @@ public class Personnaliser extends Menu{
 	
 	private void addInformation(){
 		this.information = new JLabel();
-		this.information.setBounds(150, 100, 500, 30);
+		this.information.setBounds(150, 100, 700, 30);
 		this.information.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.information.setForeground(Color.red);
 		this.add(this.information);
@@ -258,17 +258,19 @@ public class Personnaliser extends Menu{
 	    
 	}
     
-    private void addNbCoupsMax() {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	private void addNbCoupsMax() {
     	JLabel lblNombreDeCoups = new JLabel("Nombre de coups maximum");
         lblNombreDeCoups.setFont(new Font("Tahoma", Font.PLAIN, 16));
 	    lblNombreDeCoups.setBounds(151, 370, 245, 50);
         this.add(lblNombreDeCoups);
         
-        this.txtNbCoupsMax = new JTextField();
-        this.txtNbCoupsMax.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        this.txtNbCoupsMax.setBounds(440, 375, 60, 35);
-        this.add(this.txtNbCoupsMax);
-        this.txtNbCoupsMax.setColumns(3);
+        this.selectNbCoupsMax = new JComboBox();
+        this.selectNbCoupsMax.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        this.selectNbCoupsMax.setBounds(440, 375, 60, 35);
+        this.selectNbCoupsMax.setModel(new DefaultComboBoxModel(new String[] {"3", "4", "5", "6", "7", "8", "9", "10","11", "12", "13", "14", "15", "16"}));;
+
+        this.add(this.selectNbCoupsMax);
     }
     
     
@@ -366,23 +368,23 @@ public class Personnaliser extends Menu{
 	    		
 	    		boolean doubl = false;
 	    		if( !rdbtnActiver.isSelected() && !rdbtnDsactiver.isSelected() ){
-	    			information.setText("Choisisser le choix multiple");
+	    			information.setText("Veuillez choisir la multiplicité des couleurs");
 	    			return;
 	    		}
 	    		if( rdbtnActiver.isSelected() ){
 	    			doubl = true;
 	    		}
 	    		if( !doubl && couleurPossib.length < nbPions ){
-	    			information.setText("Il y a trop de pion par rapport aux couleurs");
+	    			information.setText("Le nombre de pions est trop important par rapport au nombre de couleurs");
     				return;
     			}
 	    		
-	    		String ch = txtNbCoupsMax.getText();
+	    		String ch = (String) selectNbCoupsMax.getSelectedItem();
 	    		int coupMax;
 	    		try{
 	    			coupMax = Integer.parseInt(ch);
 	    		}catch( NumberFormatException e ){
-	    			information.setText("Coups max invalide");
+	    			information.setText("Le nombre de coups maximum est invalide");
 	    			return;
 	    		}
 	    		quitter();

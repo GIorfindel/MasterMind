@@ -195,6 +195,12 @@ public class Client extends Thread {
 		case Paquet.DEMANDE_ENVOI_COMB:
 			this.demandeEnvoiComb( paquet );
 			break;
+		case Paquet.DEMANDE_CHOISIR_QUI_COMMENCE:
+			this.demandeChoisirQuiComm();
+			break;
+		case Paquet.DEMANDE_TOUR_SUIVANT:
+			this.switchTour();
+			break;
 		 }
 	}
 	
@@ -406,6 +412,9 @@ public class Client extends Thread {
 	}
 	
 	public void joueur2Parti(){
+		if( this.multi == null ){
+			return;
+		}
 		if( this.multi.getEtat() == Multijoueur.ETAT_ATTENTE_JOUER ){
 			this.multi.kickJoueur2();
 			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
@@ -420,7 +429,7 @@ public class Client extends Thread {
 				e.printStackTrace();
 			}
 			this.cJoueur2 = null;
-		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE ){
+		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE || this.multi.getEtat() == Multijoueur.TOUR_SUIVANT || this.multi.getEtat() == Multijoueur.CHOISIT_QUI_COMM ){
 			this.multi.reset();
 			this.envoyerPaquet( Paquet.creeJOUEUR2_PARTI() );
 			try {
@@ -433,7 +442,7 @@ public class Client extends Thread {
 	}
 		
 	public void demandeJoueur1Parti(){
-		if( this.multi != null ){
+		if( this.multi == null ){
 			return;
 		}
 		if( this.multi.getEtat() == Multijoueur.ETAT_CHERCHE_JOUEUR2 ){
@@ -458,7 +467,7 @@ public class Client extends Thread {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE ){
+		}else if( this.multi.getEtat() == Multijoueur.ETAT_COMB_FIXE || this.multi.getEtat() == Multijoueur.TOUR_SUIVANT || this.multi.getEtat() == Multijoueur.CHOISIT_QUI_COMM ){
 			this.multi.reset();
 			if( this.cJoueur2 != null ){
 				this.cJoueur2.joueur1Parti();
@@ -483,8 +492,12 @@ public class Client extends Thread {
 	public void demandeJouerMulti( Paquet p ){
 		this.cJoueur2.envoyerPaquet( Paquet.creePARTIE_LANCER() );
 		this.multi.commencerPartie();
-		this.choisirCombAtrouve();
 		
+	}
+	
+	public void demandeChoisirQuiComm(){
+		this.multi.demandeChoisitQuiComm();
+		this.choisirCombAtrouve();
 	}
 	
 	//Choisir la combinaison à trouvé
@@ -569,10 +582,8 @@ public class Client extends Thread {
 			this.cmptMulti.close();
 			if( this.multi.getTourDeCreateur() ){
 				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_FIXE(pions) );
-				this.cJoueur2.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 			}else{
 				this.envoyerPaquet( Paquet.creeCOMB_FIXE(pions) );
-				this.envoyerPaquet( Paquet.creeCHOISI_ESSAI() );
 			}
 		}else if( etat == Multijoueur.ETAT_COMB_FIXE ){
 			this.envoiPionsJoueurAdversse( pions );
@@ -583,7 +594,8 @@ public class Client extends Thread {
 				return;
 			}
 			if( pions.equals(this.multi.getComb()) ){
-				this.switchTour();
+				this.envoyerPaquet( Paquet.creeCOMB_TROUVE() );
+				this.cJoueur2.envoyerPaquet( Paquet.creeCOMB_TROUVE() );
 				return;
 			}else{
 				if( this.multi.getCoupTour() == this.multi.getNiveau().getCoupMax() ){

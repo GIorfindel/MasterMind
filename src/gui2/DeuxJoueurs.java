@@ -113,9 +113,7 @@ public class DeuxJoueurs extends Menu{
 		this.information = new JLabel("");
 		this.information.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.information.setForeground(Color.red);
-		this.information.setBounds(170, 630, 660, 30);
-		
-		this.information.setHorizontalAlignment( SwingConstants.CENTER );
+		this.information.setBounds(100, 400, 660, 30);
 		this.add(this.information);
 	}
 	
@@ -232,6 +230,7 @@ public class DeuxJoueurs extends Menu{
 	    		information.setText("Aucune partie trouvée");
 	    	}
 	    	else {
+	    		information.setText("");
 		    	for(int i =0; i< nbParties; i++) {
 		    		Multijoueur multi = (Multijoueur) rep.getObjet(i);
 		    		

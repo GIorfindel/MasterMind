@@ -75,7 +75,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelSoloJoues(int joues){
 		this.lblSoloJ = new JLabel("Matchs joués : " + joues);
-		lblSoloJ.setSize(130, 20);
+		lblSoloJ.setSize(200, 20);
 		lblSoloJ.setLocation(70, 190);
 		lblSoloJ.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloJ);
@@ -86,7 +86,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelSoloGagnes(int gagnes){
 		this.lblSoloG = new JLabel("Gagnés : " + gagnes);
-		lblSoloG.setSize(90, 20);
+		lblSoloG.setSize(200, 20);
 		lblSoloG.setLocation(70, 230);
 		lblSoloG.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloG);
@@ -97,7 +97,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelSoloCoups(int coups){
 		this.lblSoloC = new JLabel("Coups joués : " + coups);
-		lblSoloC.setSize(150, 20);
+		lblSoloC.setSize(200, 20);
 		lblSoloC.setLocation(70, 270);
 		lblSoloC.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloC);
@@ -108,7 +108,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelSoloRatioVD(double rvd){
 		this.lblSoloRVD = new JLabel("Ratio (victoires/défaites) : " + rvd);
-		lblSoloRVD.setSize(210, 20);
+		lblSoloRVD.setSize(300, 20);
 		lblSoloRVD.setLocation(70, 310);
 		lblSoloRVD.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloRVD);
@@ -119,7 +119,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelSoloRatioCP(double rcp){
 		this.lblSoloRCP = new JLabel("Ratio (coups/parties) : " + rcp);
-		lblSoloRCP.setSize(210, 20);
+		lblSoloRCP.setSize(300, 20);
 		lblSoloRCP.setLocation(70, 350);
 		lblSoloRCP.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblSoloRCP);
@@ -130,7 +130,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelMulti(){
 		this.multi = new JLabel("Multijoueur :");
-		multi.setSize(110, 20);
+		multi.setSize(200, 20);
 		multi.setLocation(700, 150);
 		multi.setFont(new Font("Tahoma", Font.BOLD, 16));
 		this.add(multi);
@@ -141,7 +141,7 @@ public class MScore extends Menu{
 	 */	
 	private void addLabelMultiJoues(int joues){
 		this.lblMultiJ = new JLabel("Matchs joués : " + joues);
-		lblMultiJ.setSize(130, 20);
+		lblMultiJ.setSize(200, 20);
 		lblMultiJ.setLocation(670, 190);
 		lblMultiJ.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiJ);
@@ -152,7 +152,7 @@ public class MScore extends Menu{
 	 */	
 	private void addLabelMultiGagnes(int gagnes){
 		this.lblMultiG = new JLabel("Gagnés : " + gagnes);
-		lblMultiG.setSize(90, 20);
+		lblMultiG.setSize(150, 20);
 		lblMultiG.setLocation(670, 230);
 		lblMultiG.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiG);
@@ -163,7 +163,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelMultiCoups(int coups){
 		this.lblMultiC = new JLabel("Coups joués : " + coups);
-		lblMultiC.setSize(150, 20);
+		lblMultiC.setSize(200, 20);
 		lblMultiC.setLocation(670, 270);
 		lblMultiC.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiC);
@@ -174,7 +174,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelMultiRatioVD(double rvd){
 		this.lblMultiRVD = new JLabel("Ratio (victoires/défaites) : " + rvd);
-		lblMultiRVD.setSize(210, 20);
+		lblMultiRVD.setSize(300, 20);
 		lblMultiRVD.setLocation(670, 310);
 		lblMultiRVD.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiRVD);
@@ -185,7 +185,7 @@ public class MScore extends Menu{
 	 */
 	private void addLabelMultiRatioCP(double rcp){
 		this.lblMultiRCP = new JLabel("Ratio (coups/parties) : " + rcp);
-		lblMultiRCP.setSize(210, 20);
+		lblMultiRCP.setSize(300, 20);
 		lblMultiRCP.setLocation(670, 350);
 		lblMultiRCP.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(lblMultiRCP);

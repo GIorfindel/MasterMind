@@ -17,7 +17,7 @@ public class Multijoueur extends Partie {
 	
 	private int etat;
 	public static int ETAT_CHERCHE_JOUEUR2 = 0, ETAT_ATTENTE_JOUER = 1, ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1 = 2,
-			ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 = 3, ETAT_COMB_FIXE = 4;
+			ETAT_CHOISIT_COMB_A_DEVINER_COMPT_2 = 3, ETAT_COMB_FIXE = 4, CHOISIT_QUI_COMM = 5, TOUR_SUIVANT = 6;
 	
 	public Multijoueur(String nom, Niveau niveau, Joueur joueur) {
 		super(nom, niveau, joueur);
@@ -91,6 +91,10 @@ public class Multijoueur extends Partie {
 	public void commencerPartie(){
 		Random rand = new Random();
 		this.tourDeCreateur = rand.nextBoolean();
+		this.etat = CHOISIT_QUI_COMM;
+	}
+	
+	public void demandeChoisitQuiComm(){
 		this.etat = ETAT_CHOISIT_COMB_A_DEVINER_COMPT_1;
 	}
 	
@@ -100,6 +104,10 @@ public class Multijoueur extends Partie {
 	
 	public void addCoupsJ1(){
 		this.coupsJ1++;
+	}
+	
+	public String toString(){
+		return "CoupsJ1: "+this.coupsJ1+", CoupsJ2: "+this.coupsJ2+", CoupsTour: "+this.coupTour+", NbTour: "+this.nbTour;
 	}
 	
 	public void addCoupsJ2(){
