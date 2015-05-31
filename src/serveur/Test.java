@@ -22,7 +22,6 @@ public class Test {
 		
 		else if (args[0].equals("--version"))
 		{
-			String version = Test.class.getPackage().getImplementationVersion();
 			System.out.println("Mastermind 1\nCopyright (C) 1996 Free Software Foundation, Inc.\nMastermind comes with NO WARRANTY, to the extent permitted by law.\nYou may redistribute copies of Mastermind under the terms of the GNU General Public License.\nFor more information about these matters, see the files named COPYING.");
 		}
 	}
