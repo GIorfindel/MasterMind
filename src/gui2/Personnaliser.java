@@ -157,69 +157,69 @@ public class Personnaliser extends Menu{
         JLabel vert = new JLabel();
         vert.setLabelFor(checkVert);
         vert.setHorizontalAlignment(SwingConstants.CENTER);
-        vert.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/3.png")));
+        vert.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/vert.png")));
 	    vert.setBounds(654, 200, 42, 40);
         this.add(vert);
     
 	    JLabel rouge = new JLabel();
 	    rouge.setLabelFor(checkRouge);
-	    rouge.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/1.png")));
+	    rouge.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/rouge.png")));
 	    rouge.setHorizontalAlignment(SwingConstants.CENTER);
 	    rouge.setBounds(471, 200, 42, 40);
 	    this.add(rouge);
 	    
 	    JLabel bleu = new JLabel();
 	    bleu.setLabelFor(checkBleu);
-	    bleu.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/2.png")));
+	    bleu.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/bleu.png")));
 	    bleu.setHorizontalAlignment(SwingConstants.CENTER);
 	    bleu.setBounds(565, 200, 42, 40);
 	    this.add(bleu);
 	    
 	    JLabel orange = new JLabel();
 	    orange.setLabelFor(checkOrange);
-	    orange.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/4.png")));
+	    orange.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/orange.png")));
 	    orange.setHorizontalAlignment(SwingConstants.CENTER);
 	    orange.setBounds(753, 200, 42, 40);
 	    this.add(orange);
 	    
 	    JLabel blanc = new JLabel();
 	    blanc.setLabelFor(checkBlanc);
-	    blanc.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/6.png")));
+	    blanc.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/blanc.png")));
 	    blanc.setHorizontalAlignment(SwingConstants.CENTER);
 	    blanc.setBounds(847, 200, 42, 40);
 	    this.add(blanc);
 	    
 	    JLabel jaune = new JLabel();
 	    jaune.setLabelFor(checkJaune);
-	    jaune.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/5.png")));
+	    jaune.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/jaune.png")));
 	    jaune.setHorizontalAlignment(SwingConstants.CENTER);
 	    jaune.setBounds(471, 240, 42, 40);
 	    this.add(jaune);
 	    
 	    JLabel mauve = new JLabel();
 	    mauve.setLabelFor(checkRose);
-	    mauve.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/7.png")));
+	    mauve.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/rose.png")));
 	    mauve.setHorizontalAlignment(SwingConstants.CENTER);
 	    mauve.setBounds(565, 240, 42, 40);
 	    this.add(mauve);
 	    
 	    JLabel violet = new JLabel();
 	    violet.setLabelFor(checkViolet);
-	    violet.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/8.png")));
+	    violet.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/violet.png")));
 	    violet.setHorizontalAlignment(SwingConstants.CENTER);
 	    violet.setBounds(654, 240, 42, 40);
 	    this.add(violet);
 	    
 	    JLabel noir = new JLabel();
 	    noir.setLabelFor(checkNoir);
-	    noir.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/10.png")));
+	    noir.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/noir.png")));
 	    noir.setHorizontalAlignment(SwingConstants.CENTER);
 	    noir.setBounds(753, 240, 42, 40);
 	    this.add(noir);
 	    
 	    JLabel cyan = new JLabel();
 	    cyan.setLabelFor(checkCyan);
-	    cyan.setIcon(new ImageIcon(Personnaliser.class.getResource("/ressources/11.png")));
+	    cyan.setIcon(new ImageIcon(Personnaliser.class.getResource("/imgPions/cyan.png")));
 	    cyan.setHorizontalAlignment(SwingConstants.CENTER);
 	    cyan.setBounds(847, 240, 42, 40);
 	    this.add(cyan);

@@ -57,9 +57,9 @@ public class Maquette extends JPanel{
 		this.plateauAides = new JLabel[this.niveau.getCoupMax()][this.niveau.getPions()];
 		this.plateauSolution = new JLabel[this.niveau.getPions()];
 		
-		this.pionsVide = new ImageIcon( "images/maquette/pionVide.png" );
-		this.aideVide = new ImageIcon( "images/maquette/aideVide.png" );
-		this.solucePion = new ImageIcon( "images/maquette/pionSoluce.png" );
+		this.pionsVide = new ImageIcon( Maquette.class.getResource("/imgPions/pionVide.png") );
+		this.aideVide = new ImageIcon( Maquette.class.getResource("/imgPions/aideVide.png") );
+		this.solucePion = new ImageIcon( Maquette.class.getResource("/imgPions/pionSoluce.png") );
 		
 		int x_aide = this.niveau.getPions() * 35 + 10;
 		
@@ -85,19 +85,19 @@ public class Maquette extends JPanel{
 			this.add(this.plateauSolution[i]);
      	}
      	
-     	this.rouge = new ImageIcon( "images/maquette/rouge.png" );
-     	this.jaune = new ImageIcon( "images/maquette/jaune.png" );
-     	this.vert = new ImageIcon( "images/maquette/vert.png" );
-     	this.bleu = new ImageIcon( "images/maquette/bleu.png" );
-     	this.orange = new ImageIcon( "images/maquette/orange.png" );
-     	this.blanc = new ImageIcon( "images/maquette/blanc.png" );
-     	this.violet = new ImageIcon( "images/maquette/violet.png" );
-     	this.cyan = new ImageIcon( "images/maquette/cyan.png" );
-     	this.rose = new ImageIcon( "images/maquette/rose.png" );
-     	this.noir = new ImageIcon( "images/maquette/noir.png" );
+     	this.rouge = new ImageIcon( Maquette.class.getResource("/imgPions/rouge.png") );
+     	this.jaune = new ImageIcon( Maquette.class.getResource("/imgPions/jaune.png") );
+     	this.vert = new ImageIcon( Maquette.class.getResource("/imgPions/vert.png") );
+     	this.bleu = new ImageIcon( Maquette.class.getResource("/imgPions/bleu.png") );
+     	this.orange = new ImageIcon( Maquette.class.getResource("/imgPions/orange.png") );
+     	this.blanc = new ImageIcon( Maquette.class.getResource("/imgPions/blanc.png") );
+     	this.violet = new ImageIcon( Maquette.class.getResource("/imgPions/violet.png") );
+     	this.cyan = new ImageIcon( Maquette.class.getResource("/imgPions/cyan.png") );
+     	this.rose = new ImageIcon( Maquette.class.getResource("/imgPions/rose.png") );
+     	this.noir = new ImageIcon( Maquette.class.getResource("/imgPions/noir.png") );
      	
-     	this.aide_blanc = new ImageIcon( "images/maquette/aide_blanc.png" );
-     	this.aide_noir = new ImageIcon( "images/maquette/aide_noir.png" );
+     	this.aide_blanc = new ImageIcon( Maquette.class.getResource("/imgPions/aide_blanc.png") );
+     	this.aide_noir = new ImageIcon( Maquette.class.getResource("/imgPions/aide_noir.png") );
      	
      	
 	}

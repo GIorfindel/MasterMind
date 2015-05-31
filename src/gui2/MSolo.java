@@ -70,16 +70,16 @@ public class MSolo extends Menu{
 		this.maquette = null;
 		this.valider = null;
 		this.init();
-		this.rouge = new ImageIcon( "images/maquette/rouge.png" );
-     	this.jaune = new ImageIcon( "images/maquette/jaune.png" );
-     	this.vert = new ImageIcon( "images/maquette/vert.png" );
-     	this.bleu = new ImageIcon( "images/maquette/bleu.png" );
-     	this.orange = new ImageIcon( "images/maquette/orange.png" );
-     	this.blanc = new ImageIcon( "images/maquette/blanc.png" );
-     	this.violet = new ImageIcon( "images/maquette/violet.png" );
-     	this.cyan = new ImageIcon( "images/maquette/cyan.png" );
-     	this.rose = new ImageIcon( "images/maquette/rose.png" );
-     	this.noir = new ImageIcon( "images/maquette/noir.png" );
+		this.rouge = new ImageIcon( MSolo.class.getResource("/imgPions/rouge.png") );
+     	this.jaune = new ImageIcon( MSolo.class.getResource("/imgPions/jaune.png") );
+     	this.vert = new ImageIcon( MSolo.class.getResource("/imgPions/vert.png") );
+     	this.bleu = new ImageIcon( MSolo.class.getResource("/imgPions/bleu.png") );
+     	this.orange = new ImageIcon( MSolo.class.getResource("/imgPions/orange.png") );
+     	this.blanc = new ImageIcon( MSolo.class.getResource("/imgPions/blanc.png") );
+     	this.violet = new ImageIcon( MSolo.class.getResource("/imgPions/violet.png") );
+     	this.cyan = new ImageIcon( MSolo.class.getResource("/imgPions/cyan.png") );
+     	this.rose = new ImageIcon( MSolo.class.getResource("/imgPions/rose.png") );
+     	this.noir = new ImageIcon( MSolo.class.getResource("/imgPions/noir.png") );
 	}
 	
 	private void addMenuBar() {

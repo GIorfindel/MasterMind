@@ -76,16 +76,16 @@ public class PartieMulti extends Menu{
 		this.bouton = null;
 		this.essai = null;
 		
-		this.rouge = new ImageIcon( "images/maquette/rouge.png" );
-     	this.jaune = new ImageIcon( "images/maquette/jaune.png" );
-     	this.vert = new ImageIcon( "images/maquette/vert.png" );
-     	this.bleu = new ImageIcon( "images/maquette/bleu.png" );
-     	this.orange = new ImageIcon( "images/maquette/orange.png" );
-     	this.blanc = new ImageIcon( "images/maquette/blanc.png" );
-     	this.violet = new ImageIcon( "images/maquette/violet.png" );
-     	this.cyan = new ImageIcon( "images/maquette/cyan.png" );
-     	this.rose = new ImageIcon( "images/maquette/rose.png" );
-     	this.noir = new ImageIcon( "images/maquette/noir.png" );
+		this.rouge = new ImageIcon( PartieMulti.class.getResource("/imgPions/rouge.png") );
+     	this.jaune = new ImageIcon( PartieMulti.class.getResource("/imgPions/jaune.png") );
+     	this.vert = new ImageIcon( PartieMulti.class.getResource("/imgPions/vert.png") );
+     	this.bleu = new ImageIcon( PartieMulti.class.getResource("/imgPions/bleu.png") );
+     	this.orange = new ImageIcon( PartieMulti.class.getResource("/imgPions/orange.png") );
+     	this.blanc = new ImageIcon( PartieMulti.class.getResource("/imgPions/blanc.png") );
+     	this.violet = new ImageIcon( PartieMulti.class.getResource("/imgPions/violet.png") );
+     	this.cyan = new ImageIcon( PartieMulti.class.getResource("/imgPions/cyan.png") );
+     	this.rose = new ImageIcon( PartieMulti.class.getResource("/imgPions/rose.png") );
+     	this.noir = new ImageIcon( PartieMulti.class.getResource("/imgPions/noir.png") );
      	
      	this.init();
 	}
