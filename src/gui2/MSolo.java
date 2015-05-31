@@ -376,7 +376,6 @@ public class MSolo extends Menu{
 		this.activeBoutonColor();
 		this.refreshInfoPartie();
 		
-		this.maquette.dessineSolution( solo.getTour().getComb() );
 	}
 	
 	private void refreshInfoPartie(){
