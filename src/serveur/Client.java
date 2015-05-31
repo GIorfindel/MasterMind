@@ -235,9 +235,11 @@ public class Client extends Thread {
 			ImageIO.write( this.getRenderedImage(avatar), "png", new File( this.getClass().getResource("").getPath() + "../../avatar/"+this.joueur.getIdentifiant()+".png" ) );
 			this.serveur.getBD().modifieAvatar( this.joueur );
 		} catch (IOException e) {
-			e.printStackTrace();
+			this.serveur.afficher("Imposssible de sauvegarder l'avatar");
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch( Exception e ){
+			this.serveur.afficher("Imposssible de sauvegarder l'avatar");
 		}
 	}
 	
