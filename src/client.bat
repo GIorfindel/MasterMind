@@ -1,0 +1,1 @@
+java gui2.Test %1
