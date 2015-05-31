@@ -62,9 +62,6 @@ public class Joueur implements Serializable{
 		//C'est que le serveur qui utilise cette méthode
 		public void loadAvatar( String nom ){
 			if( nom != null ){
-				
-				System.out.println("chemin123: "+(new File("avatar/"+nom)).getPath());
-				
 				this.avatar = new ImageIcon( (new File("avatar/"+nom)).getPath() );
 			}else{
 				this.avatar = null;
