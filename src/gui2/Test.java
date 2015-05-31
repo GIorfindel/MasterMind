@@ -13,7 +13,7 @@ public class Test {
 		}
 		else if (args[0].equals("--help"))
 		{
-			System.out.println("Pour lancer le mastermind, tapez la commande suivante : java -jar client.jar");
+			System.out.println("Pour lancer le mastermind, tapez la commande suivante : ./client.sh ou ./client.bat");
 			System.out.println("Report bugs to florian.choiselle@free.fr");
 		}
 		else if (args[0].equals("--version"))
