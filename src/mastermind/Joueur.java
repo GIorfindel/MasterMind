@@ -2,6 +2,7 @@ package mastermind;
 
 
 
+import java.io.File;
 import java.io.Serializable;
 import javax.swing.ImageIcon;
 
@@ -61,7 +62,10 @@ public class Joueur implements Serializable{
 		//C'est que le serveur qui utilise cette méthode
 		public void loadAvatar( String nom ){
 			if( nom != null ){
-				this.avatar = new ImageIcon( this.getClass().getResource("").getPath()+"../../avatar/"+nom );
+				
+				System.out.println("chemin123: "+(new File("avatar/"+nom)).getPath());
+				
+				this.avatar = new ImageIcon( (new File("avatar/"+nom)).getPath() );
 			}else{
 				this.avatar = null;
 			}

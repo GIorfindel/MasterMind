@@ -232,7 +232,7 @@ public class Client extends Thread {
 		}
 		ImageIcon avatar = (ImageIcon) paquet.getObjet( 0 );
 		try {
-			ImageIO.write( this.getRenderedImage(avatar), "png", new File( this.getClass().getResource("").getPath() + "../../avatar/"+this.joueur.getIdentifiant()+".png" ) );
+			ImageIO.write( this.getRenderedImage(avatar), "png", new File( "avatar/"+this.joueur.getIdentifiant()+".png" ) );
 			this.serveur.getBD().modifieAvatar( this.joueur );
 		} catch (IOException e) {
 			this.serveur.afficher("Imposssible de sauvegarder l'avatar");
