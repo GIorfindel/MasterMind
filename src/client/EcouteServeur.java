@@ -104,6 +104,8 @@ public class EcouteServeur extends Thread {
 			this.client.getFenetre().tuAsGagne();
 		}else if( p.getType() == Paquet.TU_AS_PERDU ){
 			this.client.getFenetre().tuAsPerdu();
+		}else if( p.getType() == Paquet.COMB_TROUVE ){
+			this.client.getFenetre().combTrouve(); 
 		}
 		else{
 			this.paquet = p;

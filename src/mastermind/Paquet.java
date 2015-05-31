@@ -46,7 +46,7 @@ public class Paquet implements Serializable{
 			COMPTEUR1_RATE = 30, COMPTEUR1_RATE_ADVER = 31, PERDU_COUP_CMPT2 = 32, ADV_PERDU_COUP_CMPT2 = 33, PERDU_CMPT2 = 34, ADV_PERDU_CMPT2 = 35,
 			DEMANDE_ENVOI_COMB = 36, COMB_FIXE = 37, CHOISI_ESSAI = 38, TU_AS_PERDU = 39, TU_AS_GAGNE = 40, ENVOI_ESSAI_ADV = 41,
 			DEMANDE_STATS = 42, REPONSE_STATS = 43, DEMANDE_CLASSEMENT = 44, REPONSE_CLASSEMENT = 45,
-			DEMANDE_CHOISIR_QUI_COMMENCE = 46;
+			DEMANDE_CHOISIR_QUI_COMMENCE = 46, COMB_TROUVE = 47, DEMANDE_TOUR_SUIVANT = 48;
 	private int type;
 	
 	/* Permet d'identifier un paquet parmi d'autre, si il est égale à -1, on le prend pas en compte
@@ -412,5 +412,13 @@ public class Paquet implements Serializable{
 	
 	public static Paquet creeDEMANDE_CHOISIR_QUI_COMMENCE(){
 		return new Paquet( 1, DEMANDE_CHOISIR_QUI_COMMENCE, -1 );
+	}
+	
+	public static Paquet creeCOMB_TROUVE(){
+		return new Paquet( 1, COMB_TROUVE, -1 );
+	}
+	
+	public static Paquet creeDEMANDE_TOUR_SUIVANT(){
+		return new Paquet( 1, DEMANDE_TOUR_SUIVANT, -1 );
 	}
 }

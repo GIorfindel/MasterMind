@@ -83,7 +83,7 @@ public class AttenteJoueur extends Menu {
 	
 	private void addAttente() {
 		this.information = new JLabel("Attente d'un joueur...");
-	    this.information.setBounds(434, 143, 150, 30);
+	    this.information.setBounds(434, 143, 400, 30);
 	    this.add( this.information );
 	}
 	
