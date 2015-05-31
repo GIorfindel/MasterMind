@@ -62,6 +62,25 @@ public class MSolo extends Menu{
 	JMenuItem mntmQuitter;
 	JMenuItem retourChoixNiveau;
 
+    
+	public MSolo( Fenetre fenetre ){
+		this.fenetre = fenetre;
+		this.solo = new Solo("",Niveau.niveauString("TresFacile"),null);
+		this.soloCharger = false;
+		this.maquette = null;
+		this.valider = null;
+		this.init();
+		this.rouge = new ImageIcon( "images/maquette/rouge.png" );
+     	this.jaune = new ImageIcon( "images/maquette/jaune.png" );
+     	this.vert = new ImageIcon( "images/maquette/vert.png" );
+     	this.bleu = new ImageIcon( "images/maquette/bleu.png" );
+     	this.orange = new ImageIcon( "images/maquette/orange.png" );
+     	this.blanc = new ImageIcon( "images/maquette/blanc.png" );
+     	this.violet = new ImageIcon( "images/maquette/violet.png" );
+     	this.cyan = new ImageIcon( "images/maquette/cyan.png" );
+     	this.rose = new ImageIcon( "images/maquette/rose.png" );
+     	this.noir = new ImageIcon( "images/maquette/noir.png" );
+	}
 	
 	private void addMenuBar() {
 		this.menuBar= new JMenuBar();
@@ -188,25 +207,6 @@ public class MSolo extends Menu{
 		
 	    this.add(this.menuBar);
 			
-	}
-    
-	public MSolo( Fenetre fenetre ){
-		this.fenetre = fenetre;
-		this.solo = new Solo("",Niveau.niveauString("TresFacile"),null);
-		this.soloCharger = false;
-		this.maquette = null;
-		this.valider = null;
-		this.init();
-		this.rouge = new ImageIcon( "images/maquette/rouge.png" );
-     	this.jaune = new ImageIcon( "images/maquette/jaune.png" );
-     	this.vert = new ImageIcon( "images/maquette/vert.png" );
-     	this.bleu = new ImageIcon( "images/maquette/bleu.png" );
-     	this.orange = new ImageIcon( "images/maquette/orange.png" );
-     	this.blanc = new ImageIcon( "images/maquette/blanc.png" );
-     	this.violet = new ImageIcon( "images/maquette/violet.png" );
-     	this.cyan = new ImageIcon( "images/maquette/cyan.png" );
-     	this.rose = new ImageIcon( "images/maquette/rose.png" );
-     	this.noir = new ImageIcon( "images/maquette/noir.png" );
 	}
 	
 	public void setNiveau( Niveau niveau ){

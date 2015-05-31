@@ -86,6 +86,7 @@ public class Tour  implements Serializable{
 		this.addAide( aide );
 	}
 	
+	//Utile pour la partie multijoueur
 	public static Pions getAide( Pions comb, Pions combTrouve ){
 		Pions aide = new Pions( combTrouve.getNbPion() );
 		for ( int i = 0; i < comb.getNbPion(); i++ ){

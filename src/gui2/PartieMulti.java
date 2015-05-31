@@ -54,12 +54,12 @@ public class PartieMulti extends Menu{
 	private JButton valider;
 	private JButton voirScore;
 	private JButton effEssai;
+	private JButton choisirQuiComm;
 	
 	private JLabel information;
-	private JLabel tourDe;
 	
 	private int etat;
-	private static int CHOISIT_COMB_A_DEVI = 0, ATTEND_COMB_A_DEVI_ADV = 1, CHOISIT_ESSAI = 2;
+	private static int CHOISIR_QUI_COMM = 0 , CHOISIT_COMB_A_DEVI = 1, ATTEND_COMB_A_DEVI_ADV = 2, CHOISIT_ESSAI = 3;
 	
 	public PartieMulti(Fenetre f){
 		this.fenetre = f;
@@ -99,11 +99,16 @@ public class PartieMulti extends Menu{
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( essai != null && essai.getNbPion() == niveau.getPions() ){
 	    			if( etat == CHOISIT_COMB_A_DEVI ){
+	    				if( !niveau.valideCombinaison(essai) ){
+	    					information.setText("Combinaison ne respecte pas le niveau");
+	    					return;
+	    				}
 	    				fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_ENVOI_COMB(essai) );
 	    				desactiveBoutonColor();
 	    				effEssai.setEnabled(false);
 	    				valider.setEnabled(false);
 	    				maquette.dessineSolution(essai);
+	    				comb_a_trouve = essai;
 	    				essai = new Pions( niveau.getPions() );
 	    				maquette.popEssai(0);
 	    			}else if( etat == CHOISIT_ESSAI ){
@@ -113,7 +118,7 @@ public class PartieMulti extends Menu{
 	    				valider.setEnabled(false);
 	    				nbCoupsJ1 ++;
 	    				Pions aide = Tour.getAide(essai, comb_a_trouve);
-	    				maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Blanc), Tour.comptePionsCouleur(aide, Couleur.Noir));
+	    				maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Noir), Tour.comptePionsCouleur(aide, Couleur.Blanc));
 	    				nbCoupsTour ++;
 	    				refreshInfoPartie();
 	    				essai = new Pions( niveau.getPions() );
@@ -168,13 +173,21 @@ public class PartieMulti extends Menu{
 		});
 		this.add(quit);
 		
-		this.tourDe = new JLabel();
-		this.tourDe.setBounds(350,100,300,30);
-		this.add(this.tourDe);
-		
 		this.infoPartie = new JLabel();
 		this.infoPartie.setBounds(350,130,400,30);
 		this.add(this.infoPartie);
+		
+		this.choisirQuiComm = new JButton("Choisir qui commence");
+		this.choisirQuiComm.setBounds(350,160,400,30);
+		this.choisirQuiComm.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		if( createur && etat == CHOISIR_QUI_COMM ){
+	    			fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_CHOISIR_QUI_COMMENCE() );
+	    			choisirQuiComm.setVisible(false);
+	    		}
+	    	}
+		});
+		this.add(this.choisirQuiComm);
 	}
 	
 	private void refreshInfoPartie(){
@@ -187,8 +200,10 @@ public class PartieMulti extends Menu{
 		this.nbCoupsJ1 = 0;
 		this.nbCoupsJ2 = 0;
 		this.nbTours = 0;
-		this.remove(this.maquette);
-		this.maquette = null;
+		if( this.maquette != null ){
+			this.remove(this.maquette);
+			this.maquette = null;
+		}
 		this.bouton.removeAll();
 		this.essai = null;
 		this.couleursAutorise = null;
@@ -196,7 +211,6 @@ public class PartieMulti extends Menu{
 		this.voirScore.setEnabled(false);
 		this.effEssai.setEnabled(false);
 		this.information.setText("");
-		this.tourDe.setText("");
 	}
 	
 	public void decoServeur(){
@@ -233,6 +247,16 @@ public class PartieMulti extends Menu{
 		
 		this.essai = new Pions( this.niveau.getPions() );
 		this.refreshInfoPartie();
+		
+		this.valider.setEnabled(false);
+		this.effEssai.setEnabled(false);
+		this.voirScore.setVisible(false);
+		this.desactiveBoutonColor();
+		if( this.createur ){
+			this.choisirQuiComm.setEnabled(true);
+		}else{
+			this.choisirQuiComm.setVisible(false);
+		}
 	}
 	
 	//Si on est le createur(true)
@@ -256,13 +280,14 @@ public class PartieMulti extends Menu{
 	//C'est à toi de choisir la combinaison à faire deviner
 	public void choisitCombADeviner(){
 		this.nbCoupsTour = 0;
+		this.nbTours++;
 		this.valider.setEnabled(false);
 		this.essai = new Pions( this.niveau.getPions() );
 		if( this.maquette != null ){
 			this.maquette.reset();
 		}
 		
-		this.information.setText("60 secondes pour choisir un combinaison");
+		this.information.setText("60 secondes pour choisir une combinaison");
 		this.etat = CHOISIT_COMB_A_DEVI;
 		this.activeBoutonColor();
 		this.effEssai.setEnabled(true);
@@ -272,6 +297,7 @@ public class PartieMulti extends Menu{
 	//C'est à l'autre de choisir la combinaison à faire deviner
 	public void choisitPasCombADeviner(){
 		this.nbCoupsTour = 0;
+		this.nbTours++;
 		this.valider.setEnabled(false);
 		this.essai = new Pions( this.niveau.getPions() );
 		if( this.maquette != null ){
@@ -329,7 +355,10 @@ public class PartieMulti extends Menu{
 	//La combinaison à trouver a été fixé
 	public void combFixe(Pions comb){
 		this.comb_a_trouve = comb;
-		this.information.setText("La combinaison à deviner, a été fixé");
+		this.information.setText("La combinaison à deviner, a été fixé, fait ton essai");
+		this.activeBoutonColor();
+		this.effEssai.setEnabled(true);
+		this.etat = CHOISIT_ESSAI;
 	}
 	
 	//On n'attend(et autorise) que tu choisis(et envoi) ton essai
@@ -345,7 +374,8 @@ public class PartieMulti extends Menu{
 		this.information.setText("L'adversaire a soumis un essai");
 		this.maquette.addPions(this.nbCoupsJ2,essai);
 		Pions aide = Tour.getAide(essai, comb_a_trouve);
-		maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Blanc), Tour.comptePionsCouleur(aide, Couleur.Noir));
+		maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Noir), Tour.comptePionsCouleur(aide, Couleur.Blanc));
+		this.nbCoupsTour++;
 		this.nbCoupsJ2 ++;
 		this.refreshInfoPartie();
 	}
@@ -413,6 +443,7 @@ public class PartieMulti extends Menu{
 		this.information.setText("Tu as gagné");
 		this.effEssai.setEnabled(false);
 		this.valider.setEnabled(false);
+		this.voirScore.setVisible(true);
 		this.voirScore.setEnabled(true);
 		desactiveBoutonColor();
 	}
@@ -421,6 +452,7 @@ public class PartieMulti extends Menu{
 		this.information.setText("Tu as perdu");
 		this.effEssai.setEnabled(false);
 		this.valider.setEnabled(false);
+		this.voirScore.setVisible(true);
 		this.voirScore.setEnabled(true);
 		desactiveBoutonColor();
 	}

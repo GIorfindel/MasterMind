@@ -86,18 +86,21 @@ public abstract class Niveau implements Serializable {
 	
 	public boolean valideDoubl(Pions comb)
 	{
+		if( this.doubl ){
+			return true;
+		}
 		Couleur[] coul = comb.getCombinaison();
 		Set<Couleur> unicColors = new HashSet<Couleur>();
 		for (Couleur c : coul) unicColors.add(c);
-		int unicNB = unicColors.size() - 1;
-		if (unicNB<coul.length && this.doubl==false)
+		int unicNB = unicColors.size();
+		if (unicNB==coul.length)
 		{
-			return false;
+			return true;
 		}
 		//Si le nombre de couleur sans doublons est inferieur a la longeur de la combinaison alors il y a des doublons, si les doublons ne sont pas autorises on renvoie faux
 		else
 		{
-			return true;
+			return false;
 		}
 		//Sinon on renvoie vrai
 	}
