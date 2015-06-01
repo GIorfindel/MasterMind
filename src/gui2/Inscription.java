@@ -7,8 +7,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.text.Document;
 
 import mastermind.Joueur;
 import mastermind.Paquet;
@@ -88,6 +90,7 @@ public class Inscription extends Menu{
 	    this.add(lblIdentifiant);
 	    
 	    this.identifiant = new JTextField();
+	    this.identifiant.setDocument(new TextLimiter(20));
 	    lblIdentifiant.setLabelFor( this.identifiant );
 	    this.identifiant.setBounds(450, 164, 176, 22);
 	    this.add( this.identifiant );
@@ -100,7 +103,8 @@ public class Inscription extends Menu{
 	    lblMotDePasse.setBounds(300, 218, 100, 27);
 	    this.add(lblMotDePasse);
 	    
-	    this.mdp = new JTextField();
+	    this.mdp = new JPasswordField(20);
+	    this.mdp.setDocument(new TextLimiter(20));
 	    lblMotDePasse.setLabelFor(this.mdp);
 	    this.mdp.setBounds(450, 222, 176, 22);
 	    this.add(this.mdp);

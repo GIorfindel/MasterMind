@@ -88,6 +88,7 @@ public class Connexion extends Menu{
 	    this.add(lblIdentifiant);
 	    
 	    this.identifiant = new JTextField();
+	    this.identifiant.setDocument(new TextLimiter(20));
 	    lblIdentifiant.setLabelFor( this.identifiant );
 	    this.identifiant.setBounds(450, 164, 176, 22);
 	    this.add( this.identifiant );
@@ -101,6 +102,7 @@ public class Connexion extends Menu{
 	    this.add(lblMotDePasse);
 	    
 	    this.mdp = new JPasswordField();
+	    this.mdp.setDocument(new TextLimiter(20));
 	    lblMotDePasse.setLabelFor(this.mdp);
 	    this.mdp.setBounds(450, 222, 176, 22);
 	    this.add(this.mdp);
