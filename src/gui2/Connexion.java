@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -20,7 +21,7 @@ public class Connexion extends Menu{
 	private JLabel titre;
 	private JLabel information;
 	private JTextField identifiant;
-	private JTextField mdp;
+	private JPasswordField mdp;
 	private JButton valider;
 	
 	private static int X = 405, W = 200, H = 40;
@@ -99,7 +100,7 @@ public class Connexion extends Menu{
 	    lblMotDePasse.setBounds(300, 218, 200, 27);
 	    this.add(lblMotDePasse);
 	    
-	    this.mdp = new JTextField();
+	    this.mdp = new JPasswordField();
 	    lblMotDePasse.setLabelFor(this.mdp);
 	    this.mdp.setBounds(450, 222, 176, 22);
 	    this.add(this.mdp);
