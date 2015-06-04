@@ -94,7 +94,7 @@ public class PartieMulti extends Menu{
 		this.setLayout( null );
 		
 		this.infoNiveau = new JLabel();
-		this.infoNiveau.setBounds(350,100,400,30);
+		this.infoNiveau.setBounds(380,100,400,30);
 		this.add(this.infoNiveau);
 		
 		this.bouton = new JPanel();
@@ -109,7 +109,7 @@ public class PartieMulti extends Menu{
 	    		if( essai != null && essai.getNbPion() == niveau.getPions() ){
 	    			if( etat == CHOISIT_COMB_A_DEVI ){
 	    				if( !niveau.valideCombinaison(essai) ){
-	    					information.setText("Combinaison ne respecte pas le niveau");
+	    					information.setText("La combinaison est incompatible avec ce niveau");
 	    					return;
 	    				}
 	    				fenetre.getClient().envoyerPaquet( Paquet.creeDEMANDE_ENVOI_COMB(essai) );
@@ -164,11 +164,11 @@ public class PartieMulti extends Menu{
 		this.add(this.voirScore);
 		
 		this.information = new JLabel();
-		this.information.setBounds(350,500,400,30);
+		this.information.setBounds(380,500,400,30);
 		this.add(this.information);
 		
 		JButton quit = new JButton("Quitter");
-		quit.setBounds(800,0,100,30);
+		quit.setBounds(800,10,100,30);
 		quit.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( fenetre.getClient().getConnecteAuServeur() ){
@@ -192,11 +192,11 @@ public class PartieMulti extends Menu{
 		this.add(quit);
 		
 		this.infoPartie = new JLabel();
-		this.infoPartie.setBounds(350,130,400,30);
+		this.infoPartie.setBounds(380,130,400,30);
 		this.add(this.infoPartie);
 		
-		this.choisirQuiComm = new JButton("Choisir qui commence");
-		this.choisirQuiComm.setBounds(350,160,400,30);
+		this.choisirQuiComm = new JButton("Choisir le joueur qui commence");
+		this.choisirQuiComm.setBounds(380,160,400,30);
 		this.choisirQuiComm.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
 	    		if( createur && etat == CHOISIR_QUI_COMM ){
@@ -228,7 +228,7 @@ public class PartieMulti extends Menu{
 	}
 	
 	private void refreshInfoPartie(){
-		this.infoPartie.setText("Tour: "+this.nbTours+", Mes coups: "+this.nbCoupsJ1+" Ses coups: "+this.nbCoupsJ2);
+		this.infoPartie.setText("Tour : "+this.nbTours+"     Mes coups : "+this.nbCoupsJ1+"     Coups de l'adversaire : "+this.nbCoupsJ2);
 	}
 	
 	public void quitter(){
@@ -269,7 +269,7 @@ public class PartieMulti extends Menu{
 		this.nbCoupsTour = 0;
 		this.nbTours = 0;
 		
-		this.infoNiveau.setText("Niveau: "+this.niveau.getNomNiveau());
+		this.infoNiveau.setText("Niveau : "+this.niveau.getNomNiveau());
 		
 		if( this.joueur.getAvatar() != null ){
 			this.imgJ2.setIcon( this.joueur.getAvatar() );
@@ -282,14 +282,14 @@ public class PartieMulti extends Menu{
 		}
 		
 		this.maquette = new Maquette( this.niveau);
-		this.maquette.setBounds(0, 0, 500, 700);
+		this.maquette.setBounds(20, 50, 500, 700);
 		this.maquette.setVisible(true);
 		this.add(this.maquette);
 		this.maquette.repaint();
 		
 		this.couleursAutorise = this.niveau.getCouleurAutorise();
 		this.bouton.setLayout(new GridLayout(2,5,5,5));
-		this.bouton.setBounds(350, 255, 200,100);
+		this.bouton.setBounds(380, 255, 200,100);
 		JButton b = null;
 		for( int i = 0; i < this.couleursAutorise.length; i++ ){
 			b = new JButton( this.getImage( this.couleursAutorise[i] ) );
@@ -310,7 +310,7 @@ public class PartieMulti extends Menu{
 			this.choisirQuiComm.setEnabled(true);
 		}else{
 			this.choisirQuiComm.setVisible(false);
-			this.information.setText("On choisit qui commence...");
+			this.information.setText("Choix du joueur qui commence...");
 		}
 		this.tourSuivant.setVisible(false);
 	}
@@ -339,7 +339,7 @@ public class PartieMulti extends Menu{
 			this.maquette.reset();
 		}
 		
-		this.information.setText("60 secondes pour choisir une combinaison");
+		this.information.setText("Vous avez 60 secondes pour choisir une combinaison");
 		this.etat = CHOISIT_COMB_A_DEVI;
 		this.activeBoutonColor();
 		this.effEssai.setEnabled(true);
@@ -364,7 +364,7 @@ public class PartieMulti extends Menu{
 	
 	//Le 1er compteur est écoulé
 	public void compteur1Rate(){
-		this.information.setText("60 secondes ecoulés, tous les 10 secondes tes coups augmentent");
+		this.information.setText("60 secondes ecoulées. Toutes les 10 secondes vos coups augmentent");
 	}
 	
 	//L'adversaire a écoulé son 1er compteur
@@ -374,7 +374,7 @@ public class PartieMulti extends Menu{
 	
 	//Tu as perdu un coup car 10 seconde ce sont écoulées du 2eme compteur
 	public void perduCoupsCmpt2() {
-		this.information.setText("10 secondes écoulés, tu as augmentés tes coups");
+		this.information.setText("60 secondes ecoulées. Toutes les 10 secondes vos coups augmentent");
 		this.nbCoupsJ1 ++;
 		this.refreshInfoPartie();
 	}
@@ -388,7 +388,7 @@ public class PartieMulti extends Menu{
 	
 	//Tu as perdu à cause du compteur2 écoulé
 	public void perduCmpt2() {
-		this.information.setText("Compteur terminé, tu as perdu, malus augmenté");
+		this.information.setText("Compteur terminé. Vous avez perdu, malus augmenté");
 		this.effEssai.setEnabled(false);
 		this.valider.setEnabled(false);
 		this.voirScore.setEnabled(false);
@@ -409,7 +409,7 @@ public class PartieMulti extends Menu{
 	public void combFixe(Pions comb){
 		this.nbCoupsTour = 0;
 		this.comb_a_trouve = comb;
-		this.information.setText("La combinaison à deviner, a été fixé, fait ton essai");
+		this.information.setText("La combinaison à deviner a été fixée. Veuillez commencer");
 		this.activeBoutonColor();
 		this.effEssai.setEnabled(true);
 		this.etat = CHOISIT_ESSAI;
@@ -425,7 +425,7 @@ public class PartieMulti extends Menu{
 	
 	//L'adversaire a sousmis un essai
 	public void envoiEssaiAdv(Pions essai) {
-		this.information.setText("L'adversaire a soumis un essai");
+		this.information.setText("L'adversaire a réalisé un essai");
 		this.maquette.addPions(nbCoupsTour,essai);
 		Pions aide = Tour.getAide(essai, comb_a_trouve);
 		maquette.addAide( nbCoupsTour, Tour.comptePionsCouleur(aide, Couleur.Noir), Tour.comptePionsCouleur(aide, Couleur.Blanc));
@@ -437,11 +437,11 @@ public class PartieMulti extends Menu{
 	public void combTrouve() {
 		this.etat = TOUR_SUIVANT;
 		if( this.createur ){
-			this.information.setText("Combinaison trouvé");
+			this.information.setText("Combinaison trouvée");
 			this.tourSuivant.setVisible(true);
 			this.tourSuivant.setEnabled(true);
 		}else{
-			this.information.setText("Combinaison trouvé, attendre le tour suivant");
+			this.information.setText("Combinaison trouvée. Attente du tout suivant...");
 		}
 	}
 	
@@ -505,7 +505,7 @@ public class PartieMulti extends Menu{
 	}
 
 	public void tuAsGagne() {
-		this.information.setText("Tu as gagné");
+		this.information.setText("Vous avez gagné !");
 		this.effEssai.setEnabled(false);
 		this.valider.setEnabled(false);
 		this.voirScore.setVisible(true);
@@ -515,7 +515,7 @@ public class PartieMulti extends Menu{
 	}
 
 	public void tuAsPerdu() {
-		this.information.setText("Tu as perdu");
+		this.information.setText("Vous avez perdu.");
 		this.effEssai.setEnabled(false);
 		this.valider.setEnabled(false);
 		this.voirScore.setVisible(true);

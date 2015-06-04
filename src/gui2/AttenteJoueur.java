@@ -96,6 +96,7 @@ public class AttenteJoueur extends Menu {
 	
 	private void addPret() {
 		this.information.setText("Joueur trouvé. Démarrage de la partie...");
+	    this.information.setBounds(420, 143, 400, 30);
 	}
 	
 	private void popPret(){

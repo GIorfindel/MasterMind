@@ -356,7 +356,6 @@ public class MSolo extends Menu{
 			this.maquette.setMaquette(solo.getTour());
 			this.refreshInfoPartie();
 			
-			this.maquette.dessineSolution( solo.getTour().getComb() );
 		}else{
 			this.nouveauTour();
 		}

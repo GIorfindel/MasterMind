@@ -201,13 +201,20 @@ public class DeuxJoueurs extends Menu{
 		    		Multijoueur multi = (Multijoueur) rep.getObjet(i);
 		    		
 		    		String nom_partie = multi.getNom();
-		    		String	niveau = multi.getNiveau().toString();
+		    		String	niveau = multi.getNiveau().getNomNiveau();
 		    		int	pions_max = multi.getNiveau().getPions();
 		    		int	coups_max = multi.getNiveau().getCoupMax();
 		    		int	couleurs_max = multi.getNiveau().getCouleurs();
 		    		boolean	couleurs_multiples = multi.getNiveau().getDouble();
+		    		String coul_mul;
+		    		if(couleurs_multiples) {
+		    			coul_mul = "Oui";
+		    		}
+		    		else {
+		    			coul_mul = "Non";
+		    		}
 		    		
-		    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, couleurs_multiples};
+		    		Object[] parametres = {nom_partie, niveau, pions_max, coups_max, couleurs_max, coul_mul};
 		    		
 		    		ajouterPartie(parametres);
 		    	}
