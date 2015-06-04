@@ -90,7 +90,7 @@ public class Connexion extends Menu{
 	    this.identifiant = new JTextField();
 	    this.identifiant.setDocument(new TextLimiter(20));
 	    lblIdentifiant.setLabelFor( this.identifiant );
-	    this.identifiant.setBounds(450, 164, 250, 22);
+	    this.identifiant.setBounds(450, 164, 176, 22);
 	    this.add( this.identifiant );
 	    this.identifiant.setColumns(10);
 	}

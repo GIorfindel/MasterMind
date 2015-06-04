@@ -72,7 +72,7 @@ public class Classement extends Menu {
 	private void addLabelMulti()
 	{
 		this.lMulti = new JLabel("Multi :");
-		this.lMulti.setBounds(100,300, 200, 90);
+		this.lMulti.setBounds(100,300, 50, 90);
 		this.lMulti.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		this.add(this.lMulti);
 	}

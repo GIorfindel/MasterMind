@@ -36,8 +36,8 @@ public class Serveur {
 	}
 	
 	private void initDB(){
-		this.db = new DB("localhost", "ben", "ben", "mastermind");
-		 this.db.connexion();
+		this.db = new DB("mysql-projetmastermind.alwaysdata.net", "107070", "AFjJFIaFvpJb", "projetmastermind_bd");
+		this.db.connexion();
 	}
 	
 	public DB getBD(){

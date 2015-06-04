@@ -255,7 +255,7 @@ public class MScore extends Menu{
 							rvdm = (double)mg/(double)mj;
 						if (mc!=0 && mj!=0)
 							rcpm = (double)mc/(double)mj;
-					this.refresh(sg, mg, sc, mc, rvds, rvdm, rcps, rcpm, sj, mj);
+					this.refresh(sg, mg, sc, sm, rvds, rvdm, rcps, rcpm, sj, mj);
 				}
 			}
 		}

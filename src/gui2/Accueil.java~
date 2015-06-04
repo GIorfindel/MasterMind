@@ -168,7 +168,6 @@ public class Accueil extends Menu{
 		}else{
 			this.connectServeur.setText("Connecté au serveur: non");
 			this.classement.setEnabled(false);
-			this.score.setEnabled(false);
 		}
 	}
 	
